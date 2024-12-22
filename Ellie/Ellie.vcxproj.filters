@@ -4,6 +4,9 @@
     <Filter Include="Ellie">
       <UniqueIdentifier>{30AD1C0D-9CC1-44BE-6543-E81DD11641EF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ellie\Events">
+      <UniqueIdentifier>{14A3454A-0006-D5EE-A98B-0DA595CDA071}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ellie.h" />
@@ -15,6 +18,18 @@
     </ClInclude>
     <ClInclude Include="src\Ellie\EntryPoint.h">
       <Filter>Ellie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Events\ApplicationEvent.h">
+      <Filter>Ellie\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Events\Event.h">
+      <Filter>Ellie\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Events\KeyEvent.h">
+      <Filter>Ellie\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Events\MouseEvent.h">
+      <Filter>Ellie\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Log.h">
       <Filter>Ellie</Filter>
