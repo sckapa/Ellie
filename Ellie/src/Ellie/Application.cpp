@@ -1,3 +1,4 @@
+#include "eepch.h"
 #include "Application.h"
 
 #include "Ellie/Events/ApplicationEvent.h"
@@ -7,6 +8,7 @@ namespace Ellie{
 
 	Ellie::Application::Application()
 	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
 	}
 
 	Ellie::Application::~Application()
@@ -15,12 +17,9 @@ namespace Ellie{
 
 	void Ellie::Application::Run()
 	{
-		WindowResizeEvent resizeEvent(1280, 720);
-		EE_INFO(resizeEvent);
-
-		while (true)
+		while (m_Running)
 		{
-
+			m_Window->OnUpdate();
 		}
 	}
 }

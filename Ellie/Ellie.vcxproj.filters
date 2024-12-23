@@ -7,6 +7,12 @@
     <Filter Include="Ellie\Events">
       <UniqueIdentifier>{14A3454A-0006-D5EE-A98B-0DA595CDA071}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ellie\Platform">
+      <UniqueIdentifier>{84BF580E-708D-4C14-5921-BD3A458E2879}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ellie\Platform\Windows">
+      <UniqueIdentifier>{BEADDF54-AAA7-08A7-9314-9FB77FAD6E13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ellie.h" />
@@ -34,6 +40,13 @@
     <ClInclude Include="src\Ellie\Log.h">
       <Filter>Ellie</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Platform\Windows\WindowsWindow.h">
+      <Filter>Ellie\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Window.h">
+      <Filter>Ellie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\eepch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Application.cpp">
@@ -42,5 +55,9 @@
     <ClCompile Include="src\Ellie\Log.cpp">
       <Filter>Ellie</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ellie\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Ellie\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\eepch.cpp" />
   </ItemGroup>
 </Project>

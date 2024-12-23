@@ -10,6 +10,11 @@ workspace "Ellie"
 
  outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+ IncludeDir = {}
+ IncludeDir["GLFW"] = "Ellie/vendor/GLFW/include"
+
+ include "Ellie/vendor/GLFW"
+
  project "Ellie"
  location "Ellie"
  kind "SharedLib"
@@ -17,6 +22,9 @@ workspace "Ellie"
 
  targetdir ("bin/" .. outputdir .. "/%{prj.name}")
  objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+ pchheader "eepch.h"
+ pchsource "Ellie/src/eepch.cpp"
 
  files
  {
@@ -27,7 +35,14 @@ workspace "Ellie"
  includedirs
  {
   "%{prj.name}/src",
-  "%{prj.name}/vendor/spdlog/include"
+  "%{prj.name}/vendor/spdlog/include",
+  "%{IncludeDir.GLFW}"
+ }
+
+ links
+ {
+  "GLFW",
+  "opengl32.lib"
  }
 
  filter "system:windows"

@@ -1,3 +1,4 @@
+#include "eepch.h"
 #include "Log.h"
 
 namespace Ellie{

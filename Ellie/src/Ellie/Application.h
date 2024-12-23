@@ -3,6 +3,8 @@
 #include "Core.h"
 #include "Events/Event.h"
 
+#include "Window.h"
+
 namespace Ellie{
 
 	class ELLIE_API Application
@@ -12,6 +14,10 @@ namespace Ellie{
 		virtual ~Application();
 
 		void Run();
+
+	private:
+		std::unique_ptr<Window> m_Window;
+		bool m_Running = true;
 	};
 
 	// To be defined in a CLIENT
