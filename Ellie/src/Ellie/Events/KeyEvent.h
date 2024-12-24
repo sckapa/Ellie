@@ -43,21 +43,16 @@ namespace Ellie {
 	class ELLIE_API KeyReleasedEvent : public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(int keyCode, int repeatCount) : KeyEvent(keyCode), m_RepeatCount(repeatCount) {}
-
-		inline int GetRepeatCount() { return m_RepeatCount; }
+		KeyReleasedEvent(int keyCode) : KeyEvent(keyCode) {}
 
 		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyPressedEvent : " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
+			ss << "KeyPressedEvent : " << m_KeyCode;
 			return ss.str();
 		}
 
 		EVENT_CLASS_TYPE(KeyReleased)
-
-	private:
-		int m_RepeatCount;
 	};
 
 }

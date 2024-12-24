@@ -40,6 +40,21 @@ namespace Ellie{
 		return m_Data.VSync;
 	}
 
+	void Ellie::WindowsWindow::ShutDown()
+	{
+		glfwDestroyWindow(m_window);
+	}
+
+	WindowsWindow::~WindowsWindow()
+	{
+		ShutDown();
+	}
+
+	void GLFWError(int error_code, const char* description)
+	{
+		EE_CORE_ERROR("GLFW Error ({0}) : {1}",error_code, description);
+	}
+
 	void Ellie::WindowsWindow::Init(const WindowProps& prop)
 	{
 		m_Data.Title = prop.Title;
@@ -50,6 +65,7 @@ namespace Ellie{
 		{
 			int success = glfwInit();
 			EE_ASSERT(success, "Could not initialize GLFW!")
+			glfwSetErrorCallback(GLFWError);
 			s_GLFWInitialized = true;
 		}
 
@@ -57,15 +73,90 @@ namespace Ellie{
 		glfwMakeContextCurrent(m_window);
 		glfwSetWindowUserPointer(m_window, &m_Data);
 		SetVsync(true);
+
+		// Set GLFW callbacks
+		glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
+			{
+				WindowData data = *(WindowData*) glfwGetWindowUserPointer(window);
+
+				data.Width = width;
+				data.Height = height;
+
+				WindowResizeEvent event(width, height);
+				data.EventCallBack(event);
+			});
+
+		glfwSetWindowCloseCallback((m_window), [](GLFWwindow* window)
+			{
+				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+				WindowCloseEvent event;
+				data.EventCallBack(event);
+			});
+
+		glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+			{
+				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+				switch (action)
+				{
+					case GLFW_PRESS :
+					{
+						KeyPressedEvent event(key, 0);
+						data.EventCallBack(event);
+						break;
+					}
+					case GLFW_RELEASE:
+					{
+						KeyReleasedEvent event(key);
+						data.EventCallBack(event);
+						break;
+					}
+					case GLFW_REPEAT:
+					{
+						KeyPressedEvent event(key, 1);
+						data.EventCallBack(event);
+						break;
+					}
+				}
+			});
+
+		glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mods)
+			{
+				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+				switch (action)
+				{
+				case GLFW_PRESS:
+				{
+					MouseButtonPressedEvent event(button);
+					data.EventCallBack(event);
+					break;
+				}
+				case GLFW_RELEASE:
+				{
+					MouseButtonReleasedEvent event(button);
+					data.EventCallBack(event);
+					break;
+				}
+				}
+			});
+
+		glfwSetScrollCallback((m_window), [](GLFWwindow* window, double xOffset, double yOffset)
+		{
+			WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			MouseScrolledEvent event(xOffset, yOffset);
+			data.EventCallBack(event);
+		});
+
+		glfwSetCursorPosCallback((m_window), [](GLFWwindow* window, double xPos, double yPos)
+			{
+				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+				MouseScrolledEvent event(xPos, yPos);
+				data.EventCallBack(event);
+			});
 	}
 
-	void Ellie::WindowsWindow::ShutDown()
-	{
-		glfwDestroyWindow(m_window);
-	}
-
-	WindowsWindow::~WindowsWindow()
-	{
-		ShutDown();
-	}
 }

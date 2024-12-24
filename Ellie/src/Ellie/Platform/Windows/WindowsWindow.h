@@ -2,6 +2,9 @@
 
 #include "Ellie/Window.h"
 #include <GLFW/glfw3.h>
+#include "Ellie/Events/ApplicationEvent.h"
+#include "Ellie/Events/KeyEvent.h"
+#include "Ellie/Events/MouseEvent.h"
 
 namespace Ellie{
 	class WindowsWindow : public Window

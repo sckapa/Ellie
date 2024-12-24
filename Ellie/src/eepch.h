@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Ellie/Log.h"
+
 #include <functional>
 #include <iostream>
 #include <utility>
