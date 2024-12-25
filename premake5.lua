@@ -12,8 +12,10 @@ workspace "Ellie"
 
  IncludeDir = {}
  IncludeDir["GLFW"] = "Ellie/vendor/GLFW/include"
+ IncludeDir["Glad"] = "Ellie/vendor/Glad/include"
 
  include "Ellie/vendor/GLFW"
+ include "Ellie/vendor/Glad"
 
  project "Ellie"
  location "Ellie"
@@ -36,12 +38,14 @@ workspace "Ellie"
  {
   "%{prj.name}/src",
   "%{prj.name}/vendor/spdlog/include",
-  "%{IncludeDir.GLFW}"
+  "%{IncludeDir.GLFW}",
+  "%{IncludeDir.Glad}"
  }
 
  links
  {
   "GLFW",
+  "Glad",
   "opengl32.lib"
  }
 
@@ -53,7 +57,8 @@ workspace "Ellie"
   defines
   {
    "EE_PLATFORM_WINDOWS",
-   "EE_BUILD_DLL"
+   "EE_BUILD_DLL",
+   "GLFW_INCLUDE_NONE"
   }
 
   postbuildcommands
@@ -65,16 +70,22 @@ workspace "Ellie"
   defines "EE_DEBUG"
   symbols "On"
   buildoptions "/utf-8"
+  staticruntime "off"
+  runtime "Debug"
 
  filter "configurations:Release"
   defines "EE_RELEASE"
   optimize "On"
   buildoptions "/utf-8"
+  staticruntime "off"
+  runtime "Release"
 
  filter "configurations:Dist"
   defines "EE_DIST"
   optimize "On"
   buildoptions "/utf-8"
+  staticruntime "off"
+  runtime "Release"
 
 project "Sandbox"
  location "Sandbox"
@@ -115,13 +126,19 @@ project "Sandbox"
   defines "EE_DEBUG"
   symbols "On"
   buildoptions "/utf-8"
+  staticruntime "off"
+  runtime "Debug"
 
  filter "configurations:Release"
   defines "EE_RELEASE"
   optimize "On"
   buildoptions "/utf-8"
+  staticruntime "off"
+  runtime "Release"
 
  filter "configurations:Dist"
   defines "EE_DIST"
   optimize "On"
   buildoptions "/utf-8"
+  staticruntime "off"
+  runtime "Release"

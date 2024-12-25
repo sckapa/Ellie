@@ -1,6 +1,6 @@
 #include "eepch.h"
 #include "WindowsWindow.h"
-
+#include "glad/glad.h"
 
 namespace Ellie{
 
@@ -71,6 +71,10 @@ namespace Ellie{
 
 		m_window = glfwCreateWindow((int)prop.Width, (int)prop.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_window);
+
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		EE_ASSERT(status, "Failed to load Glad!");
+
 		glfwSetWindowUserPointer(m_window, &m_Data);
 		SetVsync(true);
 

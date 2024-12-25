@@ -28,8 +28,8 @@ namespace Ellie{
 #define EE_CORE_TRACE(...)  Ellie::Log::GetCoreLogger()->trace(__VA_ARGS__)
 #define EE_CORE_WARN(...)   Ellie::Log::GetCoreLogger()->warn(__VA_ARGS__)
 
-#define EE_ERROR(...)  Ellie::Log::GetCoreLogger()->error(__VA_ARGS__)
-#define EE_FATAL(...)  Ellie::Log::GetCoreLogger()->fatal(__VA_ARGS__)
-#define EE_INFO(...)   Ellie::Log::GetCoreLogger()->info(__VA_ARGS__)
-#define EE_TRACE(...)  Ellie::Log::GetCoreLogger()->trace(__VA_ARGS__)
-#define EE_WARN(...)   Ellie::Log::GetCoreLogger()->warn(__VA_ARGS__)
+#define EE_ERROR(...)  Ellie::Log::GetClientLogger()->error(__VA_ARGS__)
+#define EE_FATAL(...)  Ellie::Log::GetClientLogger()->fatal(__VA_ARGS__)
+#define EE_INFO(...)   Ellie::Log::GetClientLogger()->info(__VA_ARGS__)
+#define EE_TRACE(...)  Ellie::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define EE_WARN(...)   Ellie::Log::GetClientLogger()->warn(__VA_ARGS__)

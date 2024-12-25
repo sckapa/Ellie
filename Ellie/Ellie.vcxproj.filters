@@ -37,6 +37,12 @@
     <ClInclude Include="src\Ellie\Events\MouseEvent.h">
       <Filter>Ellie\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Layer.h">
+      <Filter>Ellie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\LayerStack.h">
+      <Filter>Ellie</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Log.h">
       <Filter>Ellie</Filter>
     </ClInclude>
@@ -50,6 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Application.cpp">
+      <Filter>Ellie</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Layer.cpp">
+      <Filter>Ellie</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\LayerStack.cpp">
       <Filter>Ellie</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Log.cpp">
