@@ -19,6 +19,8 @@ namespace Ellie{
 		inline unsigned int GetWidth() const override { return m_Data.Width; }
 		inline unsigned int GetHeight() const override { return m_Data.Height; }
 
+		static GLFWwindow* GetWindow() { return m_window; }
+
 		inline void SetEventCallback(const EventCallBackFn& callback) override { m_Data.EventCallBack = callback; }
 		void SetVsync(const bool sync) override;
 		bool IsVsync() const override;
@@ -27,7 +29,7 @@ namespace Ellie{
 		virtual void Init(const WindowProps& prop);
 		virtual void ShutDown();
 
-		GLFWwindow* m_window;
+		static GLFWwindow* m_window;
 
 		struct WindowData
 		{

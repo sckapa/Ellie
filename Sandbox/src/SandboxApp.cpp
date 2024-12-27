@@ -22,6 +22,7 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Ellie::ImGuiLayer());
 	}
 
 	~Sandbox()

@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>eepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>EE_PLATFORM_WINDOWS;EE_BUILD_DLL;GLFW_INCLUDE_NONE;EE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -104,7 +104,7 @@
       <PrecompiledHeaderFile>eepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>EE_PLATFORM_WINDOWS;EE_BUILD_DLL;GLFW_INCLUDE_NONE;EE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -132,7 +132,7 @@
       <PrecompiledHeaderFile>eepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>EE_PLATFORM_WINDOWS;EE_BUILD_DLL;GLFW_INCLUDE_NONE;EE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -163,18 +163,25 @@
     <ClInclude Include="src\Ellie\Events\Event.h" />
     <ClInclude Include="src\Ellie\Events\KeyEvent.h" />
     <ClInclude Include="src\Ellie\Events\MouseEvent.h" />
+    <ClInclude Include="src\Ellie\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Ellie\Layer.h" />
     <ClInclude Include="src\Ellie\LayerStack.h" />
     <ClInclude Include="src\Ellie\Log.h" />
+    <ClInclude Include="src\Ellie\Platform\GLFW\imgui_glfw.h" />
+    <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLRenderer.h" />
+    <ClInclude Include="src\Ellie\Platform\OpenGL\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Ellie\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Ellie\Window.h" />
     <ClInclude Include="src\eepch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Application.cpp" />
+    <ClCompile Include="src\Ellie\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Ellie\Layer.cpp" />
     <ClCompile Include="src\Ellie\LayerStack.cpp" />
     <ClCompile Include="src\Ellie\Log.cpp" />
+    <ClCompile Include="src\Ellie\Platform\GLFW\imgui_glfw.cpp" />
+    <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLRenderer.cpp" />
     <ClCompile Include="src\Ellie\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\eepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -186,6 +193,9 @@
     </ProjectReference>
     <ProjectReference Include="vendor\Glad\Glad.vcxproj">
       <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -3,6 +3,7 @@
 #include "glad/glad.h"
 
 namespace Ellie{
+	GLFWwindow* Ellie::WindowsWindow::m_window = nullptr;
 
 	static bool s_GLFWInitialized = false;
 
