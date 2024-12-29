@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "Ellie/Log.h"
+#include "Input.h"
 
 namespace Ellie{
 

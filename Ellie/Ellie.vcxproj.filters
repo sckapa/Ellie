@@ -49,6 +49,9 @@
     <ClInclude Include="src\Ellie\ImGui\ImGuiLayer.h">
       <Filter>Ellie\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Input.h">
+      <Filter>Ellie</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Layer.h">
       <Filter>Ellie</Filter>
     </ClInclude>
@@ -66,6 +69,9 @@
     </ClInclude>
     <ClInclude Include="src\Ellie\Platform\OpenGL\imgui_impl_opengl3_loader.h">
       <Filter>Ellie\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Platform\Windows\WindowsInput.h">
+      <Filter>Ellie\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Platform\Windows\WindowsWindow.h">
       <Filter>Ellie\Platform\Windows</Filter>
@@ -96,6 +102,9 @@
     </ClCompile>
     <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLRenderer.cpp">
       <Filter>Ellie\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Platform\Windows\WindowsInput.cpp">
+      <Filter>Ellie\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Platform\Windows\WindowsWindow.cpp">
       <Filter>Ellie\Platform\Windows</Filter>

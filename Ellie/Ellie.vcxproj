@@ -164,12 +164,14 @@
     <ClInclude Include="src\Ellie\Events\KeyEvent.h" />
     <ClInclude Include="src\Ellie\Events\MouseEvent.h" />
     <ClInclude Include="src\Ellie\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Ellie\Input.h" />
     <ClInclude Include="src\Ellie\Layer.h" />
     <ClInclude Include="src\Ellie\LayerStack.h" />
     <ClInclude Include="src\Ellie\Log.h" />
     <ClInclude Include="src\Ellie\Platform\GLFW\imgui_glfw.h" />
     <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLRenderer.h" />
     <ClInclude Include="src\Ellie\Platform\OpenGL\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\Ellie\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Ellie\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Ellie\Window.h" />
     <ClInclude Include="src\eepch.h" />
@@ -182,6 +184,7 @@
     <ClCompile Include="src\Ellie\Log.cpp" />
     <ClCompile Include="src\Ellie\Platform\GLFW\imgui_glfw.cpp" />
     <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLRenderer.cpp" />
+    <ClCompile Include="src\Ellie\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Ellie\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\eepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
