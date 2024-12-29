@@ -165,9 +165,11 @@
     <ClInclude Include="src\Ellie\Events\MouseEvent.h" />
     <ClInclude Include="src\Ellie\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Ellie\Input.h" />
+    <ClInclude Include="src\Ellie\KeyCodes.h" />
     <ClInclude Include="src\Ellie\Layer.h" />
     <ClInclude Include="src\Ellie\LayerStack.h" />
     <ClInclude Include="src\Ellie\Log.h" />
+    <ClInclude Include="src\Ellie\MouseCodes.h" />
     <ClInclude Include="src\Ellie\Platform\GLFW\imgui_glfw.h" />
     <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLRenderer.h" />
     <ClInclude Include="src\Ellie\Platform\OpenGL\imgui_impl_opengl3_loader.h" />

@@ -52,6 +52,9 @@
     <ClInclude Include="src\Ellie\Input.h">
       <Filter>Ellie</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\KeyCodes.h">
+      <Filter>Ellie</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Layer.h">
       <Filter>Ellie</Filter>
     </ClInclude>
@@ -59,6 +62,9 @@
       <Filter>Ellie</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Log.h">
+      <Filter>Ellie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\MouseCodes.h">
       <Filter>Ellie</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Platform\GLFW\imgui_glfw.h">
