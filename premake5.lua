@@ -14,6 +14,7 @@ workspace "Ellie"
  IncludeDir["GLFW"] = "Ellie/vendor/GLFW/include"
  IncludeDir["Glad"] = "Ellie/vendor/Glad/include"
  IncludeDir["ImGui"] = "Ellie/vendor/imgui"
+ IncludeDir["glm"] = "Ellie/vendor/glm"
 
  include "Ellie/vendor/GLFW"
  include "Ellie/vendor/Glad"
@@ -33,7 +34,9 @@ workspace "Ellie"
  files
  {
   "%{prj.name}/src/**.h",
-  "%{prj.name}/src/**.cpp"
+  "%{prj.name}/src/**.cpp",
+  "%{prj.name}/vendor/glm/glm/**.hpp",
+  "%{prj.name}/vendor/glm/glm/**.inl"
  }
 
  includedirs
@@ -42,7 +45,8 @@ workspace "Ellie"
   "%{prj.name}/vendor/spdlog/include",
   "%{IncludeDir.GLFW}",
   "%{IncludeDir.Glad}",
-  "%{IncludeDir.ImGui}"
+  "%{IncludeDir.ImGui}",
+  "%{IncludeDir.glm}"
  }
 
  links
@@ -108,7 +112,8 @@ project "Sandbox"
  includedirs
  {
   "Ellie/vendor/spdlog/include",
-  "Ellie/src"
+  "Ellie/src",
+  "%{IncludeDir.glm}"
  }
 
  links
