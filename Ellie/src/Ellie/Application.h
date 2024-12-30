@@ -5,6 +5,7 @@
 #include "Core.h"
 #include "Events/Event.h"
 #include "Ellie/Events/ApplicationEvent.h"
+#include "ImGui/ImGuiLayer.h"
 
 
 namespace Ellie{
@@ -27,7 +28,7 @@ namespace Ellie{
 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
-
+		ImGuiLayer* m_ImGuiLayer;
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
 		LayerStack m_LayerStack;

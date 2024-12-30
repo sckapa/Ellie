@@ -17,6 +17,9 @@ namespace Ellie{
 		virtual void OnDetach() {}
 		virtual void OnUpdate() {}
 
+
+		virtual void OnImGuiRender() {}
+
 		inline const std::string& GetLayerName() const { return m_DebugName; }
 
 	private:

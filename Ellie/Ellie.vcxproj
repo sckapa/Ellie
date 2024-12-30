@@ -170,9 +170,6 @@
     <ClInclude Include="src\Ellie\LayerStack.h" />
     <ClInclude Include="src\Ellie\Log.h" />
     <ClInclude Include="src\Ellie\MouseCodes.h" />
-    <ClInclude Include="src\Ellie\Platform\GLFW\imgui_glfw.h" />
-    <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLRenderer.h" />
-    <ClInclude Include="src\Ellie\Platform\OpenGL\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Ellie\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Ellie\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Ellie\Window.h" />
@@ -596,12 +593,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Application.cpp" />
+    <ClCompile Include="src\Ellie\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Ellie\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Ellie\Layer.cpp" />
     <ClCompile Include="src\Ellie\LayerStack.cpp" />
     <ClCompile Include="src\Ellie\Log.cpp" />
-    <ClCompile Include="src\Ellie\Platform\GLFW\imgui_glfw.cpp" />
-    <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLRenderer.cpp" />
     <ClCompile Include="src\Ellie\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Ellie\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\eepch.cpp">

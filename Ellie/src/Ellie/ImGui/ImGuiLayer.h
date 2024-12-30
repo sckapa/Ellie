@@ -11,11 +11,12 @@ namespace Ellie{
 		ImGuiLayer();
 		~ImGuiLayer();
 
-		void OnEvent(Event& event);
-		void OnAttach();
-		void OnDetach();
-		void OnUpdate();
+		virtual void OnAttach() override;
+		virtual void OnDetach() override;
+		virtual void OnImGuiRender() override;
 
+		void Begin();
+		void End();
 	private:
 		float m_Time = 0.0f;
 	};
