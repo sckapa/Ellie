@@ -22,8 +22,10 @@ workspace "Ellie"
 
  project "Ellie"
  location "Ellie"
- kind "SharedLib"
+ kind "StaticLib"
  language "C++"
+ cppdialect "C++17"
+ staticruntime "on"
 
  targetdir ("bin/" .. outputdir .. "/%{prj.name}")
  objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -37,6 +39,11 @@ workspace "Ellie"
   "%{prj.name}/src/**.cpp",
   "%{prj.name}/vendor/glm/glm/**.hpp",
   "%{prj.name}/vendor/glm/glm/**.inl"
+ }
+
+ defines
+ {
+  "_CRT_SECURE_NO_WARNINGS"
  }
 
  includedirs
@@ -58,8 +65,6 @@ workspace "Ellie"
  }
 
  filter "system:windows"
-  cppdialect "C++17"
-  staticruntime "On"
   systemversion "latest"
 
   defines
@@ -69,36 +74,30 @@ workspace "Ellie"
    "GLFW_INCLUDE_NONE"
   }
 
-  postbuildcommands
-  {
-   ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-  }
-
  filter "configurations:Debug"
   defines "EE_DEBUG"
-  symbols "On"
+  symbols "on"
   buildoptions "/utf-8"
-  staticruntime "off"
   runtime "Debug"
 
  filter "configurations:Release"
   defines "EE_RELEASE"
-  optimize "On"
+  optimize "on"
   buildoptions "/utf-8"
-  staticruntime "off"
   runtime "Release"
 
  filter "configurations:Dist"
   defines "EE_DIST"
-  optimize "On"
+  optimize "on"
   buildoptions "/utf-8"
-  staticruntime "off"
   runtime "Release"
 
 project "Sandbox"
  location "Sandbox"
  kind "ConsoleApp"
  language "C++"
+ cppdialect "C++17"
+ staticruntime "on"
 
  targetdir ("bin/" .. outputdir .. "/%{prj.name}")
  objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -122,8 +121,7 @@ project "Sandbox"
  }
 
  filter "system:windows"
-  cppdialect "C++17"
-  staticruntime "On"
+  staticruntime "on"
   systemversion "latest"
 
   defines
@@ -133,21 +131,18 @@ project "Sandbox"
 
  filter "configurations:Debug"
   defines "EE_DEBUG"
-  symbols "On"
+  symbols "on"
   buildoptions "/utf-8"
-  staticruntime "off"
   runtime "Debug"
 
  filter "configurations:Release"
   defines "EE_RELEASE"
-  optimize "On"
+  optimize "on"
   buildoptions "/utf-8"
-  staticruntime "off"
   runtime "Release"
 
  filter "configurations:Dist"
   defines "EE_DIST"
-  optimize "On"
+  optimize "on"
   buildoptions "/utf-8"
-  staticruntime "off"
   runtime "Release"

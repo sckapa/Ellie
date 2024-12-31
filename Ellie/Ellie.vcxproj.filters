@@ -16,14 +16,14 @@
     <Filter Include="src\Ellie\Platform">
       <UniqueIdentifier>{BBDF3C6C-A7C3-FDC1-1024-F814FC26E843}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Ellie\Platform\GLFW">
-      <UniqueIdentifier>{DAA7CF57-46DF-17EF-4FE9-7B12BB9F3EE8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Ellie\Platform\OpenGL">
       <UniqueIdentifier>{8F289F9F-FBEA-D229-449B-61B6B09CAB07}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Ellie\Platform\Windows">
       <UniqueIdentifier>{F514A0EB-E124-4CBC-4ADE-B0DA360D3B55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Ellie\Renderer">
+      <UniqueIdentifier>{0DE71947-F9CA-DA9C-622B-D5EF4E2EC51E}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
@@ -93,11 +93,17 @@
     <ClInclude Include="src\Ellie\MouseCodes.h">
       <Filter>src\Ellie</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Ellie\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Platform\Windows\WindowsInput.h">
       <Filter>src\Ellie\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Platform\Windows\WindowsWindow.h">
       <Filter>src\Ellie\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Renderer\GraphicsContext.h">
+      <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Window.h">
       <Filter>src\Ellie</Filter>
@@ -1358,6 +1364,9 @@
     <ClCompile Include="src\Ellie\Application.cpp">
       <Filter>src\Ellie</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ellie\ImGui\ImGuiBuild.cpp">
+      <Filter>src\Ellie\ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="src\Ellie\ImGui\ImGuiLayer.cpp">
       <Filter>src\Ellie\ImGui</Filter>
     </ClCompile>
@@ -1370,6 +1379,9 @@
     <ClCompile Include="src\Ellie\Log.cpp">
       <Filter>src\Ellie</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Ellie\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Ellie\Platform\Windows\WindowsInput.cpp">
       <Filter>src\Ellie\Platform\Windows</Filter>
     </ClCompile>
@@ -1378,9 +1390,6 @@
     </ClCompile>
     <ClCompile Include="src\eepch.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ellie\ImGui\ImGuiBuild.cpp">
-      <Filter>src\Ellie\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

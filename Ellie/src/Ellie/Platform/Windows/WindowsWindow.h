@@ -5,9 +5,12 @@
 #include "Ellie/Events/ApplicationEvent.h"
 #include "Ellie/Events/KeyEvent.h"
 #include "Ellie/Events/MouseEvent.h"
-#include "GLFW/glfw3.h"
+
+#include "Ellie/Renderer/GraphicsContext.h"
+#include "Ellie/Platform/OpenGL/OpenGLContext.h"
 
 namespace Ellie{
+
 	class WindowsWindow : public Window
 	{
 	public:
@@ -30,6 +33,7 @@ namespace Ellie{
 		virtual void ShutDown();
 
 		GLFWwindow* m_window;
+		GraphicsContext* m_Context;
 
 		struct WindowData
 		{

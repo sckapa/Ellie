@@ -2,11 +2,15 @@
 
 #ifdef EE_PLATFORM_WINDOWS
 
+#if EE_DYNAMIC_BUILD
 	#ifdef EE_BUILD_DLL
 		#define ELLIE_API __declspec(dllexport)
 	#else
 		#define ELLIE_API __declspec(dllimport)
 	#endif
+#else 
+	#define ELLIE_API
+#endif
 
 #else
 	#error Ellie only supports Windows!

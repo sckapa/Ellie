@@ -1,6 +1,5 @@
 #include "eepch.h"
 #include "WindowsWindow.h"
-#include "glad/glad.h"
 
 namespace Ellie{
 	//GLFWwindow* Ellie::WindowsWindow::m_window = nullptr;
@@ -20,7 +19,7 @@ namespace Ellie{
 	void Ellie::WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_window);
+		m_Context->SwapBuffers();
 	}
 
 	void Ellie::WindowsWindow::SetVsync(const bool sync)
@@ -71,10 +70,9 @@ namespace Ellie{
 		}
 
 		m_window = glfwCreateWindow((int)prop.Width, (int)prop.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_window);
+		m_Context = new OpenGLContext(m_window);
 
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		EE_ASSERT(status, "Failed to load Glad!");
+		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_window, &m_Data);
 		SetVsync(true);
@@ -151,7 +149,7 @@ namespace Ellie{
 		{
 			WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-			MouseScrolledEvent event(xOffset, yOffset);
+			MouseScrolledEvent event((float)xOffset, (float)yOffset);
 			data.EventCallBack(event);
 		});
 
@@ -159,7 +157,7 @@ namespace Ellie{
 			{
 				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-				MouseScrolledEvent event(xPos, yPos);
+				MouseScrolledEvent event((float)xPos, (float)yPos);
 				data.EventCallBack(event);
 			});
 	}
