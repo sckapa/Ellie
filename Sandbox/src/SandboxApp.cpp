@@ -7,12 +7,12 @@ public:
 
 	void OnEvent(Ellie::Event& e) override
 	{
-		EE_INFO(e);
+		//EE_INFO(e);
 	}
 
 	void OnUpdate() override
 	{
-		EE_INFO("Update called");
+		//EE_INFO("Update called");
 	}
 };
 
