@@ -1360,6 +1360,9 @@
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\Shader.h" />
+    <ClInclude Include="src\Ellie\Renderer\Buffers.h" />
+    <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLBuffers.h" />
+    <ClInclude Include="src\Ellie\Renderer\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Application.cpp">
@@ -1393,5 +1396,8 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Ellie\Renderer\Buffers.cpp" />
+    <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLBuffers.cpp" />
+    <ClCompile Include="src\Ellie\Renderer\Renderer.cpp" />
   </ItemGroup>
 </Project>
