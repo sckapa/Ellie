@@ -7,6 +7,7 @@
 #include "Ellie/Events/ApplicationEvent.h"
 #include "ImGui/ImGuiLayer.h"
 
+#include "Renderer/Shader.h"
 
 namespace Ellie{
 
@@ -36,6 +37,7 @@ namespace Ellie{
 		static Application* s_Instance;
 
 		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		std::unique_ptr<Shader> m_Shader;
 	};
 
 	// To be defined in a CLIENT

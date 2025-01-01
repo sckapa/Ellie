@@ -146,6 +146,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ellie\Renderer\Shader.h" />
     <ClInclude Include="src\Ellie.h" />
     <ClInclude Include="src\Ellie\Application.h" />
     <ClInclude Include="src\Ellie\Core.h" />
@@ -585,6 +586,7 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ellie\Renderer\Shader.cpp" />
     <ClCompile Include="src\Ellie\Application.cpp" />
     <ClCompile Include="src\Ellie\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Ellie\ImGui\ImGuiLayer.cpp" />
