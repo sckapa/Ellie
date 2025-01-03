@@ -146,6 +146,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLBuffers.h" />
     <ClInclude Include="src\Ellie\Renderer\Buffers.h" />
     <ClInclude Include="src\Ellie\Renderer\Renderer.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\Ellie\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Ellie\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Ellie\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Ellie\Renderer\VertexArray.h" />
     <ClInclude Include="src\Ellie\Window.h" />
     <ClInclude Include="src\eepch.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -589,6 +591,7 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLBuffers.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Buffers.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Renderer.cpp" />
@@ -605,6 +608,7 @@
     <ClCompile Include="src\eepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Ellie\Renderer\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

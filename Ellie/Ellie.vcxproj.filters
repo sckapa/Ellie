@@ -1363,6 +1363,8 @@
     <ClInclude Include="src\Ellie\Renderer\Buffers.h" />
     <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLBuffers.h" />
     <ClInclude Include="src\Ellie\Renderer\Renderer.h" />
+    <ClInclude Include="src\Ellie\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLVertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Application.cpp">
@@ -1399,5 +1401,7 @@
     <ClCompile Include="src\Ellie\Renderer\Buffers.cpp" />
     <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLBuffers.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Ellie\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLVertexArray.cpp" />
   </ItemGroup>
 </Project>
