@@ -1,15 +1,18 @@
 #pragma once
 
-namespace Ellie {
+#include "RenderCommands.h"
 
-	enum class RendererAPI
-	{
-		None = 0, OpenGL = 1
-	};
+namespace Ellie {
 
 	class Renderer
 	{
-		static RendererAPI s_RendererAPI;
+	public:
+		static void BeginScene();
+		static void EndScene();
+		
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+
+		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	};
 
 }

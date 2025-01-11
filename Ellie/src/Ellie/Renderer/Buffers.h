@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Renderer.h"
-
 namespace Ellie {
 
 	enum class ShaderDataType
@@ -38,6 +36,8 @@ namespace Ellie {
 		ShaderDataType Type;
 		bool Normalized;
 
+		BufferElement() {}
+
 		BufferElement(ShaderDataType type, const std::string name, bool normalized = false)
 			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized)
 		{
@@ -63,8 +63,6 @@ namespace Ellie {
 			EE_ASSERT(false, "Invalid ShaderDataType!");
 			return 0;
 		}
-
-		BufferElement(){}
 	};
 
 	class BufferLayout
@@ -105,7 +103,7 @@ namespace Ellie {
 	class VertexBuffer
 	{
 	public:
-		~VertexBuffer() {}
+		virtual ~VertexBuffer() {}
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
@@ -119,7 +117,7 @@ namespace Ellie {
 	class IndexBuffer
 	{
 	public:
-		~IndexBuffer() {}
+		virtual ~IndexBuffer() {}
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
