@@ -7,6 +7,8 @@
 #include "Ellie/Events/ApplicationEvent.h"
 #include "ImGui/ImGuiLayer.h"
 
+#include "Ellie/Core/Timestep.h"
+
 #include "Renderer/Shader.h"
 #include "Ellie/Renderer/Buffers.h"
 #include "Ellie/Renderer/VertexArray.h"
@@ -32,8 +34,6 @@ namespace Ellie{
 		inline static Application& Get() { return *s_Instance; }
 
 	private:
-		OrthographicCamera m_Camera;
-
 		bool OnWindowClose(WindowCloseEvent& e);
 		ImGuiLayer* m_ImGuiLayer;
 		std::unique_ptr<Window> m_Window;
@@ -42,10 +42,7 @@ namespace Ellie{
 
 		static Application* s_Instance;
 
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-		std::shared_ptr<VertexBuffer> m_VertexBuffer;
-		std::shared_ptr<IndexBuffer> m_IndexBuffer;
+		float m_LastFrameTime = 0.0f;
 	};
 
 	// To be defined in a CLIENT

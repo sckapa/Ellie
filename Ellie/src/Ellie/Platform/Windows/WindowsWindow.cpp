@@ -75,7 +75,7 @@ namespace Ellie{
 		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_window, &m_Data);
-		SetVsync(true);
+		SetVsync(false);
 
 		// Set GLFW callbacks
 		glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height)

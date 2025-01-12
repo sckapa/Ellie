@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "Ellie/Events/Event.h"
-
+#include "Ellie/Core/Timestep.h"
 
 namespace Ellie{
 
@@ -15,8 +15,7 @@ namespace Ellie{
 		virtual void OnEvent(Event& event) {}
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
-
+		virtual void OnUpdate(Timestep ts) {}
 
 		virtual void OnImGuiRender() {}
 

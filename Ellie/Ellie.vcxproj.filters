@@ -1369,6 +1369,7 @@
     <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Ellie\Renderer\VertexArray.h" />
     <ClInclude Include="src\Ellie\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Ellie\Core\Timestep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Application.cpp">
