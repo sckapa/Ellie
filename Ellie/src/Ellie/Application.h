@@ -11,6 +11,8 @@
 #include "Ellie/Renderer/Buffers.h"
 #include "Ellie/Renderer/VertexArray.h"
 
+#include "Ellie/Renderer/OrthographicCamera.h"
+
 namespace Ellie{
 
 	class ELLIE_API Application
@@ -30,6 +32,8 @@ namespace Ellie{
 		inline static Application& Get() { return *s_Instance; }
 
 	private:
+		OrthographicCamera m_Camera;
+
 		bool OnWindowClose(WindowCloseEvent& e);
 		ImGuiLayer* m_ImGuiLayer;
 		std::unique_ptr<Window> m_Window;

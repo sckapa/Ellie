@@ -1368,6 +1368,7 @@
     <ClInclude Include="src\Ellie\Renderer\Renderer.h" />
     <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Ellie\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Ellie\Renderer\OrthographicCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Application.cpp">
@@ -1409,5 +1410,6 @@
     <ClCompile Include="src\Ellie\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Ellie\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Ellie\Renderer\OrthographicCamera.cpp" />
   </ItemGroup>
 </Project>

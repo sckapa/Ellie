@@ -146,6 +146,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ellie\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLBuffers.h" />
@@ -594,6 +595,7 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ellie\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLBuffers.cpp" />
