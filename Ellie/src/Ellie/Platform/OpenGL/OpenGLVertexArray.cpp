@@ -28,7 +28,7 @@ namespace Ellie{
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
-		glCreateBuffers(1, &m_RendererID);
+		glCreateVertexArrays(1, &m_RendererID);
 	}
 
 	void OpenGLVertexArray::Bind() const

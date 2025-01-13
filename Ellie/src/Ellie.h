@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "Ellie/Application.h"
 #include "Ellie/Layer.h"
 #include "Ellie/Log.h"

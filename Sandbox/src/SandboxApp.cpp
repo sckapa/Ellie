@@ -3,7 +3,7 @@
 class ExampleLayer : public Ellie::Layer
 {
 public:
-	ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+	ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_Position(glm::vec3(0.0f))
 	{
 		m_VertexArray.reset(Ellie::VertexArray::Create());
 
@@ -24,7 +24,7 @@ public:
 		m_VertexBuffer->SetLayout(layout);
 		m_VertexArray->AddVertexBuffers(m_VertexBuffer);
 
-		unsigned int indices[3] = { 0,1,2 };
+		uint32_t indices[3] = { 0,1,2 };
 
 		m_IndexBuffer.reset(Ellie::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
@@ -62,7 +62,61 @@ public:
 		}
 		)";
 
-		m_Shader.reset(new Ellie::Shader(vertexSrc, fragmentSrc));
+		m_Triangle.reset(new Ellie::Shader(vertexSrc, fragmentSrc));
+
+		//
+		m_SqVertexArray.reset(Ellie::VertexArray::Create());
+
+		float sqVertices[4 * 3] = {
+		-0.5f, -0.5f, 0.0f, 
+		0.5f, -0.5f, 0.0f, 
+		0.5f, 0.5f, 0.0f, 
+		-0.5f, 0.5f, 0.0f
+		};
+
+		m_SqVertexBuffer.reset(Ellie::VertexBuffer::Create(sqVertices, sizeof(sqVertices)));
+
+		m_SqVertexBuffer->SetLayout({
+				{Ellie::ShaderDataType::Float3, "a_Position"}
+		});
+		m_SqVertexArray->AddVertexBuffers(m_SqVertexBuffer);
+
+		uint32_t sqIndices[6] = { 0,1,2,2,3,0 };
+
+		m_SqIndexBuffer.reset(Ellie::IndexBuffer::Create(sqIndices, sizeof(sqIndices) / sizeof(uint32_t)));
+		m_SqVertexArray->SetIndexBuffer(m_SqIndexBuffer);
+
+		std::string sqVertexSrc = R"(
+		#version 330 core
+
+		layout(location = 0) in vec3 a_Position;
+
+		uniform mat4 u_ViewProjection;
+		uniform mat4 u_Transform;
+
+		out vec3 v_Position;
+
+		void main()
+		{
+			v_Position = a_Position;
+			gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+		}
+		)";
+
+		std::string sqFragmentSrc = R"(
+		#version 330 core
+
+		layout(location = 0) out vec4 color;
+
+		in vec3 v_Position;
+
+		void main()
+		{
+			color = vec4(0.2,0.3,0.8,1.0);
+		}
+		)";
+
+		m_Square.reset(new Ellie::Shader(sqVertexSrc, sqFragmentSrc));
 	}
 
 	void OnEvent(Ellie::Event& e) override
@@ -106,7 +160,18 @@ public:
 
 		Ellie::Renderer::BeginScene(m_Camera);
 
-		Ellie::Renderer::Submit(m_Shader, m_VertexArray);
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+		for (int y = 0; y < 20; y++)
+		{
+			for (int i = 0; i < 20; i++)
+			{
+				glm::vec3 pos(y * 0.11f, i * 0.11f, 0.0f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+				Ellie::Renderer::Submit(m_Square, m_SqVertexArray, transform);
+			}
+		}
+		Ellie::Renderer::Submit(m_Triangle, m_VertexArray);
 
 		Ellie::Renderer::EndScene();
 	}
@@ -114,16 +179,23 @@ public:
 private:
 	Ellie::OrthographicCamera m_Camera;
 
-	std::shared_ptr<Ellie::Shader> m_Shader;
+	std::shared_ptr<Ellie::Shader> m_Triangle;
 	std::shared_ptr<Ellie::VertexArray> m_VertexArray;
 	std::shared_ptr<Ellie::VertexBuffer> m_VertexBuffer;
 	std::shared_ptr<Ellie::IndexBuffer> m_IndexBuffer;
+
+	std::shared_ptr<Ellie::Shader> m_Square;
+	std::shared_ptr<Ellie::VertexArray> m_SqVertexArray;
+	std::shared_ptr<Ellie::VertexBuffer> m_SqVertexBuffer;
+	std::shared_ptr<Ellie::IndexBuffer> m_SqIndexBuffer;
 
 	glm::vec3 m_CameraPosition = { 0.0f,0.0f,0.0f };
 	float m_Rotation = 0.0f;
 
 	float m_CameraSpeed = 5.0f;
 	float m_RotationSpeed = 180.0f;
+
+	glm::vec3 m_Position;
 };
 
 class Sandbox : public Ellie::Application

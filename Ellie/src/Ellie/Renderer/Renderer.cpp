@@ -14,10 +14,11 @@ namespace Ellie {
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader> shader, const std::shared_ptr<VertexArray>& vertexArray)
+	void Renderer::Submit(const std::shared_ptr<Shader> shader, const std::shared_ptr<VertexArray>& vertexArray, glm::mat4 transform)
 	{
 		shader->Bind();
 		shader->UploadUniformMat4("u_ViewProjection", sceneData->ViewProjectionMatrix);
+		shader->UploadUniformMat4("u_Transform", transform);
 
 		vertexArray->Bind();
 		RenderCommands::DrawIndexed(vertexArray);

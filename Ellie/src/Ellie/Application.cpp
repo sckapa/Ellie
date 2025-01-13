@@ -24,7 +24,6 @@ namespace Ellie{
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
-
 	}
 
 	Ellie::Application::~Application()
