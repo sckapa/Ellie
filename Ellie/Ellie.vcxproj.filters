@@ -7,23 +7,26 @@
     <Filter Include="src\Ellie">
       <UniqueIdentifier>{87BBD9B2-F325-8E29-3C64-3FCFA80D6C7E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Ellie\Core">
+      <UniqueIdentifier>{3F2C88D5-2BFA-7BDB-148E-EC0100FB5740}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Ellie\Events">
       <UniqueIdentifier>{8B49665D-7742-85AF-A074-6A348CCC64BB}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Ellie\ImGui">
       <UniqueIdentifier>{F179F886-5D05-664B-6616-E93FD220C24B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Ellie\Platform">
-      <UniqueIdentifier>{BBDF3C6C-A7C3-FDC1-1024-F814FC26E843}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Ellie\Platform\OpenGL">
-      <UniqueIdentifier>{8F289F9F-FBEA-D229-449B-61B6B09CAB07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Ellie\Platform\Windows">
-      <UniqueIdentifier>{F514A0EB-E124-4CBC-4ADE-B0DA360D3B55}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Ellie\Renderer">
       <UniqueIdentifier>{0DE71947-F9CA-DA9C-622B-D5EF4E2EC51E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform">
+      <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\OpenGL">
+      <UniqueIdentifier>{35A49437-A105-7245-2A73-B8F796D3A804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\Windows">
+      <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
@@ -56,6 +59,9 @@
     </ClInclude>
     <ClInclude Include="src\Ellie\Core.h">
       <Filter>src\Ellie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Core\Timestep.h">
+      <Filter>src\Ellie\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\EntryPoint.h">
       <Filter>src\Ellie</Filter>
@@ -93,20 +99,53 @@
     <ClInclude Include="src\Ellie\MouseCodes.h">
       <Filter>src\Ellie</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLContext.h">
-      <Filter>src\Ellie\Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ellie\Platform\Windows\WindowsInput.h">
-      <Filter>src\Ellie\Platform\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ellie\Platform\Windows\WindowsWindow.h">
-      <Filter>src\Ellie\Platform\Windows</Filter>
+    <ClInclude Include="src\Ellie\Renderer\Buffers.h">
+      <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\GraphicsContext.h">
       <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Renderer\OrthographicCamera.h">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Renderer\RenderCommands.h">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Renderer\Renderer.h">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Renderer\RendererAPI.h">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Renderer\Shader.h">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Renderer\VertexArray.h">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Window.h">
       <Filter>src\Ellie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffers.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>src\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\eepch.h">
       <Filter>src</Filter>
@@ -1359,17 +1398,6 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\Renderer\Shader.h" />
-    <ClInclude Include="src\Ellie\Renderer\Buffers.h" />
-    <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLBuffers.h" />
-    <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Ellie\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\Ellie\Renderer\RenderCommands.h" />
-    <ClInclude Include="src\Ellie\Renderer\Renderer.h" />
-    <ClInclude Include="src\Ellie\Platform\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="src\Ellie\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Ellie\Renderer\OrthographicCamera.h" />
-    <ClInclude Include="src\Ellie\Core\Timestep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Application.cpp">
@@ -1390,27 +1418,50 @@
     <ClCompile Include="src\Ellie\Log.cpp">
       <Filter>src\Ellie</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLContext.cpp">
-      <Filter>src\Ellie\Platform\OpenGL</Filter>
+    <ClCompile Include="src\Ellie\Renderer\Buffers.cpp">
+      <Filter>src\Ellie\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ellie\Platform\Windows\WindowsInput.cpp">
-      <Filter>src\Ellie\Platform\Windows</Filter>
+    <ClCompile Include="src\Ellie\Renderer\OrthographicCamera.cpp">
+      <Filter>src\Ellie\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ellie\Platform\Windows\WindowsWindow.cpp">
-      <Filter>src\Ellie\Platform\Windows</Filter>
+    <ClCompile Include="src\Ellie\Renderer\RenderCommands.cpp">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Renderer\Renderer.cpp">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Renderer\RendererAPI.cpp">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Renderer\Shader.cpp">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Renderer\VertexArray.cpp">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\eepch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ellie\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Ellie\Renderer\Buffers.cpp" />
-    <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLBuffers.cpp" />
-    <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Ellie\Renderer\RenderCommands.cpp" />
-    <ClCompile Include="src\Ellie\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Ellie\Renderer\RendererAPI.cpp" />
-    <ClCompile Include="src\Ellie\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\Ellie\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Ellie\Renderer\OrthographicCamera.cpp" />
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 #include "Buffers.h"
 #include "Renderer.h"
 
-#include "Ellie/Platform/OpenGL/OpenGLBuffers.h"
+#include "Platform/OpenGL/OpenGLBuffers.h"
 
 namespace Ellie {
 

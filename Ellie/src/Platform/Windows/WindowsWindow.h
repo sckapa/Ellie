@@ -7,7 +7,7 @@
 #include "Ellie/Events/MouseEvent.h"
 
 #include "Ellie/Renderer/GraphicsContext.h"
-#include "Ellie/Platform/OpenGL/OpenGLContext.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Ellie{
 

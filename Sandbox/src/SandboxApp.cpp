@@ -1,4 +1,8 @@
 #include <Ellie.h>
+#include "Platform/OpenGL/OpenGLShader.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include "imgui.h"
+#include "glm/gtc/type_ptr.hpp"
 
 class ExampleLayer : public Ellie::Layer
 {
@@ -62,7 +66,7 @@ public:
 		}
 		)";
 
-		m_Triangle.reset(new Ellie::Shader(vertexSrc, fragmentSrc));
+		m_Triangle.reset(Ellie::Shader::Create(vertexSrc, fragmentSrc));
 
 		//
 		m_SqVertexArray.reset(Ellie::VertexArray::Create());
@@ -108,15 +112,24 @@ public:
 
 		layout(location = 0) out vec4 color;
 
+		uniform vec4 u_Color;
+
 		in vec3 v_Position;
 
 		void main()
 		{
-			color = vec4(0.2,0.3,0.8,1.0);
+			color = u_Color;
 		}
 		)";
 
-		m_Square.reset(new Ellie::Shader(sqVertexSrc, sqFragmentSrc));
+		m_Square.reset(Ellie::Shader::Create(sqVertexSrc, sqFragmentSrc));
+	}
+
+	virtual void OnImGuiRender() override
+	{
+		ImGui::Begin("Color Picker");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(sqColor));
+		ImGui::End();
 	}
 
 	void OnEvent(Ellie::Event& e) override
@@ -162,6 +175,9 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+		std::dynamic_pointer_cast<Ellie::OpenGLShader>(m_Square)->Bind();
+		std::dynamic_pointer_cast<Ellie::OpenGLShader>(m_Square)->UploadUniformFloat4("u_Color", sqColor);
+
 		for (int y = 0; y < 20; y++)
 		{
 			for (int i = 0; i < 20; i++)
@@ -196,6 +212,7 @@ private:
 	float m_RotationSpeed = 180.0f;
 
 	glm::vec3 m_Position;
+	glm::vec4 sqColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 };
 
 class Sandbox : public Ellie::Application

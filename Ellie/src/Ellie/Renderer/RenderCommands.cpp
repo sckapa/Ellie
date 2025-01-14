@@ -1,6 +1,6 @@
 #include "eepch.h"
 #include "RenderCommands.h"
-#include "Ellie/Platform/OpenGL/OpenGLRendererAPI.h"
+#include "Platform/OpenGL/OpenGLRendererAPI.h"
 
 namespace Ellie {
 

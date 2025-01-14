@@ -112,6 +112,7 @@ project "Sandbox"
  {
   "Ellie/vendor/spdlog/include",
   "Ellie/src",
+  "%{IncludeDir.ImGui}",
   "%{IncludeDir.glm}"
  }
 
