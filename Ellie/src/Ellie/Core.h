@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 #ifdef EE_PLATFORM_WINDOWS
 
@@ -33,3 +34,13 @@
 #endif 
 
 #define BIT(x) (1 << x)
+
+namespace Ellie {
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+}

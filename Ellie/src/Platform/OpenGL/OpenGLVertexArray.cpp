@@ -41,7 +41,7 @@ namespace Ellie{
 		glBindVertexArray(0);
 	}
 
-	void OpenGLVertexArray::AddVertexBuffers(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+	void OpenGLVertexArray::AddVertexBuffers(const Ref<VertexBuffer>& vertexBuffer)
 	{
 		EE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer layout not set!");
 
@@ -67,7 +67,7 @@ namespace Ellie{
 		m_VertexBuffers.push_back(vertexBuffer);
 	}
 
-	void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 	{
 		glBindVertexArray(m_RendererID);
 		indexBuffer->Bind();

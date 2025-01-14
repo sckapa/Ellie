@@ -195,15 +195,15 @@ public:
 private:
 	Ellie::OrthographicCamera m_Camera;
 
-	std::shared_ptr<Ellie::Shader> m_Triangle;
-	std::shared_ptr<Ellie::VertexArray> m_VertexArray;
-	std::shared_ptr<Ellie::VertexBuffer> m_VertexBuffer;
-	std::shared_ptr<Ellie::IndexBuffer> m_IndexBuffer;
+	Ellie::Ref<Ellie::Shader> m_Triangle;
+	Ellie::Ref<Ellie::VertexArray> m_VertexArray;
+	Ellie::Ref<Ellie::VertexBuffer> m_VertexBuffer;
+	Ellie::Ref<Ellie::IndexBuffer> m_IndexBuffer;
 
-	std::shared_ptr<Ellie::Shader> m_Square;
-	std::shared_ptr<Ellie::VertexArray> m_SqVertexArray;
-	std::shared_ptr<Ellie::VertexBuffer> m_SqVertexBuffer;
-	std::shared_ptr<Ellie::IndexBuffer> m_SqIndexBuffer;
+	Ellie::Ref<Ellie::Shader> m_Square;
+	Ellie::Ref<Ellie::VertexArray> m_SqVertexArray;
+	Ellie::Ref<Ellie::VertexBuffer> m_SqVertexBuffer;
+	Ellie::Ref<Ellie::IndexBuffer> m_SqIndexBuffer;
 
 	glm::vec3 m_CameraPosition = { 0.0f,0.0f,0.0f };
 	float m_Rotation = 0.0f;
