@@ -10,6 +10,8 @@ namespace Ellie {
 	class Renderer
 	{
 	public:
+		static void Init();
+
 		static void BeginScene(OrthographicCamera& orthoCam);
 		static void EndScene();
 

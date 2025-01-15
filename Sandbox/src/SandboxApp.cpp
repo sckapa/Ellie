@@ -69,19 +69,84 @@ public:
 		m_Triangle.reset(Ellie::Shader::Create(vertexSrc, fragmentSrc));
 
 		//
+		m_TextureVA.reset(Ellie::VertexArray::Create());
+
+		float textureVertices[4 * 5] = {
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+		0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+		-0.5f, 0.5f, 0.0f, 0.0f, 1.0f
+		};
+
+		m_TextureVB.reset(Ellie::VertexBuffer::Create(textureVertices, sizeof(textureVertices)));
+
+		m_TextureVB->SetLayout({
+				{Ellie::ShaderDataType::Float3, "a_Position"},
+				{Ellie::ShaderDataType::Float2, "a_TexCoords"}
+			});
+		m_TextureVA->AddVertexBuffers(m_TextureVB);
+
+		uint32_t textureIndices[6] = { 0,1,2,2,3,0 };
+
+		m_TextureIB.reset(Ellie::IndexBuffer::Create(textureIndices, sizeof(textureIndices) / sizeof(uint32_t)));
+		m_TextureVA->SetIndexBuffer(m_TextureIB);
+
+		std::string textureVertexSrc = R"(
+		#version 330 core
+
+		layout(location = 0) in vec3 a_Position;
+		layout(location = 1) in vec2 a_TexCoords;
+
+		uniform mat4 u_ViewProjection;
+		uniform mat4 u_Transform;
+
+		out vec3 v_Position;
+		out vec2 v_TexCoords;
+
+		void main()
+		{
+			v_Position = a_Position;
+			v_TexCoords = a_TexCoords;
+			gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+		}
+		)";
+
+		std::string textureFragmentSrc = R"(
+		#version 330 core
+
+		layout(location = 0) out vec4 color;
+
+		uniform sampler2D u_Texture;
+
+		in vec2 v_TexCoords;
+
+		void main()
+		{
+			color = texture(u_Texture, v_TexCoords);
+		}
+		)";
+
+		m_TextureShader.reset(Ellie::Shader::Create(textureVertexSrc, textureFragmentSrc));
+
+		m_AbzTexture = Ellie::Texture2D::Create("assets/textures/abz.png");
+		std::dynamic_pointer_cast<Ellie::OpenGLShader>(m_TextureShader)->Bind();
+		std::dynamic_pointer_cast<Ellie::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+
+		//
 		m_SqVertexArray.reset(Ellie::VertexArray::Create());
 
-		float sqVertices[4 * 3] = {
-		-0.5f, -0.5f, 0.0f, 
-		0.5f, -0.5f, 0.0f, 
-		0.5f, 0.5f, 0.0f, 
-		-0.5f, 0.5f, 0.0f
+		float sqVertices[4 * 5] = {
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+		0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+		-0.5f, 0.5f, 0.0f, 0.0f, 1.0f
 		};
 
 		m_SqVertexBuffer.reset(Ellie::VertexBuffer::Create(sqVertices, sizeof(sqVertices)));
 
 		m_SqVertexBuffer->SetLayout({
-				{Ellie::ShaderDataType::Float3, "a_Position"}
+				{Ellie::ShaderDataType::Float3, "a_Position"},
+				{Ellie::ShaderDataType::Float2, "a_TexCoords"}
 		});
 		m_SqVertexArray->AddVertexBuffers(m_SqVertexBuffer);
 
@@ -94,15 +159,18 @@ public:
 		#version 330 core
 
 		layout(location = 0) in vec3 a_Position;
+		layout(location = 1) in vec2 a_TexCoords;
 
 		uniform mat4 u_ViewProjection;
 		uniform mat4 u_Transform;
 
 		out vec3 v_Position;
+		out vec2 v_TexCoords;
 
 		void main()
 		{
 			v_Position = a_Position;
+			v_TexCoords = a_TexCoords;
 			gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 		}
 		)";
@@ -112,24 +180,28 @@ public:
 
 		layout(location = 0) out vec4 color;
 
-		uniform vec4 u_Color;
+		uniform sampler2D u_Texture;
 
-		in vec3 v_Position;
+		in vec2 v_TexCoords;
 
 		void main()
 		{
-			color = u_Color;
+			color = texture(u_Texture, v_TexCoords);
 		}
 		)";
 
 		m_Square.reset(Ellie::Shader::Create(sqVertexSrc, sqFragmentSrc));
+
+		m_CheckerTexture = Ellie::Texture2D::Create("assets/textures/abc.png");
+		m_TransparentTexture = Ellie::Texture2D::Create("assets/textures/fl.png");
+
+		std::dynamic_pointer_cast<Ellie::OpenGLShader>(m_Square)->Bind();
+		std::dynamic_pointer_cast<Ellie::OpenGLShader>(m_Square)->UploadUniformInt("u_Texture", 0);
 	}
 
 	virtual void OnImGuiRender() override
 	{
-		ImGui::Begin("Color Picker");
-		ImGui::ColorEdit3("Square Color", glm::value_ptr(sqColor));
-		ImGui::End();
+		// ImGUI Code
 	}
 
 	void OnEvent(Ellie::Event& e) override
@@ -171,23 +243,22 @@ public:
 		m_Camera.SetPosition(m_CameraPosition);
 		m_Camera.SetRotation(m_Rotation);
 
+		// Scene
+
 		Ellie::Renderer::BeginScene(m_Camera);
 
-		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(1.5f));
 
-		std::dynamic_pointer_cast<Ellie::OpenGLShader>(m_Square)->Bind();
-		std::dynamic_pointer_cast<Ellie::OpenGLShader>(m_Square)->UploadUniformFloat4("u_Color", sqColor);
+		m_CheckerTexture->Bind();
+		Ellie::Renderer::Submit(m_Square, m_SqVertexArray, scale);
 
-		for (int y = 0; y < 20; y++)
-		{
-			for (int i = 0; i < 20; i++)
-			{
-				glm::vec3 pos(y * 0.11f, i * 0.11f, 0.0f);
-				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				Ellie::Renderer::Submit(m_Square, m_SqVertexArray, transform);
-			}
-		}
-		Ellie::Renderer::Submit(m_Triangle, m_VertexArray);
+		m_TransparentTexture->Bind();
+		Ellie::Renderer::Submit(m_Square, m_SqVertexArray, scale);
+
+		m_AbzTexture->Bind();
+		Ellie::Renderer::Submit(m_TextureShader, m_TextureVA, glm::translate(glm::mat4(1.0f), glm::vec3(-1.3f, 0.6f, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(0.5f)));
+
+		//Ellie::Renderer::Submit(m_Triangle, m_VertexArray);
 
 		Ellie::Renderer::EndScene();
 	}
@@ -205,6 +276,15 @@ private:
 	Ellie::Ref<Ellie::VertexBuffer> m_SqVertexBuffer;
 	Ellie::Ref<Ellie::IndexBuffer> m_SqIndexBuffer;
 
+	Ellie::Ref<Ellie::Shader> m_TextureShader;
+	Ellie::Ref<Ellie::VertexArray> m_TextureVA;
+	Ellie::Ref<Ellie::VertexBuffer> m_TextureVB;
+	Ellie::Ref<Ellie::IndexBuffer> m_TextureIB;
+
+	Ellie::Ref<Ellie::Texture2D> m_AbzTexture;
+	Ellie::Ref<Ellie::Texture2D> m_CheckerTexture;
+	Ellie::Ref<Ellie::Texture2D> m_TransparentTexture;
+
 	glm::vec3 m_CameraPosition = { 0.0f,0.0f,0.0f };
 	float m_Rotation = 0.0f;
 
@@ -212,7 +292,6 @@ private:
 	float m_RotationSpeed = 180.0f;
 
 	glm::vec3 m_Position;
-	glm::vec4 sqColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 };
 
 class Sandbox : public Ellie::Application

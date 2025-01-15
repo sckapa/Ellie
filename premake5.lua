@@ -15,12 +15,13 @@ workspace "Ellie"
  IncludeDir["Glad"] = "Ellie/vendor/Glad/include"
  IncludeDir["ImGui"] = "Ellie/vendor/imgui"
  IncludeDir["glm"] = "Ellie/vendor/glm"
+ IncludeDir["stb_image"] = "Ellie/vendor/stb_image"
 
  include "Ellie/vendor/GLFW"
  include "Ellie/vendor/Glad"
  include "Ellie/vendor/imgui"
 
- project "Ellie"
+project "Ellie"
  location "Ellie"
  kind "StaticLib"
  language "C++"
@@ -37,8 +38,11 @@ workspace "Ellie"
  {
   "%{prj.name}/src/**.h",
   "%{prj.name}/src/**.cpp",
+  "%{prj.name}/vendor/stb_image/**.h",
+  "%{prj.name}/vendor/stb_image/**.cpp",
   "%{prj.name}/vendor/glm/glm/**.hpp",
-  "%{prj.name}/vendor/glm/glm/**.inl"
+  "%{prj.name}/vendor/glm/glm/**.inl",
+  "%{prj.name}/vendor/imgui/imgui_tables.cpp"
  }
 
  defines
@@ -53,6 +57,7 @@ workspace "Ellie"
   "%{IncludeDir.GLFW}",
   "%{IncludeDir.Glad}",
   "%{IncludeDir.ImGui}",
+  "%{IncludeDir.stb_image}",
   "%{IncludeDir.glm}"
  }
 

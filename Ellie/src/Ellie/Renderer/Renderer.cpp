@@ -6,6 +6,11 @@ namespace Ellie {
 
 	Renderer::SceneData* Renderer::sceneData = new Renderer::SceneData;
 
+	void Renderer::Init()
+	{
+		RenderCommands::Init();
+	}
+
 	void Renderer::BeginScene(OrthographicCamera& orthoCam)
 	{
 		sceneData->ViewProjectionMatrix = orthoCam.GetViewProjectionMatrix();
