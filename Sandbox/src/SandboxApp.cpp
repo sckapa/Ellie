@@ -66,7 +66,7 @@ public:
 		}
 		)";
 
-		m_Triangle.reset(Ellie::Shader::Create(vertexSrc, fragmentSrc));
+		m_Triangle = m_ShaderLib.Load("Triangle", vertexSrc, fragmentSrc);
 
 		//
 		m_TextureVA.reset(Ellie::VertexArray::Create());
@@ -91,7 +91,7 @@ public:
 		m_TextureIB.reset(Ellie::IndexBuffer::Create(textureIndices, sizeof(textureIndices) / sizeof(uint32_t)));
 		m_TextureVA->SetIndexBuffer(m_TextureIB);
 
-		m_TextureShader.reset(Ellie::Shader::Create("assets/shaders/texture.glsl"));
+		m_TextureShader = m_ShaderLib.Load("assets/shaders/texture.glsl");
 
 		m_AbzTexture = Ellie::Texture2D::Create("assets/textures/abz.png");
 		std::dynamic_pointer_cast<Ellie::OpenGLShader>(m_TextureShader)->Bind();
@@ -155,7 +155,7 @@ public:
 		}
 		)";
 
-		m_Square.reset(Ellie::Shader::Create(sqVertexSrc, sqFragmentSrc));
+		m_Square = m_ShaderLib.Load("Square", sqVertexSrc, sqFragmentSrc);
 
 		m_CheckerTexture = Ellie::Texture2D::Create("assets/textures/abc.png");
 		m_TransparentTexture = Ellie::Texture2D::Create("assets/textures/fl.png");
@@ -230,6 +230,8 @@ public:
 
 private:
 	Ellie::OrthographicCamera m_Camera;
+
+	Ellie::ShaderLibrary m_ShaderLib;
 
 	Ellie::Ref<Ellie::Shader> m_Triangle;
 	Ellie::Ref<Ellie::VertexArray> m_VertexArray;

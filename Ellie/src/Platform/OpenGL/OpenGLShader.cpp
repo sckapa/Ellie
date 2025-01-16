@@ -27,9 +27,17 @@ namespace Ellie {
 		std::string source = ReadFile(path);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
+
+		// Extract name from file path assets/tex/texture.glsl
+		size_t begin = path.find_last_of("/\\");
+		begin = begin == std::string::npos ? 0 : begin + 1;
+		size_t end = path.rfind('.');
+		end = end == std::string::npos ? path.size() - 1 : end;
+		size_t count = end - begin;
+		m_Name = path.substr(begin, count);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) : m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSrc;
@@ -45,7 +53,7 @@ namespace Ellie {
 	std::string OpenGLShader::ReadFile(std::string path)
 	{
 		std::string result;
-		std::ifstream in(path, std::ios::in, std::ios::binary);
+		std::ifstream in(path, std::ios::in | std::ios::binary);
 
 		if(in)
 		{
@@ -89,7 +97,9 @@ namespace Ellie {
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string> shaderSources)
 	{
 		GLint program = glCreateProgram();
-		std::vector<GLenum> glShaderIDs(shaderSources.size());
+		EE_CORE_ASSERT(shaderSources.size() <= 2, "We support only 2 shaders for now");
+		std::array<GLenum, 2> glShaderIDs;
+		int glShaderIndex = 0;
 
 		for (auto& kv : shaderSources)
 		{
@@ -120,7 +130,7 @@ namespace Ellie {
 				break;
 			}
 			glAttachShader(program, Shader);
-			glShaderIDs.push_back(Shader);
+			glShaderIDs[glShaderIndex++] = Shader;
 		}
 
 		glLinkProgram(program);
@@ -163,6 +173,11 @@ namespace Ellie {
 	void OpenGLShader::Unbind() const
 	{
 		glUseProgram(0);
+	}
+
+	std::string OpenGLShader::GetName() const
+	{
+		return m_Name;
 	}
 
 	void OpenGLShader::UploadUniformInt(const std::string name, const int integer)
