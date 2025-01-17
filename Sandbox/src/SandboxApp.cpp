@@ -1,15 +1,16 @@
 #include <Ellie.h>
 #include "Platform/OpenGL/OpenGLShader.h"
 #include <glm/gtc/matrix_transform.hpp>
-#include "imgui.h"
 #include "glm/gtc/type_ptr.hpp"
+#include "imgui.h"
+#include "Sandbox2D.h"
 
 class ExampleLayer : public Ellie::Layer
 {
 public:
 	ExampleLayer() : Layer("Example"), m_CameraController(1280.0f/720.0f), m_Position(glm::vec3(0.0f))
 	{
-		m_VertexArray.reset(Ellie::VertexArray::Create());
+		m_VertexArray = Ellie::VertexArray::Create();
 
 		float vertices[3 * 7] = {
 		-0.5f, -0.5f, 0.0f, 0.8f, 0.3f, 0.2f, 1.0f,
@@ -69,7 +70,7 @@ public:
 		m_Triangle = m_ShaderLib.Load("Triangle", vertexSrc, fragmentSrc);
 
 		//
-		m_TextureVA.reset(Ellie::VertexArray::Create());
+		m_TextureVA = Ellie::VertexArray::Create();
 
 		float textureVertices[4 * 5] = {
 		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -98,7 +99,7 @@ public:
 		std::dynamic_pointer_cast<Ellie::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
 
 		//
-		m_SqVertexArray.reset(Ellie::VertexArray::Create());
+		m_SqVertexArray = Ellie::VertexArray::Create();
 
 		float sqVertices[4 * 5] = {
 		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -237,7 +238,8 @@ class Sandbox : public Ellie::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
 	~Sandbox()

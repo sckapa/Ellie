@@ -25,8 +25,3 @@
 
 #include "Ellie/Renderer/OrthographicCamera.h"
 // -------------------------------
-
-
-// --------- Entry Point ---------
-#include "Ellie/Core/EntryPoint.h"
-// -------------------------------

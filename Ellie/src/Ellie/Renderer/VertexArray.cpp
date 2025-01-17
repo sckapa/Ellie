@@ -6,7 +6,7 @@
 
 namespace Ellie {
 
-	VertexArray* VertexArray::Create()
+	Ref<VertexArray> VertexArray::Create()
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -17,7 +17,7 @@ namespace Ellie {
 			}
 			case RendererAPI::API::OpenGL:
 			{
-				return new OpenGLVertexArray;
+				return std::make_shared<OpenGLVertexArray>();
 			}
 		}
 
