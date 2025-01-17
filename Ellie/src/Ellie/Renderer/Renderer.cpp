@@ -11,6 +11,11 @@ namespace Ellie {
 		RenderCommands::Init();
 	}
 
+	void Renderer::WindowResize(uint32_t width, uint32_t height)
+	{
+		RenderCommands::WindowResize(0, 0, width, height);
+	}
+
 	void Renderer::BeginScene(OrthographicCamera& orthoCam)
 	{
 		sceneData->ViewProjectionMatrix = orthoCam.GetViewProjectionMatrix();

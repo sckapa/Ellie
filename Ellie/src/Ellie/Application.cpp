@@ -9,8 +9,6 @@
 
 namespace Ellie{
 
-#define BIND_EVENT_FN(x) std::bind (&Application::x, this, std::placeholders::_1)
-
 	Application* Application::s_Instance = nullptr;
 
 	Ellie::Application::Application()
@@ -19,7 +17,7 @@ namespace Ellie{
 		s_Instance = this;
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window->SetEventCallback(EE_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
 
@@ -39,9 +37,12 @@ namespace Ellie{
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			for (Layer* layer : m_LayerStack)
+			if(!m_Minimized)
 			{
-				layer->OnUpdate(timestep);
+				for (Layer* layer : m_LayerStack)
+				{
+					layer->OnUpdate(timestep);
+				}
 			}
 
 			m_ImGuiLayer->Begin();
@@ -58,7 +59,8 @@ namespace Ellie{
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		dispatcher.Dispatch<WindowCloseEvent>(EE_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(EE_BIND_EVENT_FN(Application::OnWindowResize));
 
 		//EE_CORE_TRACE(e);
 
@@ -89,5 +91,19 @@ namespace Ellie{
 		m_Running = false;
 
 		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_Minimized = true;
+		}
+
+		m_Minimized = false;
+
+		Renderer::WindowResize(e.GetWidth(), e.GetHeight());
+
+		return false;
 	}
 }
