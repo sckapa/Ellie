@@ -1,6 +1,7 @@
 #include "eepch.h"
 #include "Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Renderer2D.h"
 
 namespace Ellie {
 
@@ -9,6 +10,7 @@ namespace Ellie {
 	void Renderer::Init()
 	{
 		RenderCommands::Init();
+		Renderer2D::Init();
 	}
 
 	void Renderer::WindowResize(uint32_t width, uint32_t height)

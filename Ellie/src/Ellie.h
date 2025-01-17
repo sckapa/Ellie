@@ -16,6 +16,7 @@
 
 // ---------- Renderer -----------
 #include "Ellie/Renderer/Renderer.h"
+#include "Ellie/Renderer/Renderer2D.h"
 #include "Ellie/Renderer/RenderCommands.h"
 
 #include "Ellie/Renderer/Buffers.h"
