@@ -146,6 +146,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ellie\OrthographicCameraController.h" />
     <ClInclude Include="src\Ellie.h" />
     <ClInclude Include="src\Ellie\Application.h" />
     <ClInclude Include="src\Ellie\Core.h" />
@@ -600,6 +601,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ellie\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Ellie\Application.cpp" />
     <ClCompile Include="src\Ellie\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Ellie\ImGui\ImGuiLayer.cpp" />

@@ -7,7 +7,7 @@
 class ExampleLayer : public Ellie::Layer
 {
 public:
-	ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_Position(glm::vec3(0.0f))
+	ExampleLayer() : Layer("Example"), m_CameraController(1280.0f/720.0f), m_Position(glm::vec3(0.0f))
 	{
 		m_VertexArray.reset(Ellie::VertexArray::Create());
 
@@ -171,46 +171,23 @@ public:
 
 	void OnEvent(Ellie::Event& e) override
 	{
+		m_CameraController.OnEvent(e);
 	}
 
 	void OnUpdate(Ellie::Timestep ts) override
 	{
-		if (Ellie::Input::IsKeyPressed(EE_KEY_A))
-		{
-			m_Rotation += m_RotationSpeed * ts;
-		}
-		else if (Ellie::Input::IsKeyPressed(EE_KEY_D))
-		{
-			m_Rotation -= m_RotationSpeed * ts;
-		}
-
-		if (Ellie::Input::IsKeyPressed(EE_KEY_RIGHT))
-		{
-			m_CameraPosition.x += m_CameraSpeed * ts;
-		}
-		else if (Ellie::Input::IsKeyPressed(EE_KEY_LEFT))
-		{
-			m_CameraPosition.x -= m_CameraSpeed * ts;
-		}
-
-		if (Ellie::Input::IsKeyPressed(EE_KEY_DOWN))
-		{
-			m_CameraPosition.y -= m_CameraSpeed * ts;
-		}
-		else if (Ellie::Input::IsKeyPressed(EE_KEY_UP))
-		{
-			m_CameraPosition.y += m_CameraSpeed * ts;
-		}
+		// Update
+		
+		m_CameraController.OnUpdate(ts);
+		
+		// Renderer
 
 		Ellie::RenderCommands::Clear();
 		Ellie::RenderCommands::SetClearColor({ 0.1f,0.1f,0.1f,1 });
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_Rotation);
-
 		// Scene
 
-		Ellie::Renderer::BeginScene(m_Camera);
+		Ellie::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(1.5f));
 
@@ -229,7 +206,7 @@ public:
 	}
 
 private:
-	Ellie::OrthographicCamera m_Camera;
+	Ellie::OrthographicCameraController m_CameraController;
 
 	Ellie::ShaderLibrary m_ShaderLib;
 
@@ -251,12 +228,6 @@ private:
 	Ellie::Ref<Ellie::Texture2D> m_AbzTexture;
 	Ellie::Ref<Ellie::Texture2D> m_CheckerTexture;
 	Ellie::Ref<Ellie::Texture2D> m_TransparentTexture;
-
-	glm::vec3 m_CameraPosition = { 0.0f,0.0f,0.0f };
-	float m_Rotation = 0.0f;
-
-	float m_CameraSpeed = 5.0f;
-	float m_RotationSpeed = 180.0f;
 
 	glm::vec3 m_Position;
 };

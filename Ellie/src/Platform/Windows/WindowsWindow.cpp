@@ -157,7 +157,7 @@ namespace Ellie{
 			{
 				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-				MouseScrolledEvent event((float)xPos, (float)yPos);
+				MouseMovedEvent event((float)xPos, (float)yPos);
 				data.EventCallBack(event);
 			});
 	}

@@ -38,7 +38,7 @@ namespace Ellie {
 		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseMovedEvent : " << m_MouseOffsetX << ", " << m_MouseOffsetY;
+			ss << "MouseScrolledEvent : " << m_MouseOffsetX << ", " << m_MouseOffsetY;
 			return ss.str();
 		}
 
