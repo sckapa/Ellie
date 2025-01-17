@@ -18,6 +18,8 @@ public:
 private:
 	Ellie::OrthographicCameraController m_CameraController;
 
+	Ellie::Ref<Ellie::Texture2D> m_Checker;
+
 	Ellie::Ref<Ellie::Shader> m_FlatColorShader;
 	Ellie::Ref<Ellie::VertexArray> m_SqVertexArray;
 

@@ -19,6 +19,7 @@ Sandbox2D::~Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
+	m_Checker = Ellie::Texture2D::Create("assets/textures/abc.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -42,6 +43,7 @@ void Sandbox2D::OnUpdate(Ellie::Timestep ts)
 
 	Ellie::Renderer2D::DrawQuad({-0.5f, 0.0f}, {0.5f,0.5f}, {0.8f,0.2f,0.3f,1.0f});
 	Ellie::Renderer2D::DrawQuad({0.5f, 0.0f}, {0.5f,0.75f}, {0.2f,0.3f,0.8f,1.0f});
+	Ellie::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {10.0f,10.0f}, m_Checker);
 
 	Ellie::Renderer2D::EndScene();
 }
