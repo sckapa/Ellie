@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Ellie/Log.h"
+#include "Ellie/Core/Log.h"
 
 #include <functional>
 #include <iostream>

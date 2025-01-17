@@ -1,7 +1,7 @@
 #include "eepch.h"
 #include "Application.h"
 
-#include "Ellie/Log.h"
+#include "Ellie/Core/Log.h"
 #include "Input.h"
 #include <GLFW/glfw3.h>
 

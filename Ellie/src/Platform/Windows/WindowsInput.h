@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Ellie/Input.h"
+#include "Ellie/Core/Input.h"
 
 
 namespace Ellie{

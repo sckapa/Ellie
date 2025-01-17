@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Ellie/Core.h"
-#include "Ellie/Layer.h"
+#include "Ellie/Core/Core.h"
+#include "Ellie/Core/Layer.h"
 
 namespace Ellie{
 

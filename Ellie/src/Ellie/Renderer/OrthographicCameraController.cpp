@@ -1,8 +1,8 @@
 #include "eepch.h"
 #include "OrthographicCameraController.h"
 
-#include "Ellie/Input.h"
-#include "Ellie/KeyCodes.h"
+#include "Ellie/Core/Input.h"
+#include "Ellie/Core/KeyCodes.h"
 
 namespace Ellie {
 

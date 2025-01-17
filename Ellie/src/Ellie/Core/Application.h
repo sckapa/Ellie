@@ -3,13 +3,13 @@
 #include "Window.h"
 #include "LayerStack.h"
 #include "Core.h"
-#include "Events/Event.h"
+#include "Ellie/Events/Event.h"
 #include "Ellie/Events/ApplicationEvent.h"
-#include "ImGui/ImGuiLayer.h"
+#include "Ellie/ImGui/ImGuiLayer.h"
 
 #include "Ellie/Core/Timestep.h"
 
-#include "Renderer/Shader.h"
+#include "Ellie/Renderer/Shader.h"
 #include "Ellie/Renderer/Buffers.h"
 #include "Ellie/Renderer/VertexArray.h"
 

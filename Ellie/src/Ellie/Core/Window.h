@@ -1,8 +1,8 @@
 #pragma once
 
 #include "eepch.h"
-#include "Ellie/Core.h"
-#include "Events/Event.h"
+#include "Ellie/Core/Core.h"
+#include "Ellie/Events/Event.h"
 
 namespace Ellie {
 

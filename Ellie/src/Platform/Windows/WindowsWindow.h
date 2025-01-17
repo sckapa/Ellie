@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Ellie/Window.h"
+#include "Ellie/Core/Window.h"
 #include <GLFW/glfw3.h>
 #include "Ellie/Events/ApplicationEvent.h"
 #include "Ellie/Events/KeyEvent.h"

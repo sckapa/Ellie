@@ -1,7 +1,7 @@
 #pragma once
 
 #include "eepch.h"
-#include "Ellie/Core.h"
+#include "Ellie/Core/Core.h"
 
 namespace Ellie {
 

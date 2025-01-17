@@ -9,7 +9,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-#include "Ellie/Application.h"
+#include "Ellie/Core/Application.h"
 
 namespace Ellie {
 

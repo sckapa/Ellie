@@ -146,33 +146,33 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Ellie\OrthographicCameraController.h" />
     <ClInclude Include="src\Ellie.h" />
-    <ClInclude Include="src\Ellie\Application.h" />
-    <ClInclude Include="src\Ellie\Core.h" />
+    <ClInclude Include="src\Ellie\Core\Application.h" />
+    <ClInclude Include="src\Ellie\Core\Core.h" />
+    <ClInclude Include="src\Ellie\Core\EntryPoint.h" />
+    <ClInclude Include="src\Ellie\Core\Input.h" />
+    <ClInclude Include="src\Ellie\Core\KeyCodes.h" />
+    <ClInclude Include="src\Ellie\Core\Layer.h" />
+    <ClInclude Include="src\Ellie\Core\LayerStack.h" />
+    <ClInclude Include="src\Ellie\Core\Log.h" />
+    <ClInclude Include="src\Ellie\Core\MouseCodes.h" />
     <ClInclude Include="src\Ellie\Core\Timestep.h" />
-    <ClInclude Include="src\Ellie\EntryPoint.h" />
+    <ClInclude Include="src\Ellie\Core\Window.h" />
     <ClInclude Include="src\Ellie\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Ellie\Events\Event.h" />
     <ClInclude Include="src\Ellie\Events\KeyEvent.h" />
     <ClInclude Include="src\Ellie\Events\MouseEvent.h" />
     <ClInclude Include="src\Ellie\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\Ellie\Input.h" />
-    <ClInclude Include="src\Ellie\KeyCodes.h" />
-    <ClInclude Include="src\Ellie\Layer.h" />
-    <ClInclude Include="src\Ellie\LayerStack.h" />
-    <ClInclude Include="src\Ellie\Log.h" />
-    <ClInclude Include="src\Ellie\MouseCodes.h" />
     <ClInclude Include="src\Ellie\Renderer\Buffers.h" />
     <ClInclude Include="src\Ellie\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Ellie\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Ellie\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="src\Ellie\Renderer\RenderCommands.h" />
     <ClInclude Include="src\Ellie\Renderer\Renderer.h" />
     <ClInclude Include="src\Ellie\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Ellie\Renderer\Shader.h" />
     <ClInclude Include="src\Ellie\Renderer\Texture.h" />
     <ClInclude Include="src\Ellie\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Ellie\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffers.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
@@ -601,15 +601,15 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ellie\OrthographicCameraController.cpp" />
-    <ClCompile Include="src\Ellie\Application.cpp" />
+    <ClCompile Include="src\Ellie\Core\Application.cpp" />
+    <ClCompile Include="src\Ellie\Core\Layer.cpp" />
+    <ClCompile Include="src\Ellie\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Ellie\Core\Log.cpp" />
     <ClCompile Include="src\Ellie\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Ellie\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Ellie\Layer.cpp" />
-    <ClCompile Include="src\Ellie\LayerStack.cpp" />
-    <ClCompile Include="src\Ellie\Log.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Buffers.cpp" />
     <ClCompile Include="src\Ellie\Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="src\Ellie\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Ellie\Renderer\RenderCommands.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Ellie\Renderer\RendererAPI.cpp" />

@@ -60,17 +60,38 @@
     <ClInclude Include="src\Ellie.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\Application.h">
-      <Filter>src\Ellie</Filter>
+    <ClInclude Include="src\Ellie\Core\Application.h">
+      <Filter>src\Ellie\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\Core.h">
-      <Filter>src\Ellie</Filter>
+    <ClInclude Include="src\Ellie\Core\Core.h">
+      <Filter>src\Ellie\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Core\EntryPoint.h">
+      <Filter>src\Ellie\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Core\Input.h">
+      <Filter>src\Ellie\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Core\KeyCodes.h">
+      <Filter>src\Ellie\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Core\Layer.h">
+      <Filter>src\Ellie\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Core\LayerStack.h">
+      <Filter>src\Ellie\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Core\Log.h">
+      <Filter>src\Ellie\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Core\MouseCodes.h">
+      <Filter>src\Ellie\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Core\Timestep.h">
       <Filter>src\Ellie\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\EntryPoint.h">
-      <Filter>src\Ellie</Filter>
+    <ClInclude Include="src\Ellie\Core\Window.h">
+      <Filter>src\Ellie\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Events\ApplicationEvent.h">
       <Filter>src\Ellie\Events</Filter>
@@ -87,24 +108,6 @@
     <ClInclude Include="src\Ellie\ImGui\ImGuiLayer.h">
       <Filter>src\Ellie\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\Input.h">
-      <Filter>src\Ellie</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ellie\KeyCodes.h">
-      <Filter>src\Ellie</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ellie\Layer.h">
-      <Filter>src\Ellie</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ellie\LayerStack.h">
-      <Filter>src\Ellie</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ellie\Log.h">
-      <Filter>src\Ellie</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ellie\MouseCodes.h">
-      <Filter>src\Ellie</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\Buffers.h">
       <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
@@ -112,6 +115,9 @@
       <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\OrthographicCamera.h">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Renderer\OrthographicCameraController.h">
       <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\RenderCommands.h">
@@ -131,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\VertexArray.h">
       <Filter>src\Ellie\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ellie\Window.h">
-      <Filter>src\Ellie</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffers.h">
       <Filter>src\Platform\OpenGL</Filter>
@@ -1413,11 +1416,19 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\OrthographicCameraController.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ellie\Application.cpp">
-      <Filter>src\Ellie</Filter>
+    <ClCompile Include="src\Ellie\Core\Application.cpp">
+      <Filter>src\Ellie\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Core\Layer.cpp">
+      <Filter>src\Ellie\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Core\LayerStack.cpp">
+      <Filter>src\Ellie\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Core\Log.cpp">
+      <Filter>src\Ellie\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\ImGui\ImGuiBuild.cpp">
       <Filter>src\Ellie\ImGui</Filter>
@@ -1425,19 +1436,13 @@
     <ClCompile Include="src\Ellie\ImGui\ImGuiLayer.cpp">
       <Filter>src\Ellie\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ellie\Layer.cpp">
-      <Filter>src\Ellie</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ellie\LayerStack.cpp">
-      <Filter>src\Ellie</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ellie\Log.cpp">
-      <Filter>src\Ellie</Filter>
-    </ClCompile>
     <ClCompile Include="src\Ellie\Renderer\Buffers.cpp">
       <Filter>src\Ellie\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Renderer\OrthographicCamera.cpp">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Renderer\OrthographicCameraController.cpp">
       <Filter>src\Ellie\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Renderer\RenderCommands.cpp">
@@ -1491,6 +1496,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ellie\OrthographicCameraController.cpp" />
   </ItemGroup>
 </Project>

@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Ellie/Application.h"
-#include "Ellie/Layer.h"
-#include "Ellie/Log.h"
+#include "Ellie/Core/Application.h"
+#include "Ellie/Core/Layer.h"
+#include "Ellie/Core/Log.h"
 
-#include "Ellie/Input.h"
-#include "Ellie/KeyCodes.h"
-#include "Ellie/MouseCodes.h"
+#include "Ellie/Core/Input.h"
+#include "Ellie/Core/KeyCodes.h"
+#include "Ellie/Core/MouseCodes.h"
 
-#include "Ellie/OrthographicCameraController.h"
+#include "Ellie/Renderer/OrthographicCameraController.h"
 
 #include "Ellie/Core/Timestep.h"
 
@@ -28,5 +28,5 @@
 
 
 // --------- Entry Point ---------
-#include "Ellie/EntryPoint.h"
+#include "Ellie/Core/EntryPoint.h"
 // -------------------------------

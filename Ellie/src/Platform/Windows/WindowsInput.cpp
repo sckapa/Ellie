@@ -1,6 +1,6 @@
 #include "eepch.h"
 #include "WindowsInput.h"
-#include "Ellie/Application.h"
+#include "Ellie/Core/Application.h"
 #include "GLFW/glfw3.h"
 
 
