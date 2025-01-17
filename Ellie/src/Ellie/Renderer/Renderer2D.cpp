@@ -4,7 +4,8 @@
 #include "VertexArray.h"
 #include "Shader.h"
 
-#include "Platform/OpenGL/OpenGLShader.h"
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "RenderCommands.h"
 
 namespace Ellie {
@@ -60,9 +61,8 @@ namespace Ellie {
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		std::dynamic_pointer_cast<OpenGLShader>(s_data->Shader)->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(s_data->Shader)->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-		std::dynamic_pointer_cast<OpenGLShader>(s_data->Shader)->UploadUniformMat4("u_Transform", glm::mat4(1.0));
+		s_data->Shader->Bind();
+		s_data->Shader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
@@ -71,8 +71,11 @@ namespace Ellie {
 
 	void Renderer2D::DrawQuad(glm::vec2 position, glm::vec2 size, glm::vec4 color)
 	{
-		std::dynamic_pointer_cast<OpenGLShader>(s_data->Shader)->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(s_data->Shader)->UploadUniformFloat4("u_Color", color);
+		s_data->Shader->Bind();
+		s_data->Shader->SetFloat4("u_Color", color);
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), { position.x, position.y, 0.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		s_data->Shader->SetMat4("u_Transform", transform);
 
 		s_data->QuadVertexArray->Bind();
 		RenderCommands::DrawIndexed(s_data->QuadVertexArray);

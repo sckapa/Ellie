@@ -19,15 +19,19 @@ namespace Ellie {
 
 		virtual std::string GetName() const override;
 
-		void UploadUniformInt(const std::string name, const int integer);
+		virtual void SetFloat3(const std::string& name, const glm::vec3& value) override;
+		virtual void SetFloat4(const std::string& name, const glm::vec4& value) override;
+		virtual void SetMat4(const std::string& name, const glm::mat4& value) override;
 
-		void UploadUniformFloat(const std::string name, const float fl);
-		void UploadUniformFloat2(const std::string name, const glm::vec2 float2);
-		void UploadUniformFloat3(const std::string name, const glm::vec3 float3);
-		void UploadUniformFloat4(const std::string name, const glm::vec4 float4);
+		void UploadUniformInt(const std::string& name, const int& integer);
 
-		void UploadUniformMat3(const std::string name, const glm::mat3 matrix);
-		void UploadUniformMat4(const std::string name, const glm::mat4 matrix);
+		void UploadUniformFloat(const std::string& name, const float& fl);
+		void UploadUniformFloat2(const std::string& name, const glm::vec2& float2);
+		void UploadUniformFloat3(const std::string& name, const glm::vec3& float3);
+		void UploadUniformFloat4(const std::string& name, const glm::vec4& float4);
+
+		void UploadUniformMat3(const std::string& name, const glm::mat3& matrix);
+		void UploadUniformMat4(const std::string& name, const glm::mat4& matrix);
 
 	private:
 		std::string ReadFile(std::string path);
