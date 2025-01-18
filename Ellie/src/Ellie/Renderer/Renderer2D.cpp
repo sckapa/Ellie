@@ -13,7 +13,6 @@ namespace Ellie {
 	struct Renderer2DStorage
 	{
 		Ref<VertexArray> QuadVertexArray;
-		Ref<Shader> QuadShader;
 		Ref<Shader> TextureShader;
 	};
 
@@ -53,7 +52,6 @@ namespace Ellie {
 		s_data->QuadVertexArray->SetIndexBuffer(sqIB);
 
 		// Shader
-		s_data->QuadShader = Ellie::Shader::Create("assets/shaders/FlatColor.glsl");
 		s_data->TextureShader = Ellie::Shader::Create("assets/shaders/Texture.glsl");
 		s_data->TextureShader->Bind();
 		s_data->TextureShader->SetInt("u_Texture", 0);
@@ -66,9 +64,6 @@ namespace Ellie {
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		s_data->QuadShader->Bind();
-		s_data->QuadShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-
 		s_data->TextureShader->Bind();
 		s_data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
@@ -84,11 +79,18 @@ namespace Ellie {
 
 	void Renderer2D::DrawQuad(glm::vec3 position, glm::vec2 size, glm::vec4 color)
 	{
-		s_data->QuadShader->Bind();
-		s_data->QuadShader->SetFloat4("u_Color", color);
+		s_data->TextureShader->Bind();
+		s_data->TextureShader->SetFloat4("u_Color", color);
+
+		Ref<Texture2D> whiteTexture = Texture2D::Create(1, 1);
+		uint32_t texData = 0xffffffff;
+		whiteTexture->SetData(&texData);
+
+		whiteTexture->Bind();
+		s_data->TextureShader->SetInt("u_Texture", 0);
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		s_data->QuadShader->SetMat4("u_Transform", transform);
+		s_data->TextureShader->SetMat4("u_Transform", transform);
 
 		s_data->QuadVertexArray->Bind();
 		RenderCommands::DrawIndexed(s_data->QuadVertexArray);
@@ -97,11 +99,11 @@ namespace Ellie {
 	void Renderer2D::DrawQuad(glm::vec3 position, glm::vec2 size, Ref<Texture2D> texture)
 	{
 		s_data->TextureShader->Bind();
+		s_data->TextureShader->SetFloat4("u_Color", {1.0f,1.0f,1.0f,1.0f});
+		texture->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 		s_data->TextureShader->SetMat4("u_Transform", transform);
-
-		texture->Bind();
 
 		s_data->QuadVertexArray->Bind();
 		RenderCommands::DrawIndexed(s_data->QuadVertexArray);
