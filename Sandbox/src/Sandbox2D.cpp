@@ -42,7 +42,7 @@ void Sandbox2D::OnUpdate(Ellie::Timestep ts)
 	Ellie::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 	Ellie::Renderer2D::DrawQuad({-0.5f, 0.0f}, {0.5f,0.5f}, {0.8f,0.2f,0.3f,1.0f});
-	Ellie::Renderer2D::DrawQuad({0.5f, 0.0f}, {0.5f,0.75f}, {0.2f,0.3f,0.8f,1.0f});
+	Ellie::Renderer2D::DrawRotatedQuad({0.5f, 0.0f}, {0.5f,0.75f}, glm::radians(45.0f), {0.2f,0.3f,0.8f,1.0f});
 	Ellie::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {10.0f,10.0f}, m_Checker);
 
 	Ellie::Renderer2D::EndScene();

@@ -14,6 +14,7 @@ namespace Ellie {
 	{
 		Ref<VertexArray> QuadVertexArray;
 		Ref<Shader> TextureShader;
+		Ref<Texture2D> whiteTexture;
 	};
 
 	static Renderer2DStorage* s_data;
@@ -55,6 +56,11 @@ namespace Ellie {
 		s_data->TextureShader = Ellie::Shader::Create("assets/shaders/Texture.glsl");
 		s_data->TextureShader->Bind();
 		s_data->TextureShader->SetInt("u_Texture", 0);
+
+		s_data->whiteTexture = Texture2D::Create(1, 1);
+		uint32_t texData = 0xffffffff;
+		s_data->whiteTexture->SetData(&texData, sizeof(uint32_t));
+
 	}
 
 	void Renderer2D::ShutDown()
@@ -72,21 +78,16 @@ namespace Ellie {
 	{
 	}
 
-	void Renderer2D::DrawQuad(glm::vec2 position, glm::vec2 size, glm::vec4 color)
+	void Renderer2D::DrawQuad(const glm::vec2 position, const  glm::vec2 size, const  glm::vec4 color)
 	{
 		DrawQuad({ position.x, position.y, 0.0 }, size, color);
 	}
 
-	void Renderer2D::DrawQuad(glm::vec3 position, glm::vec2 size, glm::vec4 color)
+	void Renderer2D::DrawQuad(const glm::vec3 position, const  glm::vec2 size, const  glm::vec4 color)
 	{
-		s_data->TextureShader->Bind();
 		s_data->TextureShader->SetFloat4("u_Color", color);
 
-		Ref<Texture2D> whiteTexture = Texture2D::Create(1, 1);
-		uint32_t texData = 0xffffffff;
-		whiteTexture->SetData(&texData);
-
-		whiteTexture->Bind();
+		s_data->whiteTexture->Bind();
 		s_data->TextureShader->SetInt("u_Texture", 0);
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
@@ -96,10 +97,9 @@ namespace Ellie {
 		RenderCommands::DrawIndexed(s_data->QuadVertexArray);
 	}
 
-	void Renderer2D::DrawQuad(glm::vec3 position, glm::vec2 size, Ref<Texture2D> texture)
+	void Renderer2D::DrawQuad(const glm::vec3 position, const  glm::vec2 size, const  Ref<Texture2D> texture)
 	{
-		s_data->TextureShader->Bind();
-		s_data->TextureShader->SetFloat4("u_Color", {1.0f,1.0f,1.0f,1.0f});
+		s_data->TextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
 		texture->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
@@ -109,9 +109,48 @@ namespace Ellie {
 		RenderCommands::DrawIndexed(s_data->QuadVertexArray);
 	}
 
-	void Renderer2D::DrawQuad(glm::vec2 position, glm::vec2 size, Ref<Texture2D> texture)
+	void Renderer2D::DrawQuad(const glm::vec2 position, const  glm::vec2 size, const  Ref<Texture2D> texture)
 	{
 		DrawQuad({ position.x, position.y, 0.0 }, size, texture);
 	}
 
+	void Renderer2D::DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0 }, size, rotationInRadians, color);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color)
+	{
+		s_data->TextureShader->SetFloat4("u_Color", color);
+
+		s_data->whiteTexture->Bind();
+		s_data->TextureShader->SetInt("u_Texture", 0);
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		s_data->TextureShader->SetMat4("u_Transform", transform);
+
+		s_data->QuadVertexArray->Bind();
+		RenderCommands::DrawIndexed(s_data->QuadVertexArray);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
+	{
+		s_data->TextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
+		texture->Bind();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		s_data->TextureShader->SetMat4("u_Transform", transform);
+
+		s_data->QuadVertexArray->Bind();
+		RenderCommands::DrawIndexed(s_data->QuadVertexArray);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0 }, size, rotationInRadians, texture);
+	}
 }
