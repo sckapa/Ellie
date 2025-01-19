@@ -10,72 +10,104 @@
 
 namespace Ellie {
 
-	struct Renderer2DStorage
+	struct QuadVertex
 	{
-		Ref<VertexArray> QuadVertexArray;
-		Ref<Shader> TextureShader;
-		Ref<Texture2D> whiteTexture;
+		glm::vec3 position;
+		glm::vec4 color;
+		glm::vec2 texCoords;
 	};
 
-	static Renderer2DStorage* s_data;
+	struct Renderer2DStorage
+	{
+		uint32_t MaxQuads = 10000;
+		uint32_t MaxVertices = MaxQuads * 4;
+		uint32_t MaxIndices = MaxQuads * 6;
+
+		Ref<VertexArray> QuadVertexArray;
+		Ref<VertexBuffer> QuadVertexBuffer;
+		Ref<Shader> TextureShader;
+		Ref<Texture2D> whiteTexture;
+
+		uint32_t QuadIndexCount = 0;
+
+		QuadVertex* QuadVertexBase = nullptr;
+		QuadVertex* QuadVertexPtr = nullptr;
+	};
+
+	static Renderer2DStorage s_data;
 
 	void Renderer2D::Init()
 	{
-		s_data = new Renderer2DStorage();
-
 		// Geometry
-		s_data->QuadVertexArray = Ellie::VertexArray::Create();
+		s_data.QuadVertexArray = Ellie::VertexArray::Create();
 
-		float vertices[5 * 4]
-		{
-			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
-			-0.5f, 0.5f, 0.0f, 0.0f, 1.0f
-		};
+		s_data.QuadVertexBase = new QuadVertex[s_data.MaxVertices];
 
 		auto layout = Ellie::BufferLayout({
 			{Ellie::ShaderDataType::Float3, "a_Position"},
+			{Ellie::ShaderDataType::Float4, "a_Color"},
 			{Ellie::ShaderDataType::Float2, "a_TexCoords"}
 			});
 
-		std::shared_ptr<Ellie::VertexBuffer> sqVB;
-		sqVB.reset(Ellie::VertexBuffer::Create(vertices, sizeof(vertices)));
+		s_data.QuadVertexBuffer.reset(Ellie::VertexBuffer::Create(s_data.MaxVertices * sizeof(QuadVertex)));
 
-		sqVB->SetLayout(layout);
-		s_data->QuadVertexArray->AddVertexBuffers(sqVB);
+		s_data.QuadVertexBuffer->SetLayout(layout);
+		s_data.QuadVertexArray->AddVertexBuffers(s_data.QuadVertexBuffer);
 
-		uint32_t indices[6]{ 0,1,2,2,3,0 };
+		uint32_t* quadIndices = new uint32_t[s_data.MaxIndices];
+		uint32_t offset = 0;
+		for (uint32_t i = 0; i < s_data.MaxIndices; i += 6)
+		{
+			quadIndices[i + 0] = offset + 0;
+			quadIndices[i + 1] = offset + 1;
+			quadIndices[i + 2] = offset + 2;
+
+			quadIndices[i + 3] = offset + 2;
+			quadIndices[i + 4] = offset + 3;
+			quadIndices[i + 5] = offset + 0;
+
+			offset += 4;
+		}
 
 		std::shared_ptr<Ellie::IndexBuffer> sqIB;
-		sqIB.reset(Ellie::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		sqIB.reset(Ellie::IndexBuffer::Create(quadIndices, s_data.MaxIndices));
+		s_data.QuadVertexArray->SetIndexBuffer(sqIB);
 
-		s_data->QuadVertexArray->SetIndexBuffer(sqIB);
+		delete[] quadIndices;
 
 		// Shader
-		s_data->TextureShader = Ellie::Shader::Create("assets/shaders/Texture.glsl");
-		s_data->TextureShader->Bind();
-		s_data->TextureShader->SetInt("u_Texture", 0);
+		s_data.TextureShader = Ellie::Shader::Create("assets/shaders/Texture.glsl");
+		s_data.TextureShader->Bind();
+		s_data.TextureShader->SetInt("u_Texture", 0);
 
-		s_data->whiteTexture = Texture2D::Create(1, 1);
+		s_data.whiteTexture = Texture2D::Create(1, 1);
 		uint32_t texData = 0xffffffff;
-		s_data->whiteTexture->SetData(&texData, sizeof(uint32_t));
-
+		s_data.whiteTexture->SetData(&texData, sizeof(uint32_t));
 	}
 
 	void Renderer2D::ShutDown()
 	{
-		delete s_data;
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		s_data->TextureShader->Bind();
-		s_data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_data.TextureShader->Bind();
+		s_data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		s_data.QuadIndexCount = 0;
+		s_data.QuadVertexPtr = s_data.QuadVertexBase;
 	}
 
 	void Renderer2D::EndScene()
 	{
+		uint32_t dataSize = (uint8_t*)s_data.QuadVertexPtr - (uint8_t*)s_data.QuadVertexBase;
+		s_data.QuadVertexBuffer->SetData(s_data.QuadVertexBase, dataSize);
+		Flush();
+	}
+
+	void Renderer2D::Flush()
+	{
+		RenderCommands::DrawIndexed(s_data.QuadVertexArray, s_data.QuadIndexCount);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2 position, const  glm::vec2 size, const  glm::vec4 color)
@@ -85,28 +117,48 @@ namespace Ellie {
 
 	void Renderer2D::DrawQuad(const glm::vec3 position, const  glm::vec2 size, const  glm::vec4 color)
 	{
-		s_data->TextureShader->SetFloat4("u_Color", color);
+		s_data.QuadVertexPtr->position = position;
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 0.0f,0.0f };
+		s_data.QuadVertexPtr++;
 
-		s_data->whiteTexture->Bind();
-		s_data->TextureShader->SetInt("u_Texture", 0);
+		s_data.QuadVertexPtr->position = { position.x + size.x, position.y, 0.0f };
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 1.0f,0.0f };
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadVertexPtr->position = { position.x + size.x, position.y + size.y, 0.0f };
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 1.0f,1.0f };
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadVertexPtr->position = { position.x, position.y + size.y, 0.0f };
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 0.0f,1.0f };
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadIndexCount += 6;
+
+		/*s_data.whiteTexture->Bind();
+		s_data.TextureShader->SetInt("u_Texture", 0);
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		s_data->TextureShader->SetMat4("u_Transform", transform);
+		s_data.TextureShader->SetMat4("u_Transform", transform);
 
-		s_data->QuadVertexArray->Bind();
-		RenderCommands::DrawIndexed(s_data->QuadVertexArray);
+		s_data.QuadVertexArray->Bind();
+		RenderCommands::DrawIndexed(s_data.QuadVertexArray);*/
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3 position, const  glm::vec2 size, const  Ref<Texture2D> texture)
 	{
-		s_data->TextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
+		s_data.TextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
 		texture->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		s_data->TextureShader->SetMat4("u_Transform", transform);
+		s_data.TextureShader->SetMat4("u_Transform", transform);
 
-		s_data->QuadVertexArray->Bind();
-		RenderCommands::DrawIndexed(s_data->QuadVertexArray);
+		s_data.QuadVertexArray->Bind();
+		RenderCommands::DrawIndexed(s_data.QuadVertexArray);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2 position, const  glm::vec2 size, const  Ref<Texture2D> texture)
@@ -121,32 +173,32 @@ namespace Ellie {
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color)
 	{
-		s_data->TextureShader->SetFloat4("u_Color", color);
+		s_data.TextureShader->SetFloat4("u_Color", color);
 
-		s_data->whiteTexture->Bind();
-		s_data->TextureShader->SetInt("u_Texture", 0);
+		s_data.whiteTexture->Bind();
+		s_data.TextureShader->SetInt("u_Texture", 0);
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		s_data->TextureShader->SetMat4("u_Transform", transform);
+		s_data.TextureShader->SetMat4("u_Transform", transform);
 
-		s_data->QuadVertexArray->Bind();
-		RenderCommands::DrawIndexed(s_data->QuadVertexArray);
+		s_data.QuadVertexArray->Bind();
+		RenderCommands::DrawIndexed(s_data.QuadVertexArray);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
 	{
-		s_data->TextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
+		s_data.TextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
 		texture->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		s_data->TextureShader->SetMat4("u_Transform", transform);
+		s_data.TextureShader->SetMat4("u_Transform", transform);
 
-		s_data->QuadVertexArray->Bind();
-		RenderCommands::DrawIndexed(s_data->QuadVertexArray);
+		s_data.QuadVertexArray->Bind();
+		RenderCommands::DrawIndexed(s_data.QuadVertexArray);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)

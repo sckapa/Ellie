@@ -5,6 +5,24 @@
 #include "Platform/OpenGL/OpenGLBuffers.h"
 
 namespace Ellie {
+	VertexBuffer* VertexBuffer::Create(uint32_t size)
+	{
+		switch (RendererAPI::API::OpenGL)
+		{
+		case Ellie::RendererAPI::API::None:
+		{
+			EE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
+			return nullptr;
+		}
+		case Ellie::RendererAPI::API::OpenGL:
+		{
+			return new OpenGLVertexBuffer(size);
+		}
+		}
+
+		EE_CORE_ASSERT(false, "Unknown RendererAPI");
+		return nullptr;
+	}
 
 	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size)
 	{
