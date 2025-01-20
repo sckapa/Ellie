@@ -35,6 +35,8 @@ void Sandbox2D::OnUpdate(Ellie::Timestep ts)
 {
 	m_CameraController.OnUpdate(ts);
 
+	Ellie::Renderer2D::ResetStats();
+
 	// Renderer
 	Ellie::RenderCommands::Clear();
 	Ellie::RenderCommands::SetClearColor({0.1f,0.1f,0.1f,1.0f});
@@ -53,4 +55,10 @@ void Sandbox2D::OnUpdate(Ellie::Timestep ts)
 
 void Sandbox2D::OnImGuiRender()
 {
+	auto stats = Ellie::Renderer2D::GetStatistics();
+
+	ImGui::Begin("Stats");
+	ImGui::Text("Draw calls : %d", stats.GetDrawCount());
+	ImGui::Text("Quad count : %d", stats.GetQuadCount());
+	ImGui::End();
 }

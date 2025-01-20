@@ -39,6 +39,8 @@ namespace Ellie {
 		std::array<Ref<Texture2D>, MaxTexSlots> TextureSlots;
 
 		glm::vec4 QuadVerices[4];
+
+		Renderer2D::Statistics stats;
 	};
 
 	static Renderer2DStorage s_data;
@@ -136,6 +138,7 @@ namespace Ellie {
 		}
 
 		RenderCommands::DrawIndexed(s_data.QuadVertexArray, s_data.QuadIndexCount);
+		s_data.stats.DrawCount++;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2 position, const  glm::vec2 size, const  glm::vec4 color)
@@ -143,8 +146,23 @@ namespace Ellie {
 		DrawQuad({ position.x, position.y, 0.0 }, size, color);
 	}
 
+	void Renderer2D::FlushAndReset()
+	{
+		EndScene();
+
+		s_data.QuadIndexCount = 0;
+		s_data.QuadVertexPtr = s_data.QuadVertexBase;
+
+		s_data.TexSlotIndex = 1;
+	}
+
 	void Renderer2D::DrawQuad(const glm::vec3 position, const  glm::vec2 size, const  glm::vec4 color)
 	{
+		if (s_data.QuadIndexCount >= s_data.MaxIndices)
+		{
+			FlushAndReset();
+		}
+
 		const float texIndex = 0.0f;
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
@@ -175,10 +193,17 @@ namespace Ellie {
 		s_data.QuadVertexPtr++;
 
 		s_data.QuadIndexCount += 6;
+
+		s_data.stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3 position, const  glm::vec2 size, const  Ref<Texture2D> texture)
 	{
+		if (s_data.QuadIndexCount >= s_data.MaxIndices)
+		{
+			FlushAndReset();
+		}
+
 		const glm::vec4 color = { 1.0f,1.0f,1.0f,1.0f };
 
 		float texIndex = 0.0f;
@@ -227,6 +252,8 @@ namespace Ellie {
 		s_data.QuadVertexPtr++;
 
 		s_data.QuadIndexCount += 6;
+
+		s_data.stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2 position, const  glm::vec2 size, const  Ref<Texture2D> texture)
@@ -241,6 +268,11 @@ namespace Ellie {
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color)
 	{
+		if (s_data.QuadIndexCount >= s_data.MaxIndices)
+		{
+			FlushAndReset();
+		}
+
 		const float texIndex = 0.0f;
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
@@ -272,10 +304,17 @@ namespace Ellie {
 		s_data.QuadVertexPtr++;
 
 		s_data.QuadIndexCount += 6;
+
+		s_data.stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
 	{
+		if (s_data.QuadIndexCount >= s_data.MaxIndices)
+		{
+			FlushAndReset();
+		}
+
 		const glm::vec4 color = { 1.0f,1.0f,1.0f,1.0f };
 
 		float texIndex = 0.0f;
@@ -325,10 +364,22 @@ namespace Ellie {
 		s_data.QuadVertexPtr++;
 
 		s_data.QuadIndexCount += 6;
+
+		s_data.stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
 	{
 		DrawRotatedQuad({ position.x, position.y, 0.0 }, size, rotationInRadians, texture);
+	}
+
+	Renderer2D::Statistics Renderer2D::GetStatistics()
+	{
+		return s_data.stats;
+	}
+
+	void Renderer2D::ResetStats()
+	{
+		memset(&s_data.stats, 0, sizeof(Statistics));
 	}
 }
