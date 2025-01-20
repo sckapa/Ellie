@@ -37,6 +37,8 @@ namespace Ellie {
 
 		uint32_t TexSlotIndex;
 		std::array<Ref<Texture2D>, MaxTexSlots> TextureSlots;
+
+		glm::vec4 QuadVerices[4];
 	};
 
 	static Renderer2DStorage s_data;
@@ -97,6 +99,11 @@ namespace Ellie {
 		s_data.whiteTexture->SetData(&texData, sizeof(uint32_t));
 
 		s_data.TextureSlots[0] = s_data.whiteTexture;
+
+		s_data.QuadVerices[0] = { -0.5f,-0.5f,0.0f,1.0f };
+		s_data.QuadVerices[1] = { 0.5f,-0.5f,0.0f,1.0f };
+		s_data.QuadVerices[2] = { 0.5f,0.5f,0.0f,1.0f };
+		s_data.QuadVerices[3] = { -0.5f,0.5f,0.0f,1.0f };
 	}
 
 	void Renderer2D::ShutDown()
@@ -140,40 +147,34 @@ namespace Ellie {
 	{
 		const float texIndex = 0.0f;
 
-		s_data.QuadVertexPtr->position = position;
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
+
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[0];
 		s_data.QuadVertexPtr->color = color;
 		s_data.QuadVertexPtr->texCoords = { 0.0f,0.0f };
 		s_data.QuadVertexPtr->TexIndex = texIndex;
 		s_data.QuadVertexPtr++;
 
-		s_data.QuadVertexPtr->position = { position.x + size.x, position.y, 0.0f };
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[1];
 		s_data.QuadVertexPtr->color = color;
 		s_data.QuadVertexPtr->texCoords = { 1.0f,0.0f };
 		s_data.QuadVertexPtr->TexIndex = texIndex;
 		s_data.QuadVertexPtr++;
 
-		s_data.QuadVertexPtr->position = { position.x + size.x, position.y + size.y, 0.0f };
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[2];
 		s_data.QuadVertexPtr->color = color;
 		s_data.QuadVertexPtr->texCoords = { 1.0f,1.0f };
 		s_data.QuadVertexPtr->TexIndex = texIndex;
 		s_data.QuadVertexPtr++;
 
-		s_data.QuadVertexPtr->position = { position.x, position.y + size.y, 0.0f };
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[3];
 		s_data.QuadVertexPtr->color = color;
 		s_data.QuadVertexPtr->texCoords = { 0.0f,1.0f };
 		s_data.QuadVertexPtr->TexIndex = texIndex;
 		s_data.QuadVertexPtr++;
 
 		s_data.QuadIndexCount += 6;
-
-		/*s_data.whiteTexture->Bind();
-		s_data.TextureShader->SetInt("u_Texture", 0);
-
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		s_data.TextureShader->SetMat4("u_Transform", transform);
-
-		s_data.QuadVertexArray->Bind();
-		RenderCommands::DrawIndexed(s_data.QuadVertexArray);*/
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3 position, const  glm::vec2 size, const  Ref<Texture2D> texture)
@@ -197,41 +198,35 @@ namespace Ellie {
 			s_data.TextureSlots[s_data.TexSlotIndex] = texture;
 			s_data.TexSlotIndex++;
 		}
-		
-		s_data.QuadVertexPtr->position = position;
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
+
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[0];
 		s_data.QuadVertexPtr->color = color;
 		s_data.QuadVertexPtr->texCoords = { 0.0f,0.0f };
 		s_data.QuadVertexPtr->TexIndex = texIndex;
 		s_data.QuadVertexPtr++;
 
-		s_data.QuadVertexPtr->position = { position.x + size.x, position.y, 0.0f };
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[1];
 		s_data.QuadVertexPtr->color = color;
 		s_data.QuadVertexPtr->texCoords = { 1.0f,0.0f };
 		s_data.QuadVertexPtr->TexIndex = texIndex;
 		s_data.QuadVertexPtr++;
 
-		s_data.QuadVertexPtr->position = { position.x + size.x, position.y + size.y, 0.0f };
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[2];
 		s_data.QuadVertexPtr->color = color;
 		s_data.QuadVertexPtr->texCoords = { 1.0f,1.0f };
 		s_data.QuadVertexPtr->TexIndex = texIndex;
 		s_data.QuadVertexPtr++;
 
-		s_data.QuadVertexPtr->position = { position.x, position.y + size.y, 0.0f };
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[3];
 		s_data.QuadVertexPtr->color = color;
 		s_data.QuadVertexPtr->texCoords = { 0.0f,1.0f };
 		s_data.QuadVertexPtr->TexIndex = texIndex;
 		s_data.QuadVertexPtr++;
 
 		s_data.QuadIndexCount += 6;
-
-		/*s_data.TextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
-		texture->Bind();
-
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		s_data.TextureShader->SetMat4("u_Transform", transform);
-
-		s_data.QuadVertexArray->Bind();
-		RenderCommands::DrawIndexed(s_data.QuadVertexArray);*/
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2 position, const  glm::vec2 size, const  Ref<Texture2D> texture)
@@ -246,32 +241,90 @@ namespace Ellie {
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color)
 	{
-		s_data.TextureShader->SetFloat4("u_Color", color);
-
-		s_data.whiteTexture->Bind();
-		s_data.TextureShader->SetInt("u_Texture", 0);
+		const float texIndex = 0.0f;
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		s_data.TextureShader->SetMat4("u_Transform", transform);
+			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
 
-		s_data.QuadVertexArray->Bind();
-		RenderCommands::DrawIndexed(s_data.QuadVertexArray);
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[0];
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 0.0f,0.0f };
+		s_data.QuadVertexPtr->TexIndex = texIndex;
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[1];
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 1.0f,0.0f };
+		s_data.QuadVertexPtr->TexIndex = texIndex;
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[2];
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 1.0f,1.0f };
+		s_data.QuadVertexPtr->TexIndex = texIndex;
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[3];
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 0.0f,1.0f };
+		s_data.QuadVertexPtr->TexIndex = texIndex;
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadIndexCount += 6;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
 	{
-		s_data.TextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
-		texture->Bind();
+		const glm::vec4 color = { 1.0f,1.0f,1.0f,1.0f };
+
+		float texIndex = 0.0f;
+
+		for (uint32_t i = 1; i < s_data.TexSlotIndex; i++)
+		{
+			if (*s_data.TextureSlots[i].get() == *texture.get())
+			{
+				texIndex = (float)i;
+				break;
+			}
+		}
+
+		if (texIndex == 0.0f)
+		{
+			texIndex = s_data.TexSlotIndex;
+			s_data.TextureSlots[s_data.TexSlotIndex] = texture;
+			s_data.TexSlotIndex++;
+		}
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		s_data.TextureShader->SetMat4("u_Transform", transform);
+			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
 
-		s_data.QuadVertexArray->Bind();
-		RenderCommands::DrawIndexed(s_data.QuadVertexArray);
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[0];
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 0.0f,0.0f };
+		s_data.QuadVertexPtr->TexIndex = texIndex;
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[1];
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 1.0f,0.0f };
+		s_data.QuadVertexPtr->TexIndex = texIndex;
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[2];
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 1.0f,1.0f };
+		s_data.QuadVertexPtr->TexIndex = texIndex;
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[3];
+		s_data.QuadVertexPtr->color = color;
+		s_data.QuadVertexPtr->texCoords = { 0.0f,1.0f };
+		s_data.QuadVertexPtr->TexIndex = texIndex;
+		s_data.QuadVertexPtr++;
+
+		s_data.QuadIndexCount += 6;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
