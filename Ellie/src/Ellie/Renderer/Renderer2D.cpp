@@ -20,9 +20,9 @@ namespace Ellie {
 
 	struct Renderer2DStorage
 	{
-		const uint32_t MaxQuads = 10000;
-		const uint32_t MaxVertices = MaxQuads * 4;
-		const uint32_t MaxIndices = MaxQuads * 6;
+		static const uint32_t MaxQuads = 10000;
+		static const uint32_t MaxVertices = MaxQuads * 4;
+		static const uint32_t MaxIndices = MaxQuads * 6;
 		static const uint32_t MaxTexSlots = 32;
 
 		Ref<VertexArray> QuadVertexArray;
@@ -167,30 +167,16 @@ namespace Ellie {
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
+		glm::vec2 texCoords[] = { {0.0f,0.0f},{ 1.0f,0.0f },{ 1.0f,1.0f },{ 0.0f,1.0f } };
 
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[0];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 0.0f,0.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
-
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[1];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 1.0f,0.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
-
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[2];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 1.0f,1.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
-
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[3];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 0.0f,1.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
+		for (int i = 0; i < 4; i++)
+		{
+			s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[i];
+			s_data.QuadVertexPtr->color = color;
+			s_data.QuadVertexPtr->texCoords = texCoords[i];
+			s_data.QuadVertexPtr->TexIndex = texIndex;
+			s_data.QuadVertexPtr++;
+		}
 
 		s_data.QuadIndexCount += 6;
 
@@ -203,7 +189,6 @@ namespace Ellie {
 		{
 			FlushAndReset();
 		}
-
 		const glm::vec4 color = { 1.0f,1.0f,1.0f,1.0f };
 
 		float texIndex = 0.0f;
@@ -227,29 +212,25 @@ namespace Ellie {
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
 
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[0];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 0.0f,0.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
+		float x = 2.0f, y = 3.0f;
+		float sheetHeight = 1664.0f, sheetWidth = 2560.0f;
+		float spriteHeight = 128.0f, spriteWidth = 128.0f;
 
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[1];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 1.0f,0.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
+		glm::vec2 texCoords[] = {
+			{x * spriteWidth / sheetWidth,y * spriteHeight / sheetHeight},
+			{(x + 1) * spriteWidth / sheetWidth,y * spriteHeight / sheetHeight},
+			{(x + 1) * spriteWidth / sheetWidth,(y + 1) * spriteHeight / sheetHeight},
+			{x * spriteWidth / sheetWidth,(y + 1) * spriteHeight / sheetHeight}
+		};
 
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[2];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 1.0f,1.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
-
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[3];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 0.0f,1.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
+		for (int i = 0; i < 4; i++)
+		{
+			s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[i];
+			s_data.QuadVertexPtr->color = color;
+			s_data.QuadVertexPtr->texCoords = texCoords[i];
+			s_data.QuadVertexPtr->TexIndex = texIndex;
+			s_data.QuadVertexPtr++;
+		}
 
 		s_data.QuadIndexCount += 6;
 
@@ -278,30 +259,16 @@ namespace Ellie {
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
+		glm::vec2 texCoords[] = { {0.0f,0.0f},{ 1.0f,0.0f },{ 1.0f,1.0f },{ 0.0f,1.0f } };
 
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[0];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 0.0f,0.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
-
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[1];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 1.0f,0.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
-
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[2];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 1.0f,1.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
-
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[3];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 0.0f,1.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
+		for (int i = 0; i < 4; i++)
+		{
+			s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[i];
+			s_data.QuadVertexPtr->color = color;
+			s_data.QuadVertexPtr->texCoords = texCoords[i];
+			s_data.QuadVertexPtr->TexIndex = texIndex;
+			s_data.QuadVertexPtr++;
+		}
 
 		s_data.QuadIndexCount += 6;
 
@@ -338,30 +305,16 @@ namespace Ellie {
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
+		glm::vec2 texCoords[] = { {0.0f,0.0f},{ 1.0f,0.0f },{ 1.0f,1.0f },{ 0.0f,1.0f } };
 
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[0];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 0.0f,0.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
-
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[1];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 1.0f,0.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
-
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[2];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 1.0f,1.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
-
-		s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[3];
-		s_data.QuadVertexPtr->color = color;
-		s_data.QuadVertexPtr->texCoords = { 0.0f,1.0f };
-		s_data.QuadVertexPtr->TexIndex = texIndex;
-		s_data.QuadVertexPtr++;
+		for (int i = 0; i < 4; i++)
+		{
+			s_data.QuadVertexPtr->position = transform * s_data.QuadVerices[i];
+			s_data.QuadVertexPtr->color = color;
+			s_data.QuadVertexPtr->texCoords = texCoords[i];
+			s_data.QuadVertexPtr->TexIndex = texIndex;
+			s_data.QuadVertexPtr++;
+		}
 
 		s_data.QuadIndexCount += 6;
 

@@ -20,6 +20,7 @@ Sandbox2D::~Sandbox2D()
 void Sandbox2D::OnAttach()
 {
 	m_Checker = Ellie::Texture2D::Create("assets/textures/abc.png");
+	m_SpriteSheet = Ellie::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -41,14 +42,9 @@ void Sandbox2D::OnUpdate(Ellie::Timestep ts)
 	Ellie::RenderCommands::Clear();
 	Ellie::RenderCommands::SetClearColor({0.1f,0.1f,0.1f,1.0f});
 
-	static float rot = 0.0f;
-	rot += ts * 50.0f;
-
 	Ellie::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	Ellie::Renderer2D::DrawQuad({0.0f, 0.0f, 0.0f}, {0.5f,0.5f}, {0.8f,0.2f,0.3f,1.0f});
-	Ellie::Renderer2D::DrawRotatedQuad({1.0f, 0.0f}, {0.5f,0.5f}, glm::radians(rot), {0.2f,0.3f,0.8f,1.0f});
-	Ellie::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {10.0f,10.0f}, m_Checker);
+	Ellie::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {10.0f,10.0f}, m_SpriteSheet);
 
 	Ellie::Renderer2D::EndScene();
 }
