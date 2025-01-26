@@ -56,6 +56,11 @@ namespace Ellie{
 		}
 	}
 
+	void Application::Close()
+	{
+		m_Running = false;
+	}
+
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
@@ -88,7 +93,7 @@ namespace Ellie{
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
-		m_Running = false;
+		Close();
 
 		return true;
 	}

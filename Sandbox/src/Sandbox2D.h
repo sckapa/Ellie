@@ -21,6 +21,8 @@ private:
 	Ellie::Ref<Ellie::Texture2D> m_Checker;
 	Ellie::Ref<Ellie::Texture2D> m_SpriteSheet;
 
+	Ellie::Ref<Ellie::FrameBuffer> m_FrameBuffer;
+
 	Ellie::Ref<Ellie::Shader> m_FlatColorShader;
 	Ellie::Ref<Ellie::VertexArray> m_SqVertexArray;
 

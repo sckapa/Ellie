@@ -146,6 +146,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
+    <ClInclude Include="src\Ellie\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Ellie\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Ellie.h" />
     <ClInclude Include="src\Ellie\Core\Application.h" />
@@ -602,6 +604,8 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
+    <ClCompile Include="src\Ellie\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Ellie\Core\Application.cpp" />
     <ClCompile Include="src\Ellie\Core\Layer.cpp" />
