@@ -1,40 +1,38 @@
 #include "eepch.h"
-#include "WindowsInput.h"
+#include "Ellie/Core/Input.h"
 #include "Ellie/Core/Application.h"
 #include "GLFW/glfw3.h"
 
 
 namespace Ellie{
 
-	Input* Input::s_Input = new WindowsInput();
-
-	bool WindowsInput::IsKeyPressedImpl(int keycode)
+	bool Input::IsKeyPressed(int keycode)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		int status = glfwGetKey(window, keycode);
 		return status == GLFW_PRESS || status == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::IsMouseButtonPressedImpl(int button)
+	bool Input::IsMouseButtonPressed(int button)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		int status = glfwGetMouseButton(window, button);
 		return status == GLFW_PRESS;
 	}
 
-	float WindowsInput::GetMouseXImpl()
+	float Input::GetMouseX()
 	{
-		auto [x, y] = GetMouseImpl();
+		auto [x, y] = GetMousePosition();
 		return x;
 	}
 
-	float WindowsInput::GetMouseYImpl()
+	float Input::GetMouseY()
 	{
-		auto [x, y] = GetMouseImpl();
+		auto [x, y] = GetMousePosition();
 		return y;
 	}
 
-	std::pair<float, float> WindowsInput::GetMouseImpl()
+	std::pair<float, float> Input::GetMousePosition()
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		double xPos, yPos;
