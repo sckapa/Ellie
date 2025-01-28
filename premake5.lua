@@ -1,5 +1,6 @@
 workspace "Ellie"
  architecture "x64"
+ startproject "Ellie-Editor"
 
  configurations
  {
@@ -99,6 +100,62 @@ project "Ellie"
 
 project "Sandbox"
  location "Sandbox"
+ kind "ConsoleApp"
+ language "C++"
+ cppdialect "C++17"
+ staticruntime "on"
+
+ targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+ objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+ files
+ {
+  "%{prj.name}/src/**.h",
+  "%{prj.name}/src/**.cpp"
+ }
+
+ includedirs
+ {
+  "Ellie/vendor/spdlog/include",
+  "Ellie/src",
+  "%{IncludeDir.ImGui}",
+  "%{IncludeDir.glm}"
+ }
+
+ links
+ {
+  "Ellie"
+ }
+
+ filter "system:windows"
+  staticruntime "on"
+  systemversion "latest"
+
+  defines
+  {
+   "EE_PLATFORM_WINDOWS"
+  }
+
+ filter "configurations:Debug"
+  defines "EE_DEBUG"
+  symbols "on"
+  buildoptions "/utf-8"
+  runtime "Debug"
+
+ filter "configurations:Release"
+  defines "EE_RELEASE"
+  optimize "on"
+  buildoptions "/utf-8"
+  runtime "Release"
+
+ filter "configurations:Dist"
+  defines "EE_DIST"
+  optimize "on"
+  buildoptions "/utf-8"
+  runtime "Release"
+
+project "Ellie-Editor"
+ location "Ellie-Editor"
  kind "ConsoleApp"
  language "C++"
  cppdialect "C++17"

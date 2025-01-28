@@ -146,9 +146,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
-    <ClInclude Include="src\Ellie\Renderer\FrameBuffer.h" />
-    <ClInclude Include="src\Ellie\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Ellie.h" />
     <ClInclude Include="src\Ellie\Core\Application.h" />
     <ClInclude Include="src\Ellie\Core\Core.h" />
@@ -167,17 +164,20 @@
     <ClInclude Include="src\Ellie\Events\MouseEvent.h" />
     <ClInclude Include="src\Ellie\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Ellie\Renderer\Buffers.h" />
+    <ClInclude Include="src\Ellie\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Ellie\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Ellie\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Ellie\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="src\Ellie\Renderer\RenderCommands.h" />
     <ClInclude Include="src\Ellie\Renderer\Renderer.h" />
+    <ClInclude Include="src\Ellie\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Ellie\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Ellie\Renderer\Shader.h" />
     <ClInclude Include="src\Ellie\Renderer\Texture.h" />
     <ClInclude Include="src\Ellie\Renderer\VertexArray.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffers.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture2D.h" />
@@ -604,9 +604,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
-    <ClCompile Include="src\Ellie\Renderer\FrameBuffer.cpp" />
-    <ClCompile Include="src\Ellie\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Ellie\Core\Application.cpp" />
     <ClCompile Include="src\Ellie\Core\Layer.cpp" />
     <ClCompile Include="src\Ellie\Core\LayerStack.cpp" />
@@ -614,16 +611,19 @@
     <ClCompile Include="src\Ellie\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Ellie\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Buffers.cpp" />
+    <ClCompile Include="src\Ellie\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Ellie\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Ellie\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Ellie\Renderer\RenderCommands.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Ellie\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Ellie\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Shader.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Texture.cpp" />
     <ClCompile Include="src\Ellie\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture2D.cpp" />

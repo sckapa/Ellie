@@ -20,7 +20,7 @@ namespace Ellie{
 	class ELLIE_API Application
 	{
 	public :
-		Application();
+		Application(std::string name = "Ellie App");
 		virtual ~Application();
 
 		void Run();
