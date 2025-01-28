@@ -56,6 +56,12 @@ namespace Ellie {
 		dispatcher.Dispatch<WindowResizeEvent>(EE_BIND_EVENT_FN(OrthographicCameraController::WindowResize));
 	}
 
+	void OrthographicCameraController::OnResize(float width, float height)
+	{
+		m_AspectRatio = width / height;
+		m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+	}
+
 	bool OrthographicCameraController::MouseScrolled(MouseScrolledEvent& e)
 	{
 		m_ZoomLevel -= e.GetOffsetY() * 0.25f;
@@ -66,8 +72,7 @@ namespace Ellie {
 
 	bool OrthographicCameraController::WindowResize(WindowResizeEvent& e)
 	{
-		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-		m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		OnResize((float)e.GetWidth(), (float)e.GetHeight());
 		return false;
 	}
 }

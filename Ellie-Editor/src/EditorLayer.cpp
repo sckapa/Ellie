@@ -21,7 +21,6 @@ namespace Ellie {
     void EditorLayer::OnAttach()
     {
         m_Checker = Texture2D::Create("assets/textures/abc.png");
-        m_SpriteSheet = Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
 
         FrameBufferSpecification spec;
         spec.width = 1280;
@@ -52,7 +51,9 @@ namespace Ellie {
 
         Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-        Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f,10.0f }, m_SpriteSheet);
+        Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f,10.0f }, m_Checker);
+        Renderer2D::DrawQuad({ 1.0f, 0.0f, 0.0f }, { 1.0f,1.0f }, { 0.8f,0.2f,0.3f,1.0f });
+        Renderer2D::DrawQuad({ -1.0f, 0.0f, 0.0f }, { 1.0f,1.0f }, { 0.2f,0.2f,0.8f,1.0f });
 
         Renderer2D::EndScene();
 
@@ -115,14 +116,32 @@ namespace Ellie {
             ImGui::EndMenuBar();
         }
 
+        // Stats window
         ImGui::Begin("Stats");
+
         ImGui::Text("Draw calls : %d", stats.GetDrawCount());
         ImGui::Text("Quad count : %d", stats.GetQuadCount());
 
+        ImGui::End();
+
+        // Viewport
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
+        ImGui::Begin("Viewport");
+
+        ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+        if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
+        {
+            m_FrameBuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
+            m_ViewportSize = { viewportPanelSize.x,viewportPanelSize.y };
+
+            m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
+        }
+
         uint32_t texID = m_FrameBuffer->GetColorAttachmentRendererID();
-        ImGui::Image((ImTextureID)(uintptr_t)texID, ImVec2{ 1280.0f,720.0f }, ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::Image((ImTextureID)(uintptr_t)texID, ImVec2{ m_ViewportSize.x,m_ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
 
         ImGui::End();
+        ImGui::PopStyleVar();
 
         ImGui::End();
     }

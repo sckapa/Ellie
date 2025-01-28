@@ -130,6 +130,16 @@ namespace Ellie {
 		Flush();
 	}
 
+	void Renderer2D::FlushAndReset()
+	{
+		EndScene();
+
+		s_data.QuadIndexCount = 0;
+		s_data.QuadVertexPtr = s_data.QuadVertexBase;
+
+		s_data.TexSlotIndex = 1;
+	}
+
 	void Renderer2D::Flush()
 	{
 		for (uint32_t i = 0; i < s_data.TexSlotIndex; i++)
@@ -144,16 +154,6 @@ namespace Ellie {
 	void Renderer2D::DrawQuad(const glm::vec2 position, const  glm::vec2 size, const  glm::vec4 color)
 	{
 		DrawQuad({ position.x, position.y, 0.0 }, size, color);
-	}
-
-	void Renderer2D::FlushAndReset()
-	{
-		EndScene();
-
-		s_data.QuadIndexCount = 0;
-		s_data.QuadVertexPtr = s_data.QuadVertexBase;
-
-		s_data.TexSlotIndex = 1;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3 position, const  glm::vec2 size, const  glm::vec4 color)
@@ -212,16 +212,7 @@ namespace Ellie {
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
 
-		float x = 2.0f, y = 3.0f;
-		float sheetHeight = 1664.0f, sheetWidth = 2560.0f;
-		float spriteHeight = 128.0f, spriteWidth = 128.0f;
-
-		glm::vec2 texCoords[] = {
-			{x * spriteWidth / sheetWidth,y * spriteHeight / sheetHeight},
-			{(x + 1) * spriteWidth / sheetWidth,y * spriteHeight / sheetHeight},
-			{(x + 1) * spriteWidth / sheetWidth,(y + 1) * spriteHeight / sheetHeight},
-			{x * spriteWidth / sheetWidth,(y + 1) * spriteHeight / sheetHeight}
-		};
+		glm::vec2 texCoords[] = { {0.0f,0.0f},{ 1.0f,0.0f },{ 1.0f,1.0f },{ 0.0f,1.0f } };
 
 		for (int i = 0; i < 4; i++)
 		{
