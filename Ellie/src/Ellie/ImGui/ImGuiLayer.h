@@ -13,10 +13,15 @@ namespace Ellie{
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
-		virtual void OnImGuiRender() override;
+		virtual void OnEvent(Event& e) override;
 
 		void Begin();
 		void End();
+
+		void SetBlocked(bool blocked) { m_isBlocked = blocked; }
+
+	private:
+		bool m_isBlocked = true;
 	};
 
 }

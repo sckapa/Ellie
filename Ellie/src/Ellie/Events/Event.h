@@ -44,10 +44,7 @@ namespace Ellie {
 			return GetCategoryFlags() & category;
 		}
 
-		bool IsHandled() const { return m_Handled; }
-
-	protected:
-		bool m_Handled = false;
+		bool Handled = false;
 	};
 
 	//
@@ -65,7 +62,7 @@ namespace Ellie {
 		{
 			if (m_Event.GetEventType() == T::GetStaticType())
 			{
-				m_Event.m_Handled = func(*(T*)&m_Event);		// *(T*)& is used to typecast the event into T
+				m_Event.Handled = func(*(T*)&m_Event);		// *(T*)& is used to typecast the event into T
 				return true;
 			}
 			return false;

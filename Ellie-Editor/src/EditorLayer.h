@@ -18,6 +18,8 @@ namespace Ellie {
 
 
 	private:
+		bool isViewportFocused = false, isViewportHovered = false;
+
 		Ellie::OrthographicCameraController m_CameraController;
 
 		Ellie::Ref<Ellie::Texture2D> m_Checker;

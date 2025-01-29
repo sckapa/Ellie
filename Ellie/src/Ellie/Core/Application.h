@@ -34,6 +34,7 @@ namespace Ellie{
 		inline Window& GetWindow() { return *m_Window; }
 		inline static Application& Get() { return *s_Instance; }
 
+		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; } // Remove later, used for blocking events in editorlayer
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);

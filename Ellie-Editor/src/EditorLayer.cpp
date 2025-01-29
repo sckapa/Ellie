@@ -39,7 +39,10 @@ namespace Ellie {
 
     void EditorLayer::OnUpdate(Timestep ts)
     {
-        m_CameraController.OnUpdate(ts);
+        if (isViewportFocused)
+        {
+            m_CameraController.OnUpdate(ts);
+        }
 
         // Renderer
         Renderer2D::ResetStats();
@@ -127,6 +130,10 @@ namespace Ellie {
         // Viewport
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
         ImGui::Begin("Viewport");
+
+        isViewportFocused = ImGui::IsWindowFocused();
+        isViewportHovered = ImGui::IsWindowHovered();
+        Application::Get().GetImGuiLayer()->SetBlocked(!isViewportFocused || !isViewportHovered);
 
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
