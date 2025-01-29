@@ -19,6 +19,9 @@
     <Filter Include="src\Ellie\Renderer">
       <UniqueIdentifier>{0DE71947-F9CA-DA9C-622B-D5EF4E2EC51E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Ellie\Scene">
+      <UniqueIdentifier>{E471A887-50FD-154C-590E-9940C518724C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
@@ -143,6 +146,12 @@
     </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\VertexArray.h">
       <Filter>src\Ellie\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Scene\Components.h">
+      <Filter>src\Ellie\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Scene\Scene.h">
+      <Filter>src\Ellie\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffers.h">
       <Filter>src\Platform\OpenGL</Filter>
@@ -1474,6 +1483,9 @@
     </ClCompile>
     <ClCompile Include="src\Ellie\Renderer\VertexArray.cpp">
       <Filter>src\Ellie\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Scene\Scene.cpp">
+      <Filter>src\Ellie\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp">
       <Filter>src\Platform\OpenGL</Filter>

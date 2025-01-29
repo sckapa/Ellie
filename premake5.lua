@@ -17,6 +17,7 @@ workspace "Ellie"
  IncludeDir["ImGui"] = "Ellie/vendor/imgui"
  IncludeDir["glm"] = "Ellie/vendor/glm"
  IncludeDir["stb_image"] = "Ellie/vendor/stb_image"
+ IncludeDir["entt"] = "Ellie/vendor/entt/include"
 
  include "Ellie/vendor/GLFW"
  include "Ellie/vendor/Glad"
@@ -59,7 +60,8 @@ project "Ellie"
   "%{IncludeDir.Glad}",
   "%{IncludeDir.ImGui}",
   "%{IncludeDir.stb_image}",
-  "%{IncludeDir.glm}"
+  "%{IncludeDir.glm}",
+  "%{IncludeDir.entt}"
  }
 
  links
@@ -175,7 +177,8 @@ project "Ellie-Editor"
   "Ellie/vendor/spdlog/include",
   "Ellie/src",
   "%{IncludeDir.ImGui}",
-  "%{IncludeDir.glm}"
+  "%{IncludeDir.glm}",
+  "%{IncludeDir.entt}"
  }
 
  links

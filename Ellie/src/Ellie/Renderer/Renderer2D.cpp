@@ -151,6 +151,8 @@ namespace Ellie {
 		s_data.stats.DrawCount++;
 	}
 
+	//
+
 	void Renderer2D::DrawQuad(const glm::vec2 position, const  glm::vec2 size, const  glm::vec4 color)
 	{
 		DrawQuad({ position.x, position.y, 0.0 }, size, color);
@@ -182,6 +184,8 @@ namespace Ellie {
 
 		s_data.stats.QuadCount++;
 	}
+
+	//
 
 	void Renderer2D::DrawQuad(const glm::vec3 position, const  glm::vec2 size, const  Ref<Texture2D> texture)
 	{
@@ -233,12 +237,9 @@ namespace Ellie {
 		DrawQuad({ position.x, position.y, 0.0 }, size, texture);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color)
-	{
-		DrawRotatedQuad({ position.x, position.y, 0.0 }, size, rotationInRadians, color);
-	}
+	//
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color)
+	void Renderer2D::DrawQuad(const glm::mat4 transform, const glm::vec4 color)
 	{
 		if (s_data.QuadIndexCount >= s_data.MaxIndices)
 		{
@@ -247,9 +248,6 @@ namespace Ellie {
 
 		const float texIndex = 0.0f;
 
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
-			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
 		glm::vec2 texCoords[] = { {0.0f,0.0f},{ 1.0f,0.0f },{ 1.0f,1.0f },{ 0.0f,1.0f } };
 
 		for (int i = 0; i < 4; i++)
@@ -266,8 +264,9 @@ namespace Ellie {
 		s_data.stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
+	void Renderer2D::DrawQuad(const glm::mat4 transform, const Ref<Texture2D> texture)
 	{
+
 		if (s_data.QuadIndexCount >= s_data.MaxIndices)
 		{
 			FlushAndReset();
@@ -293,9 +292,6 @@ namespace Ellie {
 			s_data.TexSlotIndex++;
 		}
 
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
-			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
 		glm::vec2 texCoords[] = { {0.0f,0.0f},{ 1.0f,0.0f },{ 1.0f,1.0f },{ 0.0f,1.0f } };
 
 		for (int i = 0; i < 4; i++)
@@ -312,10 +308,39 @@ namespace Ellie {
 		s_data.stats.QuadCount++;
 	}
 
+	//
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0 }, size, rotationInRadians, color);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color)
+	{
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
+			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
+		
+		DrawQuad(transform, color);
+	}
+
+	//
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
+	{
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
+			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
+
+		DrawQuad(transform, texture);
+	}
+
 	void Renderer2D::DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
 	{
 		DrawRotatedQuad({ position.x, position.y, 0.0 }, size, rotationInRadians, texture);
 	}
+
+	//
 
 	Renderer2D::Statistics Renderer2D::GetStatistics()
 	{

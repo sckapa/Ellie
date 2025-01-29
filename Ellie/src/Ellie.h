@@ -22,6 +22,8 @@
 #include "Ellie/Renderer/Buffers.h"
 #include "Ellie/Renderer/Shader.h"
 #include "Ellie/Renderer/Texture.h"
+#include "Ellie/Scene/Components.h"
+#include "Ellie/Scene/Scene.h"
 #include "Ellie/Renderer/FrameBuffer.h"
 #include "Ellie/Renderer/VertexArray.h"
 

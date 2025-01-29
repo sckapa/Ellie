@@ -29,6 +29,12 @@ namespace Ellie {
 
 	void OpenGLFrameBuffer::Resize(uint32_t width, uint32_t height)
 	{
+		if (width == 0 || height == 0 || width > 8192 || height > 8192)
+		{
+			EE_CORE_WARN("Attempted to resize frame buffer to {0}, {1}", width, height);
+			return;
+		}
+
 		m_spec.width = width;
 		m_spec.height = height;
 

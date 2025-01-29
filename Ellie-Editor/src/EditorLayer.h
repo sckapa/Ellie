@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Ellie.h"
+
 namespace Ellie {
 
-	class EditorLayer : public Ellie::Layer
+	class EditorLayer : public Layer
 	{
 	public:
 		EditorLayer();
@@ -11,22 +13,28 @@ namespace Ellie {
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 
-		virtual void OnEvent(Ellie::Event& event) override;
-		virtual void OnUpdate(Ellie::Timestep ts) override;
+		virtual void OnEvent(Event& event) override;
+		virtual void OnUpdate(Timestep ts) override;
 
 		virtual void OnImGuiRender() override;
-
 
 	private:
 		bool isViewportFocused = false, isViewportHovered = false;
 
-		Ellie::OrthographicCameraController m_CameraController;
+		OrthographicCameraController m_CameraController;
 
-		Ellie::Ref<Ellie::Texture2D> m_Checker;
+		Ref<Texture2D> m_Checker;
 
-		Ellie::Ref<Ellie::FrameBuffer> m_FrameBuffer;
+		Ref<FrameBuffer> m_FrameBuffer;
 
 		glm::vec2 m_ViewportSize = { 0.0f,0.0f };
+
+		// Delete
+		glm::vec4 m_Color = { 0.0f,1.0f,0.0f,1.0f };
+		entt::entity m_Square;
+		//
+
+		Ref<Scene> m_ActiveScene;
 	};
 
 }

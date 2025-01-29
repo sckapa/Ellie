@@ -26,6 +26,13 @@ namespace Ellie {
         spec.width = 1280;
         spec.height = 720;
         m_FrameBuffer = FrameBuffer::Create(spec);
+
+        m_ActiveScene = std::make_shared<Scene>();
+
+        auto square = m_ActiveScene->CreateEntity();
+        m_ActiveScene->Reg().emplace<TransformComponent>(square);
+        m_ActiveScene->Reg().emplace<SpriteRendererComponent>(square, m_Color);
+        m_Square = square;
     }
 
     void EditorLayer::OnDetach()
@@ -54,9 +61,8 @@ namespace Ellie {
 
         Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-        Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f,10.0f }, m_Checker);
-        Renderer2D::DrawQuad({ 1.0f, 0.0f, 0.0f }, { 1.0f,1.0f }, { 0.8f,0.2f,0.3f,1.0f });
-        Renderer2D::DrawQuad({ -1.0f, 0.0f, 0.0f }, { 1.0f,1.0f }, { 0.2f,0.2f,0.8f,1.0f });
+        m_ActiveScene->Reg().get<SpriteRendererComponent>(m_Square).Color = m_Color;
+        m_ActiveScene->OnUpdate(ts);
 
         Renderer2D::EndScene();
 
@@ -65,6 +71,7 @@ namespace Ellie {
 
     void EditorLayer::OnImGuiRender()
     {
+        // For Docking
         auto stats = Renderer2D::GetStatistics();
 
         static bool dockspaceOpen = true;
@@ -122,6 +129,8 @@ namespace Ellie {
         // Stats window
         ImGui::Begin("Stats");
 
+        ImGui::ColorEdit4("HI murgon", glm::value_ptr(m_Color));
+
         ImGui::Text("Draw calls : %d", stats.GetDrawCount());
         ImGui::Text("Quad count : %d", stats.GetQuadCount());
 
@@ -136,7 +145,7 @@ namespace Ellie {
         Application::Get().GetImGuiLayer()->SetBlocked(!isViewportFocused || !isViewportHovered);
 
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
+        if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
         {
             m_FrameBuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
             m_ViewportSize = { viewportPanelSize.x,viewportPanelSize.y };
