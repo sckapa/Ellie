@@ -30,8 +30,8 @@ namespace Ellie {
         m_ActiveScene = std::make_shared<Scene>();
 
         auto square = m_ActiveScene->CreateEntity();
-        m_ActiveScene->Reg().emplace<TransformComponent>(square);
-        m_ActiveScene->Reg().emplace<SpriteRendererComponent>(square, m_Color);
+        square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f,0.0f,1.0f,1.0f });
+
         m_Square = square;
     }
 
@@ -61,7 +61,6 @@ namespace Ellie {
 
         Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-        m_ActiveScene->Reg().get<SpriteRendererComponent>(m_Square).Color = m_Color;
         m_ActiveScene->OnUpdate(ts);
 
         Renderer2D::EndScene();
@@ -129,10 +128,16 @@ namespace Ellie {
         // Stats window
         ImGui::Begin("Stats");
 
-        ImGui::ColorEdit4("HI murgon", glm::value_ptr(m_Color));
-
         ImGui::Text("Draw calls : %d", stats.GetDrawCount());
         ImGui::Text("Quad count : %d", stats.GetQuadCount());
+
+        auto& Color = m_Square.GetComponent<SpriteRendererComponent>().Color;
+        ImGui::ColorEdit4("HI murgon", glm::value_ptr(Color));
+        
+        ImGui::Separator();
+        auto& name = m_Square.GetComponent<TagComponent>().Tag;
+        ImGui::Text("%s", name.c_str());
+        ImGui::Separator();
 
         ImGui::End();
 

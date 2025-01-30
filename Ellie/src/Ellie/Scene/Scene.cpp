@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Ellie/Renderer/Renderer2D.h"
 #include "Components.h"
+#include "Entity.h"
 
 namespace Ellie {
 
@@ -13,9 +14,13 @@ namespace Ellie {
 	{
 	}
 
-	entt::entity Scene::CreateEntity()
+	Entity Scene::CreateEntity(std::string name)
 	{
-		return m_Registry.create();
+		Entity entity = { m_Registry.create(), this };
+		entity.AddComponent<TransformComponent>();
+		auto& tag = entity.AddComponent<TagComponent>();
+		tag.Tag = name.empty() ? "Entity" : name;
+		return entity;
 	}
 
 	void Scene::OnUpdate(Timestep ts)
