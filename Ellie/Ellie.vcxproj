@@ -146,6 +146,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ellie\Renderer\Camera.h" />
     <ClInclude Include="src\Ellie\Scene\Entity.h" />
     <ClInclude Include="src\Ellie.h" />
     <ClInclude Include="src\Ellie\Core\Application.h" />

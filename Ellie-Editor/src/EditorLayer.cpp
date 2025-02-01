@@ -32,7 +32,10 @@ namespace Ellie {
         auto square = m_ActiveScene->CreateEntity();
         square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f,0.0f,1.0f,1.0f });
 
-        m_Square = square;
+        m_SquareEntity = square;
+
+        m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
+        m_CameraEntity.AddComponent<CameraComponent>(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f));
     }
 
     void EditorLayer::OnDetach()
@@ -59,11 +62,7 @@ namespace Ellie {
         RenderCommands::Clear();
         RenderCommands::SetClearColor({ 0.1f,0.1f,0.1f,1.0f });
 
-        Renderer2D::BeginScene(m_CameraController.GetCamera());
-
         m_ActiveScene->OnUpdate(ts);
-
-        Renderer2D::EndScene();
 
         m_FrameBuffer->Unbind();
     }
@@ -131,12 +130,14 @@ namespace Ellie {
         ImGui::Text("Draw calls : %d", stats.GetDrawCount());
         ImGui::Text("Quad count : %d", stats.GetQuadCount());
 
-        auto& Color = m_Square.GetComponent<SpriteRendererComponent>().Color;
+        auto& Color = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
         ImGui::ColorEdit4("HI murgon", glm::value_ptr(Color));
         
         ImGui::Separator();
-        auto& name = m_Square.GetComponent<TagComponent>().Tag;
+        auto& name = m_CameraEntity.GetComponent<TagComponent>().Tag;
         ImGui::Text("%s", name.c_str());
+
+        ImGui::DragFloat3("Position", glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
         ImGui::Separator();
 
         ImGui::End();

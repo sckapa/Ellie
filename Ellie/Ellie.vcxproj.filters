@@ -1432,6 +1432,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Scene\Entity.h" />
+    <ClInclude Include="src\Ellie\Renderer\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Core\Application.cpp">

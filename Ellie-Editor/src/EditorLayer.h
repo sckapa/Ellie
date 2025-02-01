@@ -30,7 +30,8 @@ namespace Ellie {
 		glm::vec2 m_ViewportSize = { 0.0f,0.0f };
 
 		// Delete
-		Entity m_Square;
+		Entity m_SquareEntity;
+		Entity m_CameraEntity;
 		//
 
 		Ref<Scene> m_ActiveScene;

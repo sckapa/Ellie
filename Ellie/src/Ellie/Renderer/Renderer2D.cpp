@@ -1,11 +1,8 @@
 #include "eepch.h"
 #include "Renderer2D.h"
-
 #include "VertexArray.h"
 #include "Shader.h"
-
 #include <glm/gtc/matrix_transform.hpp>
-
 #include "RenderCommands.h"
 
 namespace Ellie {
@@ -110,6 +107,19 @@ namespace Ellie {
 
 	void Renderer2D::ShutDown()
 	{
+	}
+
+	void Renderer2D::BeginScene(const Camera& camera, glm::mat4 transform)
+	{
+		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
+
+		s_data.TextureShader->Bind();
+		s_data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+
+		s_data.QuadIndexCount = 0;
+		s_data.QuadVertexPtr = s_data.QuadVertexBase;
+
+		s_data.TexSlotIndex = 1;
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)

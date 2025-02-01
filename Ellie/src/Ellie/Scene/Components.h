@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include "Ellie/Renderer/Camera.h"
 
 namespace Ellie {
 
@@ -32,6 +33,16 @@ namespace Ellie {
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4 color) : Color(color) {};
+	};
+
+	struct CameraComponent
+	{
+		Ellie::Camera Camera;
+		bool Primary = true; // Change this
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+		CameraComponent(const glm::mat4 projection) : Camera(projection) {};
 	};
 
 }
