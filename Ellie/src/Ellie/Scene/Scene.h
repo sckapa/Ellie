@@ -16,6 +16,7 @@ namespace Ellie {
 		Entity CreateEntity(std::string name = std::string());
 		
 		void OnUpdate(Timestep ts);
+		void OnViewportResize(uint32_t width, uint32_t height);
 
 	private:
 		entt::registry m_Registry;

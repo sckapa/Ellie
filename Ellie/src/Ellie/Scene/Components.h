@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "Ellie/Renderer/Camera.h"
+#include "SceneCamera.h"
 
 namespace Ellie {
 
@@ -37,12 +38,12 @@ namespace Ellie {
 
 	struct CameraComponent
 	{
-		Ellie::Camera Camera;
+		SceneCamera Camera;
 		bool Primary = true; // Change this
+		bool FixedAspectRatio = false;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
-		CameraComponent(const glm::mat4 projection) : Camera(projection) {};
 	};
 
 }

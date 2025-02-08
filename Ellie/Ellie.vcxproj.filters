@@ -1433,6 +1433,7 @@
     </ClInclude>
     <ClInclude Include="src\Ellie\Scene\Entity.h" />
     <ClInclude Include="src\Ellie\Renderer\Camera.h" />
+    <ClInclude Include="src\Ellie\Scene\SceneCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Core\Application.cpp">
@@ -1526,5 +1527,6 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Scene\Entity.cpp" />
+    <ClCompile Include="src\Ellie\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>

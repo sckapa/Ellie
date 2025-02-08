@@ -179,6 +179,7 @@
     <ClInclude Include="src\Ellie\Renderer\VertexArray.h" />
     <ClInclude Include="src\Ellie\Scene\Components.h" />
     <ClInclude Include="src\Ellie\Scene\Scene.h" />
+    <ClInclude Include="src\Ellie\Scene\SceneCamera.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffers.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
@@ -626,6 +627,7 @@
     <ClCompile Include="src\Ellie\Renderer\Texture.cpp" />
     <ClCompile Include="src\Ellie\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Ellie\Scene\Scene.cpp" />
+    <ClCompile Include="src\Ellie\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />

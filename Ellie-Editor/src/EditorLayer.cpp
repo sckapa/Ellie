@@ -35,7 +35,7 @@ namespace Ellie {
         m_SquareEntity = square;
 
         m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
-        m_CameraEntity.AddComponent<CameraComponent>(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f));
+        m_CameraEntity.AddComponent<CameraComponent>();
     }
 
     void EditorLayer::OnDetach()
@@ -49,11 +49,20 @@ namespace Ellie {
 
     void EditorLayer::OnUpdate(Timestep ts)
     {
+        if (FrameBufferSpecification spec = m_FrameBuffer->GetFrameBufferSpec();
+            m_ViewportSize.x > 0 && m_ViewportSize.y > 0
+            (spec.width != m_ViewportSize.x || spec.height != m_ViewportSize.y))
+        {
+            m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+            m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+            m_ActiveScene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+        }
+
         if (isViewportFocused)
         {
             m_CameraController.OnUpdate(ts);
         }
-
+            
         // Renderer
         Renderer2D::ResetStats();
 
@@ -151,13 +160,7 @@ namespace Ellie {
         Application::Get().GetImGuiLayer()->SetBlocked(!isViewportFocused || !isViewportHovered);
 
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
-        {
-            m_FrameBuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
-            m_ViewportSize = { viewportPanelSize.x,viewportPanelSize.y };
-
-            m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
-        }
+        m_ViewportSize = { viewportPanelSize.x,viewportPanelSize.y };
 
         uint32_t texID = m_FrameBuffer->GetColorAttachmentRendererID();
         ImGui::Image((ImTextureID)(uintptr_t)texID, ImVec2{ m_ViewportSize.x,m_ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
