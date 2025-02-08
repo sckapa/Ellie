@@ -24,6 +24,7 @@
 #include "Ellie/Renderer/Texture.h"
 #include "Ellie/Scene/Components.h"
 #include "Ellie/Scene/Entity.h"
+#include "Ellie/Scene/ScriptableEntity.h"
 #include "Ellie/Scene/Scene.h"
 #include "Ellie/Renderer/FrameBuffer.h"
 #include "Ellie/Renderer/VertexArray.h"

@@ -1434,6 +1434,7 @@
     <ClInclude Include="src\Ellie\Scene\Entity.h" />
     <ClInclude Include="src\Ellie\Renderer\Camera.h" />
     <ClInclude Include="src\Ellie\Scene\SceneCamera.h" />
+    <ClInclude Include="src\Ellie\Scene\ScriptableEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Core\Application.cpp">

@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui.h"
+#include "Ellie/Scene/ScriptableEntity.h"
 
 namespace Ellie {
 
@@ -36,6 +37,41 @@ namespace Ellie {
 
         m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
         m_CameraEntity.AddComponent<CameraComponent>();
+
+        class CameraController : public ScriptableEntity
+        {
+        public:
+            void OnCreate()
+            {
+            }
+
+            void OnDestroy()
+            {
+            }
+
+            void OnUpdate(Timestep ts)
+            {
+                auto& tr = GetComponent<TransformComponent>().Transform;
+                if (Input::IsKeyPressed(EE_KEY_A))
+                {
+                    tr[3][0] -= 5.0f * ts;
+                }
+                if (Input::IsKeyPressed(EE_KEY_D))
+                {
+                    tr[3][0] += 5.0f * ts;
+                }
+                if (Input::IsKeyPressed(EE_KEY_W))
+                {
+                    tr[3][1] += 5.0f * ts;
+                }
+                if (Input::IsKeyPressed(EE_KEY_S))
+                {
+                    tr[3][1] -= 5.0f * ts;
+                }
+            }
+        };
+
+        m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
     }
 
     void EditorLayer::OnDetach()
