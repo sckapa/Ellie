@@ -72,6 +72,8 @@ namespace Ellie {
         };
 
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
 
     void EditorLayer::OnDetach()
@@ -93,6 +95,7 @@ namespace Ellie {
             m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
             m_ActiveScene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
         }
+
 
         if (isViewportFocused)
         {
@@ -176,7 +179,7 @@ namespace Ellie {
         ImGui::Text("Quad count : %d", stats.GetQuadCount());
 
         auto& Color = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
-        ImGui::ColorEdit4("HI murgon", glm::value_ptr(Color));
+        ImGui::ColorEdit4("Color Editor", glm::value_ptr(Color));
         
         ImGui::Separator();
         auto& name = m_CameraEntity.GetComponent<TagComponent>().Tag;
@@ -186,6 +189,9 @@ namespace Ellie {
         ImGui::Separator();
 
         ImGui::End();
+
+        // Hierarchy Panel
+        m_SceneHierarchyPanel.OnImGuiRender();
 
         // Viewport
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });

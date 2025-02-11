@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Ellie.h"
+#include "Panels/SceneHierarchyPanel.h"
 
 namespace Ellie {
 
@@ -35,6 +36,8 @@ namespace Ellie {
 		//
 
 		Ref<Scene> m_ActiveScene;
+
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 	};
 
 }
