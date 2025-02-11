@@ -146,8 +146,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Ellie\Renderer\Camera.h" />
-    <ClInclude Include="src\Ellie\Scene\Entity.h" />
     <ClInclude Include="src\Ellie.h" />
     <ClInclude Include="src\Ellie\Core\Application.h" />
     <ClInclude Include="src\Ellie\Core\Core.h" />
@@ -166,6 +164,7 @@
     <ClInclude Include="src\Ellie\Events\MouseEvent.h" />
     <ClInclude Include="src\Ellie\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Ellie\Renderer\Buffers.h" />
+    <ClInclude Include="src\Ellie\Renderer\Camera.h" />
     <ClInclude Include="src\Ellie\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Ellie\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Ellie\Renderer\OrthographicCamera.h" />
@@ -178,6 +177,7 @@
     <ClInclude Include="src\Ellie\Renderer\Texture.h" />
     <ClInclude Include="src\Ellie\Renderer\VertexArray.h" />
     <ClInclude Include="src\Ellie\Scene\Components.h" />
+    <ClInclude Include="src\Ellie\Scene\Entity.h" />
     <ClInclude Include="src\Ellie\Scene\Scene.h" />
     <ClInclude Include="src\Ellie\Scene\SceneCamera.h" />
     <ClInclude Include="src\Ellie\Scene\ScriptableEntity.h" />
@@ -609,7 +609,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ellie\Scene\Entity.cpp" />
     <ClCompile Include="src\Ellie\Core\Application.cpp" />
     <ClCompile Include="src\Ellie\Core\Layer.cpp" />
     <ClCompile Include="src\Ellie\Core\LayerStack.cpp" />
@@ -627,6 +626,7 @@
     <ClCompile Include="src\Ellie\Renderer\Shader.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Texture.cpp" />
     <ClCompile Include="src\Ellie\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Ellie\Scene\Entity.cpp" />
     <ClCompile Include="src\Ellie\Scene\Scene.cpp" />
     <ClCompile Include="src\Ellie\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp" />

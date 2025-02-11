@@ -114,6 +114,9 @@
     <ClInclude Include="src\Ellie\Renderer\Buffers.h">
       <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Renderer\Camera.h">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\FrameBuffer.h">
       <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
@@ -150,7 +153,16 @@
     <ClInclude Include="src\Ellie\Scene\Components.h">
       <Filter>src\Ellie\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Scene\Entity.h">
+      <Filter>src\Ellie\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Scene\Scene.h">
+      <Filter>src\Ellie\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Scene\SceneCamera.h">
+      <Filter>src\Ellie\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Scene\ScriptableEntity.h">
       <Filter>src\Ellie\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffers.h">
@@ -1431,10 +1443,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\Scene\Entity.h" />
-    <ClInclude Include="src\Ellie\Renderer\Camera.h" />
-    <ClInclude Include="src\Ellie\Scene\SceneCamera.h" />
-    <ClInclude Include="src\Ellie\Scene\ScriptableEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Core\Application.cpp">
@@ -1488,7 +1496,13 @@
     <ClCompile Include="src\Ellie\Renderer\VertexArray.cpp">
       <Filter>src\Ellie\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ellie\Scene\Entity.cpp">
+      <Filter>src\Ellie\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Ellie\Scene\Scene.cpp">
+      <Filter>src\Ellie\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Scene\SceneCamera.cpp">
       <Filter>src\Ellie\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp">
@@ -1527,7 +1541,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ellie\Scene\Entity.cpp" />
-    <ClCompile Include="src\Ellie\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>
