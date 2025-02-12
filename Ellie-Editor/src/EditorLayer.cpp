@@ -30,7 +30,7 @@ namespace Ellie {
 
         m_ActiveScene = std::make_shared<Scene>();
 
-        auto square = m_ActiveScene->CreateEntity();
+        auto square = m_ActiveScene->CreateEntity("Blue Square");
         square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f,0.0f,1.0f,1.0f });
 
         m_SquareEntity = square;

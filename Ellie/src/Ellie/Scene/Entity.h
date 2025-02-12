@@ -11,6 +11,11 @@ namespace Ellie {
 		Entity() = default;
 		Entity(entt::entity entity, Scene* scene);
 
+		bool IsValid()
+		{
+			return m_EntityHandle != entt::null;
+		}
+
 		template<typename T>
 		T& GetComponent()
 		{
@@ -38,8 +43,20 @@ namespace Ellie {
 			return m_Scene->m_Registry.all_of<T>(m_EntityHandle);
 		}
 
+		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
+
+		bool operator==(const Entity& entity) const 
+		{ 
+			return m_EntityHandle == entity.m_EntityHandle && m_Scene == entity.m_Scene;
+		}
+
+		bool operator!=(const Entity& entity)
+		{
+			return !(*this == entity);
+		}
+
 	private:
-		entt::entity m_EntityHandle = entt::null;
+		entt::entity m_EntityHandle{ entt::null };
 		Scene* m_Scene = nullptr;
 	};
 
