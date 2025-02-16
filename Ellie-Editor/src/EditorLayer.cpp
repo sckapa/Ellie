@@ -51,7 +51,7 @@ namespace Ellie {
 
             void OnUpdate(Timestep ts)
             {
-                auto& tr = GetComponent<TransformComponent>().Transform;
+                auto& tr = GetComponent<TransformComponent>().GetTransform();
                 if (Input::IsKeyPressed(EE_KEY_A))
                 {
                     tr[3][0] -= 5.0f * ts;
@@ -177,16 +177,6 @@ namespace Ellie {
 
         ImGui::Text("Draw calls : %d", stats.GetDrawCount());
         ImGui::Text("Quad count : %d", stats.GetQuadCount());
-
-        auto& Color = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
-        ImGui::ColorEdit4("Color Editor", glm::value_ptr(Color));
-        
-        ImGui::Separator();
-        auto& name = m_CameraEntity.GetComponent<TagComponent>().Tag;
-        ImGui::Text("%s", name.c_str());
-
-        ImGui::DragFloat3("Position", glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
-        ImGui::Separator();
 
         ImGui::End();
 
