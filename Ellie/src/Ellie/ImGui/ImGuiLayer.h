@@ -20,6 +20,8 @@ namespace Ellie{
 
 		void SetBlocked(bool blocked) { m_isBlocked = blocked; }
 
+		void SetDarkThemeColors();
+
 	private:
 		bool m_isBlocked = true;
 	};

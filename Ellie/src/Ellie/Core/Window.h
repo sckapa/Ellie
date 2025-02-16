@@ -12,7 +12,7 @@ namespace Ellie {
 		uint32_t Height;
 		uint32_t Width;
 
-		WindowProps(const std::string title = "Ellie Engine", uint32_t width = 1280, uint32_t height = 720)
+		WindowProps(const std::string title = "Ellie Engine", uint32_t width = 1600, uint32_t height = 900)
 			: Title(title), Height(height), Width(width) { }
 	};
 
