@@ -162,6 +162,9 @@
     <ClInclude Include="src\Ellie\Scene\SceneCamera.h">
       <Filter>src\Ellie\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Scene\SceneSerializer.h">
+      <Filter>src\Ellie\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Scene\ScriptableEntity.h">
       <Filter>src\Ellie\Scene</Filter>
     </ClInclude>
@@ -1503,6 +1506,9 @@
       <Filter>src\Ellie\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Scene\SceneCamera.cpp">
+      <Filter>src\Ellie\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Scene\SceneSerializer.cpp">
       <Filter>src\Ellie\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp">

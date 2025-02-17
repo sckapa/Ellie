@@ -18,10 +18,14 @@ workspace "Ellie"
  IncludeDir["glm"] = "Ellie/vendor/glm"
  IncludeDir["stb_image"] = "Ellie/vendor/stb_image"
  IncludeDir["entt"] = "Ellie/vendor/entt/include"
-
- include "Ellie/vendor/GLFW"
- include "Ellie/vendor/Glad"
- include "Ellie/vendor/imgui"
+ IncludeDir["yaml_cpp"] = "Ellie/vendor/yaml-cpp/include"
+ 
+ group "Dependencies"
+  include "Ellie/vendor/GLFW"
+  include "Ellie/vendor/Glad"
+  include "Ellie/vendor/imgui"
+  include "Ellie/vendor/yaml-cpp"
+ group ""
 
 project "Ellie"
  location "Ellie"
@@ -49,7 +53,8 @@ project "Ellie"
 
  defines
  {
-  "_CRT_SECURE_NO_WARNINGS"
+  "_CRT_SECURE_NO_WARNINGS",
+   "YAML_CPP_STATIC_DEFINE"
  }
 
  includedirs
@@ -61,6 +66,7 @@ project "Ellie"
   "%{IncludeDir.ImGui}",
   "%{IncludeDir.stb_image}",
   "%{IncludeDir.glm}",
+  "%{IncludeDir.yaml_cpp}",
   "%{IncludeDir.entt}"
  }
 
@@ -69,6 +75,7 @@ project "Ellie"
   "GLFW",
   "Glad",
   "ImGui",
+  "yaml-cpp",
   "opengl32.lib"
  }
 
@@ -79,7 +86,8 @@ project "Ellie"
   {
    "EE_PLATFORM_WINDOWS",
    "EE_BUILD_DLL",
-   "GLFW_INCLUDE_NONE"
+   "GLFW_INCLUDE_NONE",
+   "YAML_CPP_STATIC_DEFINE"
   }
 
  filter "configurations:Debug"
@@ -135,7 +143,8 @@ project "Sandbox"
 
   defines
   {
-   "EE_PLATFORM_WINDOWS"
+   "EE_PLATFORM_WINDOWS",
+   "YAML_CPP_STATIC_DEFINE"
   }
 
  filter "configurations:Debug"
@@ -192,7 +201,8 @@ project "Ellie-Editor"
 
   defines
   {
-   "EE_PLATFORM_WINDOWS"
+   "EE_PLATFORM_WINDOWS",
+   "YAML_CPP_STATIC_DEFINE"
   }
 
  filter "configurations:Debug"
