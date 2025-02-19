@@ -2,28 +2,28 @@ Scene: Untitled
 Entities:
   - Entity: 98218742
     TagComponent:
+      Tag: Blue Square
+    TransformComponent:
+      Translation: [0, 0.1, -2.5]
+      Rotation: [0.7347836, 0.52883476, -0.4415683]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0, 0, 1, 1]
+  - Entity: 98218742
+    TagComponent:
       Tag: Camera Entity
     TransformComponent:
-      Translation: [0, 0, 0]
+      Translation: [0, 0, 4]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
       Camera:
-        ProjectionType: 1
-        PerspectiveFOV: 0
-        PerspectiveNear: 0
+        ProjectionType: 0
+        PerspectiveFOV: 0.5235988
+        PerspectiveNear: 0.05
         PerspectiveFar: 1000
         OrthoGraphicSize: 10
         OrthographicNear: -1
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 98218742
-    TagComponent:
-      Tag: Blue Square
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0, 0, 1, 1]

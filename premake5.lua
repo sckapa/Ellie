@@ -19,6 +19,7 @@ workspace "Ellie"
  IncludeDir["stb_image"] = "Ellie/vendor/stb_image"
  IncludeDir["entt"] = "Ellie/vendor/entt/include"
  IncludeDir["yaml_cpp"] = "Ellie/vendor/yaml-cpp/include"
+ IncludeDir["ImGuizmo"] = "Ellie/vendor/ImGuizmo"
  
  group "Dependencies"
   include "Ellie/vendor/GLFW"
@@ -48,7 +49,9 @@ project "Ellie"
   "%{prj.name}/vendor/stb_image/**.cpp",
   "%{prj.name}/vendor/glm/glm/**.hpp",
   "%{prj.name}/vendor/glm/glm/**.inl",
-  "%{prj.name}/vendor/imgui/imgui_tables.cpp"
+  "%{prj.name}/vendor/imgui/imgui_tables.cpp",
+  "%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
+  "%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp"
  }
 
  defines
@@ -67,7 +70,8 @@ project "Ellie"
   "%{IncludeDir.stb_image}",
   "%{IncludeDir.glm}",
   "%{IncludeDir.yaml_cpp}",
-  "%{IncludeDir.entt}"
+  "%{IncludeDir.entt}",
+  "%{IncludeDir.ImGuizmo}"
  }
 
  links
@@ -78,6 +82,12 @@ project "Ellie"
   "yaml-cpp",
   "opengl32.lib"
  }
+
+ filter "files:Ellie/vendor/ImGuizmo/**.cpp"
+ flags {"NoPCH"}
+
+ filter "files:Ellie/vendor/ImGui/**.cpp"
+ flags {"NoPCH"}
 
  filter "system:windows"
   systemversion "latest"
@@ -187,7 +197,8 @@ project "Ellie-Editor"
   "Ellie/src",
   "%{IncludeDir.ImGui}",
   "%{IncludeDir.glm}",
-  "%{IncludeDir.entt}"
+  "%{IncludeDir.entt}",
+  "%{IncludeDir.ImGuizmo}"
  }
 
  links

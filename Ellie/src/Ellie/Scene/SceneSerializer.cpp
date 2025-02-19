@@ -119,12 +119,12 @@ namespace Ellie {
 			out << YAML::Key << "Camera" << YAML::Value;
 			out << YAML::BeginMap;
 			out << YAML::Key << "ProjectionType" << YAML::Value << (int)camera.GetProjectionType();
-			out << YAML::Key << "PerspectiveFOV" << YAML::Value << (int)camera.GetPerspectiveVerticalFOV();
-			out << YAML::Key << "PerspectiveNear" << YAML::Value << (int)camera.GetPerspectiveNearClip();
-			out << YAML::Key << "PerspectiveFar" << YAML::Value << (int)camera.GetPerspectiveFarClip();
-			out << YAML::Key << "OrthoGraphicSize" << YAML::Value << (int)camera.GetOrthographicSize();
-			out << YAML::Key << "OrthographicNear" << YAML::Value << (int)camera.GetOrthoNearClip();
-			out << YAML::Key << "OrthographicFar" << YAML::Value << (int)camera.GetOrthoFarClip();
+			out << YAML::Key << "PerspectiveFOV" << YAML::Value << camera.GetPerspectiveVerticalFOV();
+			out << YAML::Key << "PerspectiveNear" << YAML::Value << camera.GetPerspectiveNearClip();
+			out << YAML::Key << "PerspectiveFar" << YAML::Value << camera.GetPerspectiveFarClip();
+			out << YAML::Key << "OrthoGraphicSize" << YAML::Value << camera.GetOrthographicSize();
+			out << YAML::Key << "OrthographicNear" << YAML::Value << camera.GetOrthoNearClip();
+			out << YAML::Key << "OrthographicFar" << YAML::Value << camera.GetOrthoFarClip();
 			out << YAML::EndMap;
 				
 			out << YAML::Key << "Primary" << YAML::Value << cameraComponent.Primary;

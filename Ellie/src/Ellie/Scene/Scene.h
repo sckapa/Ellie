@@ -22,6 +22,8 @@ namespace Ellie {
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
 
+		Entity GetPrimaryCameraEntity();
+
 	private:
 		entt::registry m_Registry;
 

@@ -13,3 +13,6 @@
 [submodule "Ellie/vendor/yaml-cpp"]
 	path = Ellie/vendor/yaml-cpp
 	url = https://github.com/sckapa/yaml-cpp
+[submodule "Ellie/vendor/ImGuizmo"]
+	path = Ellie/vendor/ImGuizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo

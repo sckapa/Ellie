@@ -10,7 +10,16 @@
 #include "Ellie/Scene/ScriptableEntity.h"
 #include "Ellie/Scene/SceneSerializer.h"
 
+#include "Ellie/Utils/PlatformUtils.h"
+#include "ImGuizmo.h"
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/matrix_decompose.hpp"
+#include <glm/gtc/quaternion.hpp>
+
 namespace Ellie {
+
+    ImGuizmo::OPERATION m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
 
     EditorLayer::EditorLayer() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f)
     {
@@ -78,18 +87,10 @@ namespace Ellie {
 
 #endif
         m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-        SceneSerializer serializer(m_ActiveScene);
-        serializer.Deserialize("assets/scenes/Example.ellie");
     }
 
     void EditorLayer::OnDetach()
     {
-    }
-
-    void EditorLayer::OnEvent(Event& event)
-    {
-        m_CameraController.OnEvent(event);
     }
 
     void EditorLayer::OnUpdate(Timestep ts)
@@ -176,6 +177,21 @@ namespace Ellie {
         {
             if (ImGui::BeginMenu("File"))
             {
+                if (ImGui::MenuItem("New", "Ctrl+N"))
+                {
+                    NewScene();
+                }
+
+                if (ImGui::MenuItem("Open...", "Ctrl+O"))
+                {
+                    OpenScene();
+                }
+
+                if (ImGui::MenuItem("SaveAs...", "Crtl+Shift+S"))
+                {
+                    SaveSceneAs();
+                }
+
                 if (ImGui::MenuItem("Exit")) { Application::Get().Close(); }
                 ImGui::EndMenu();
             }
@@ -200,7 +216,7 @@ namespace Ellie {
 
         isViewportFocused = ImGui::IsWindowFocused();
         isViewportHovered = ImGui::IsWindowHovered();
-        Application::Get().GetImGuiLayer()->SetBlocked(!isViewportFocused || !isViewportHovered);
+        Application::Get().GetImGuiLayer()->SetBlocked(!isViewportFocused && !isViewportHovered);
 
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         m_ViewportSize = { viewportPanelSize.x,viewportPanelSize.y };
@@ -208,9 +224,153 @@ namespace Ellie {
         uint32_t texID = m_FrameBuffer->GetColorAttachmentRendererID();
         ImGui::Image((ImTextureID)(uintptr_t)texID, ImVec2{ m_ViewportSize.x,m_ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
 
+        // Gizmo
+        Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+        if (selectedEntity.IsValid() && m_GizmoType != -1)
+        {
+            ImGuizmo::SetOrthographic(false);
+            ImGuizmo::SetDrawlist();
+
+            float width = (float)ImGui::GetWindowWidth();
+            float height = (float)ImGui::GetWindowHeight();
+            ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, width, height);
+
+            auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+            glm::mat4 camView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+            const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+            const glm::mat4& cameraProjection = camera.GetProjection();
+
+            auto& tc = selectedEntity.GetComponent<TransformComponent>();
+            glm::mat4 transform = tc.GetTransform();
+
+            bool snap = Input::IsKeyPressed(EE_KEY_LEFT_CONTROL);
+            float snapValue = 0.5f;
+            if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+            {
+                snapValue = 45.0f;
+            }
+            float snapValues[3] = { snapValue,snapValue,snapValue };
+
+            ImGuizmo::Manipulate(glm::value_ptr(camView), glm::value_ptr(cameraProjection),
+                m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap ? snapValues : nullptr);
+
+            if (ImGuizmo::IsUsing())
+            {
+                glm::vec3 outTranslation, outScale, skew;
+                glm::quat outRotation;
+                glm::vec4 perspective;
+
+                glm::decompose(transform, outScale, outRotation, outTranslation, skew, perspective);
+
+                tc.Translation = outTranslation;
+                tc.Rotation = glm::eulerAngles(outRotation);
+                tc.Scale = outScale;
+            }
+        }
+
         ImGui::End();
         ImGui::PopStyleVar();
 
         ImGui::End();
+    }
+
+    void EditorLayer::OnEvent(Event& event)
+    {
+        m_CameraController.OnEvent(event);
+
+        EventDispatcher dispatcher(event);
+        dispatcher.Dispatch<KeyPressedEvent>(EE_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+    }
+
+    bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+    {
+        if (e.GetRepeatCount() > 0)
+        {
+            return false;
+        }
+
+        bool control = Input::IsKeyPressed(EE_KEY_LEFT_CONTROL) || Input::IsKeyPressed(EE_KEY_RIGHT_CONTROL);
+        bool shift = Input::IsKeyPressed(EE_KEY_LEFT_SHIFT) || Input::IsKeyPressed(EE_KEY_RIGHT_SHIFT);
+        switch (e.GetKeyCode())
+        {
+            case EE_KEY_S:
+            {
+                if (control && shift)
+                {
+                    SaveSceneAs();
+                }
+                break;
+            }
+            case EE_KEY_O:
+            {
+                if (control)
+                {
+                    OpenScene();
+                }
+                break;
+            }
+            case EE_KEY_N:
+            {
+                if (control)
+                {
+                    NewScene();
+                }
+                break;
+            }
+
+            // Gizmo
+            case EE_KEY_Q:
+            {
+                m_GizmoType = ImGuizmo::OPERATION::UNIVERSAL;
+                break;
+            }
+            case EE_KEY_W:
+            {
+                m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+                break;
+            }
+            case EE_KEY_E:
+            {
+                m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+                break;
+            }
+            case EE_KEY_R:
+            {
+                m_GizmoType = ImGuizmo::OPERATION::SCALE;
+                break;
+            }
+        }
+    }
+
+    void EditorLayer::SaveSceneAs()
+    {
+        std::string filepath = FileDialogs::SaveFile("Ellie Scene (*.ellie)\0*.ellie\0");
+        if (!filepath.empty())
+        {
+            SceneSerializer serializer(m_ActiveScene);
+            serializer.Serialize(filepath);
+        }
+    }
+    
+    void EditorLayer::NewScene()
+    {
+        m_ActiveScene = std::make_shared<Scene>();
+        m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+    }
+    
+    void EditorLayer::OpenScene()
+    {
+        std::string filepath = FileDialogs::OpenFile("Ellie Scene (*.ellie)\0*.ellie\0");
+        if (!filepath.empty())
+        {
+            m_ActiveScene = std::make_shared<Scene>();
+            m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+            m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+            SceneSerializer serializer(m_ActiveScene);
+            serializer.Deserialize(filepath);
+        }
     }
 }

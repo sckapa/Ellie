@@ -2,6 +2,7 @@
 
 #include "Ellie.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Ellie/Events/KeyEvent.h"
 
 namespace Ellie {
 
@@ -20,6 +21,11 @@ namespace Ellie {
 		virtual void OnImGuiRender() override;
 
 	private:
+		bool OnKeyPressed(KeyPressedEvent& e);
+		void SaveSceneAs();
+		void NewScene();
+		void OpenScene();
+
 		bool isViewportFocused = false, isViewportHovered = false;
 
 		OrthographicCameraController m_CameraController;
