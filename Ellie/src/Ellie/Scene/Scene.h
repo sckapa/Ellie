@@ -2,6 +2,7 @@
 
 #include <entt.hpp>
 #include "Ellie/Core/Timestep.h"
+#include "Ellie/Renderer/EditorCamera.h"
 
 namespace Ellie {
 
@@ -16,7 +17,9 @@ namespace Ellie {
 		Entity CreateEntity(std::string name = std::string());
 		void DestroyEntity(Entity entity);
 		
-		void OnUpdate(Timestep ts);
+		void OnUpdateRuntime(Timestep ts);
+		void OnUpdateEditor(Timestep ts, EditorCamera& editorCam);
+
 		void OnViewportResize(uint32_t width, uint32_t height);
 
 		template<typename T>

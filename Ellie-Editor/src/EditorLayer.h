@@ -3,6 +3,7 @@
 #include "Ellie.h"
 #include "Panels/SceneHierarchyPanel.h"
 #include "Ellie/Events/KeyEvent.h"
+#include "Ellie/Renderer/EditorCamera.h"
 
 namespace Ellie {
 
@@ -29,6 +30,8 @@ namespace Ellie {
 		bool isViewportFocused = false, isViewportHovered = false;
 
 		OrthographicCameraController m_CameraController;
+
+		EditorCamera m_EditorCamera;
 
 		Ref<Texture2D> m_Checker;
 

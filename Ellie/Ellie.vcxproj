@@ -146,6 +146,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ellie\Renderer\EditorCamera.h" />
     <ClInclude Include="src\Ellie.h" />
     <ClInclude Include="src\Ellie\Core\Application.h" />
     <ClInclude Include="src\Ellie\Core\Core.h" />
@@ -612,6 +613,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ellie\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\Ellie\Core\Application.cpp" />
     <ClCompile Include="src\Ellie\Core\Layer.cpp" />
     <ClCompile Include="src\Ellie\Core\LayerStack.cpp" />

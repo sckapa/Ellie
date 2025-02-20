@@ -40,6 +40,8 @@ namespace Ellie {
 
         m_ActiveScene = std::make_shared<Scene>();
 
+        m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+
 #if 0
 
         auto square = m_ActiveScene->CreateEntity("Blue Square");
@@ -101,6 +103,7 @@ namespace Ellie {
         {
             m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
             m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+            m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
             m_ActiveScene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
         }
 
@@ -108,6 +111,7 @@ namespace Ellie {
         if (isViewportFocused)
         {
             m_CameraController.OnUpdate(ts);
+            m_EditorCamera.OnUpdate(ts);
         }
             
         // Renderer
@@ -118,7 +122,7 @@ namespace Ellie {
         RenderCommands::Clear();
         RenderCommands::SetClearColor({ 0.1f,0.1f,0.1f,1.0f });
 
-        m_ActiveScene->OnUpdate(ts);
+        m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 
         m_FrameBuffer->Unbind();
     }
@@ -235,11 +239,17 @@ namespace Ellie {
             float height = (float)ImGui::GetWindowHeight();
             ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, width, height);
 
-            auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+            // Runtime Camera
+            /*auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
             glm::mat4 camView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
 
             const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-            const glm::mat4& cameraProjection = camera.GetProjection();
+            const glm::mat4& cameraProjection = camera.GetProjection();*/
+
+            // Editor Camera
+            glm::mat4 camView = m_EditorCamera.GetViewMatrix();
+            const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
+
 
             auto& tc = selectedEntity.GetComponent<TransformComponent>();
             glm::mat4 transform = tc.GetTransform();
@@ -278,6 +288,7 @@ namespace Ellie {
     void EditorLayer::OnEvent(Event& event)
     {
         m_CameraController.OnEvent(event);
+        m_EditorCamera.OnEvent(event);
 
         EventDispatcher dispatcher(event);
         dispatcher.Dispatch<KeyPressedEvent>(EE_BIND_EVENT_FN(EditorLayer::OnKeyPressed));

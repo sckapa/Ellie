@@ -3,6 +3,7 @@
 #include "OrthographicCamera.h"
 #include "Texture.h"
 #include "Ellie/Renderer/Camera.h"
+#include "Ellie/Renderer/EditorCamera.h"
 
 namespace Ellie {
 
@@ -14,6 +15,7 @@ namespace Ellie {
 
 		static void BeginScene(const Camera& camera, glm::mat4 transform);
 		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const EditorCamera& editorCamera);
 		static void EndScene();
 
 		static void Flush();

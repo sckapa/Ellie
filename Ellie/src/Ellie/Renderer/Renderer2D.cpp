@@ -133,6 +133,19 @@ namespace Ellie {
 		s_data.TexSlotIndex = 1;
 	}
 
+	void Renderer2D::BeginScene(const EditorCamera& editorCamera)
+	{
+		glm::mat4 viewProj = editorCamera.GetViewProjection();
+
+		s_data.TextureShader->Bind();
+		s_data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+
+		s_data.QuadIndexCount = 0;
+		s_data.QuadVertexPtr = s_data.QuadVertexBase;
+
+		s_data.TexSlotIndex = 1;
+	}
+
 	void Renderer2D::EndScene()
 	{
 		uint32_t dataSize = (uint8_t*)s_data.QuadVertexPtr - (uint8_t*)s_data.QuadVertexBase;
