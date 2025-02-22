@@ -23,6 +23,7 @@ namespace Ellie {
 
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 		void SaveSceneAs();
 		void NewScene();
 		void OpenScene();
@@ -38,6 +39,8 @@ namespace Ellie {
 		Ref<FrameBuffer> m_FrameBuffer;
 
 		glm::vec2 m_ViewportSize = { 0.0f,0.0f };
+		glm::vec2 m_ViewportBounds[2];
+		Entity m_SelectedEntity = Entity();
 
 		// Delete
 		Entity m_SquareEntity;

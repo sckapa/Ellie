@@ -82,11 +82,11 @@ namespace Ellie {
 	{
 	}
 
-	static void SerializeEntity(YAML::Emitter& out, Entity entity)
+	static void SerializeEntity(YAML::Emitter& out, Entity entity, int id)
 	{
 		out << YAML::BeginMap;
 		out << YAML::Key << "Entity";
-		out << YAML::Value << "98218742";
+		out << YAML::Value << id;
 
 		if (entity.HasComponent<TagComponent>())
 		{
@@ -154,7 +154,7 @@ namespace Ellie {
 		for (const auto [ent, ref] : m_Scene->m_Registry.storage<TagComponent>().each())
 		{
 			Entity entity{ ent,m_Scene.get() };
-			SerializeEntity(out, entity);
+			SerializeEntity(out, entity, (int)ent);
 		}
 
 		out << YAML::EndSeq;

@@ -1,15 +1,6 @@
 Scene: Untitled
 Entities:
-  - Entity: 98218742
-    TagComponent:
-      Tag: Blue Square
-    TransformComponent:
-      Translation: [0, 0.1, -2.5]
-      Rotation: [0.7347836, 0.52883476, -0.4415683]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0, 0, 1, 1]
-  - Entity: 98218742
+  - Entity: 1
     TagComponent:
       Tag: Camera Entity
     TransformComponent:
@@ -27,3 +18,12 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
+  - Entity: 0
+    TagComponent:
+      Tag: Blue Square
+    TransformComponent:
+      Translation: [0, 0.1, -2.5]
+      Rotation: [0.7347836, 0.52883476, -0.4415683]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0, 0, 1, 1]

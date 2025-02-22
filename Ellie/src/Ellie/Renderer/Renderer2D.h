@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Ellie/Renderer/Camera.h"
 #include "Ellie/Renderer/EditorCamera.h"
+#include "Ellie/Scene/Components.h"
 
 namespace Ellie {
 
@@ -25,13 +26,15 @@ namespace Ellie {
 		static void DrawQuad(const glm::vec3 position, const glm::vec2 size, const Ref<Texture2D> texture);
 		static void DrawQuad(const glm::vec2 position, const glm::vec2 size, const Ref<Texture2D> texture);
 
-		static void DrawQuad(const glm::mat4 transform, const glm::vec4 color);
-		static void DrawQuad(const glm::mat4 transform, const Ref<Texture2D> texture);
+		static void DrawQuad(const glm::mat4 transform, const glm::vec4 color, int entityID = -1);
+		static void DrawQuad(const glm::mat4 transform, const Ref<Texture2D> texture, int entityID = -1);
 
 		static void DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color);
 		static void DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const glm::vec4 color);
 		static void DrawRotatedQuad(const glm::vec3 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture);
 		static void DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture);
+
+		static void DrawSprite(const glm::mat4 transform, SpriteRendererComponent& src, int entityID);
 
 		struct Statistics
 		{

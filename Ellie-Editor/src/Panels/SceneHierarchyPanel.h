@@ -17,6 +17,7 @@ namespace Ellie {
 		void OnImGuiRender();
 
 		Entity GetSelectedEntity() { return m_SelectedContext; }
+		void SetSelectedEntity(Entity entity) { m_SelectedContext = entity; }
 
 	private:
 		void DrawEntityNode(Entity entity);

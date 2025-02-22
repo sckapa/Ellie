@@ -34,6 +34,7 @@ namespace Ellie {
         m_Checker = Texture2D::Create("assets/textures/abc.png");
 
         FrameBufferSpecification spec;
+        spec.Attachments = { FrameBufferTextureFormat::RGBA8,FrameBufferTextureFormat::RED_INTEGER, FrameBufferTextureFormat::Depth };
         spec.width = 1280;
         spec.height = 720;
         m_FrameBuffer = FrameBuffer::Create(spec);
@@ -119,10 +120,29 @@ namespace Ellie {
 
         m_FrameBuffer->Bind();
 
-        RenderCommands::Clear();
         RenderCommands::SetClearColor({ 0.1f,0.1f,0.1f,1.0f });
+        RenderCommands::Clear();
+
+        // Clear our entity ID attachment to -1
+        m_FrameBuffer->ClearAttachment(1, -1);
 
         m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+
+        auto [mx, my] = ImGui::GetMousePos();
+        mx -= m_ViewportBounds[0].x;
+        my -= m_ViewportBounds[0].y;
+
+        glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+        my = viewportSize.y - my;
+
+        int mouseX = (int)mx;
+        int mouseY = (int)my;
+
+        if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+        {
+            int pixelData = m_FrameBuffer->ReadPixel(1, mouseX, mouseY);
+            m_SelectedEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
+        }
 
         m_FrameBuffer->Unbind();
     }
@@ -218,6 +238,12 @@ namespace Ellie {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
         ImGui::Begin("Viewport");
 
+        auto viewposrtMinRegion = ImGui::GetWindowContentRegionMin();
+        auto viewposrtMaxRegion = ImGui::GetWindowContentRegionMax();
+        auto viewportOffset = ImGui::GetWindowPos();
+        m_ViewportBounds[0] = { viewposrtMinRegion.x + viewportOffset.x,viewposrtMinRegion.y + viewportOffset.y };
+        m_ViewportBounds[1] = { viewposrtMaxRegion.x + viewportOffset.x,viewposrtMaxRegion.y + viewportOffset.y };
+
         isViewportFocused = ImGui::IsWindowFocused();
         isViewportHovered = ImGui::IsWindowHovered();
         Application::Get().GetImGuiLayer()->SetBlocked(!isViewportFocused && !isViewportHovered);
@@ -235,9 +261,7 @@ namespace Ellie {
             ImGuizmo::SetOrthographic(false);
             ImGuizmo::SetDrawlist();
 
-            float width = (float)ImGui::GetWindowWidth();
-            float height = (float)ImGui::GetWindowHeight();
-            ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, width, height);
+            ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
             // Runtime Camera
             /*auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
@@ -292,6 +316,7 @@ namespace Ellie {
 
         EventDispatcher dispatcher(event);
         dispatcher.Dispatch<KeyPressedEvent>(EE_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+        dispatcher.Dispatch<MouseButtonPressedEvent>(EE_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
     }
 
     bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -352,6 +377,18 @@ namespace Ellie {
                 break;
             }
         }
+    }
+
+    bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+    {
+        if ((e.GetMouseButton() == EE_MOUSE_BUTTON_LEFT) 
+            && isViewportHovered 
+            && !ImGuizmo::IsOver() 
+            && !Input::IsKeyPressed(EE_KEY_LEFT_ALT))
+        {
+            m_SceneHierarchyPanel.SetSelectedEntity(m_SelectedEntity);
+        }
+        return false;
     }
 
     void EditorLayer::SaveSceneAs()

@@ -13,6 +13,9 @@ namespace Ellie {
 		glm::vec4 color;
 		glm::vec2 texCoords;
 		float TexIndex;
+
+		// Editor Only
+		int EntityID;
 	};
 
 	struct Renderer2DStorage
@@ -53,7 +56,8 @@ namespace Ellie {
 			{Ellie::ShaderDataType::Float3, "a_Position"},
 			{Ellie::ShaderDataType::Float4, "a_Color"},
 			{Ellie::ShaderDataType::Float2, "a_TexCoords"},
-			{Ellie::ShaderDataType::Float, "a_TexIndex"}
+			{Ellie::ShaderDataType::Float, "a_TexIndex"},
+			{Ellie::ShaderDataType::Int, "a_EntityID"}
 			});
 
 		s_data.QuadVertexBuffer.reset(Ellie::VertexBuffer::Create(s_data.MaxVertices * sizeof(QuadVertex)));
@@ -262,7 +266,7 @@ namespace Ellie {
 
 	//
 
-	void Renderer2D::DrawQuad(const glm::mat4 transform, const glm::vec4 color)
+	void Renderer2D::DrawQuad(const glm::mat4 transform, const glm::vec4 color, int entityID)
 	{
 		if (s_data.QuadIndexCount >= s_data.MaxIndices)
 		{
@@ -279,6 +283,7 @@ namespace Ellie {
 			s_data.QuadVertexPtr->color = color;
 			s_data.QuadVertexPtr->texCoords = texCoords[i];
 			s_data.QuadVertexPtr->TexIndex = texIndex;
+			s_data.QuadVertexPtr->EntityID = entityID;
 			s_data.QuadVertexPtr++;
 		}
 
@@ -287,7 +292,7 @@ namespace Ellie {
 		s_data.stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4 transform, const Ref<Texture2D> texture)
+	void Renderer2D::DrawQuad(const glm::mat4 transform, const Ref<Texture2D> texture, int entityID)
 	{
 
 		if (s_data.QuadIndexCount >= s_data.MaxIndices)
@@ -323,6 +328,7 @@ namespace Ellie {
 			s_data.QuadVertexPtr->color = color;
 			s_data.QuadVertexPtr->texCoords = texCoords[i];
 			s_data.QuadVertexPtr->TexIndex = texIndex;
+			s_data.QuadVertexPtr->EntityID = entityID;
 			s_data.QuadVertexPtr++;
 		}
 
@@ -361,6 +367,11 @@ namespace Ellie {
 	void Renderer2D::DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
 	{
 		DrawRotatedQuad({ position.x, position.y, 0.0 }, size, rotationInRadians, texture);
+	}
+
+	void Renderer2D::DrawSprite(const glm::mat4 transform, SpriteRendererComponent& src, int entityID)
+	{
+		DrawQuad(transform, src.Color, entityID);
 	}
 
 	//
