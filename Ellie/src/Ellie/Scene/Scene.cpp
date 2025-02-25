@@ -37,6 +37,7 @@ namespace Ellie {
 
 			if (camera.Primary)
 			{
+				EE_TRACE("ifkejn");
 				return Entity{ entity,this };
 			}
 		}
@@ -47,22 +48,20 @@ namespace Ellie {
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
 		// Update Scripts
+		m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
 		{
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+			if (!nsc.Instance)
 			{
-				if (!nsc.Instance)
-				{
-					nsc.Instance = nsc.InstantiateScript();
-					nsc.Instance->m_Entity = Entity{ entity,this };
-					nsc.Instance->OnCreate();
-				}
+				nsc.Instance = nsc.InstantiateScript();
+				nsc.Instance->m_Entity = Entity{ entity,this };
+				nsc.Instance->OnCreate();
+			}
 
-				nsc.Instance->OnUpdate(ts);
-			});
-		}
+			nsc.Instance->OnUpdate(ts);
+		});
 
 		Camera* mainCamera = nullptr;
-		glm::mat4* cameraTransform = nullptr;
+		glm::mat4 cameraTransform;
 
 		auto view = m_Registry.view<TransformComponent, CameraComponent>();
 		for (auto entity : view)
@@ -72,9 +71,24 @@ namespace Ellie {
 			if (camera.Primary)
 			{
 				mainCamera = &camera.Camera;
-				cameraTransform = &transform.GetTransform();
+				cameraTransform = transform.GetTransform();
 				break;
 			}
+		}
+
+		if (mainCamera)
+		{
+			Renderer2D::BeginScene(*mainCamera, cameraTransform);
+
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group)
+			{
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+			}
+
+			Renderer2D::EndScene();
 		}
 	}
 

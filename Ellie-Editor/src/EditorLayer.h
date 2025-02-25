@@ -30,13 +30,18 @@ namespace Ellie {
 		void OpenScene();
 		void OpenScene(std::filesystem::path path);
 
+		void UI_Toolbar();
+		void OnScenePlay();
+		void OnSceneStop();
+
 		bool isViewportFocused = false, isViewportHovered = false;
 
 		OrthographicCameraController m_CameraController;
 
 		EditorCamera m_EditorCamera;
 
-		Ref<Texture2D> m_Checker;
+		Ref<Texture2D> m_PlayButton;
+		Ref<Texture2D> m_StopButton;
 
 		Ref<FrameBuffer> m_FrameBuffer;
 
@@ -48,6 +53,12 @@ namespace Ellie {
 		Entity m_SquareEntity;
 		Entity m_CameraEntity;
 		//
+
+		enum class SceneState
+		{
+			Edit = 0, Play = 1
+		};
+		SceneState m_SceneState = SceneState::Edit;
 
 		Ref<Scene> m_ActiveScene;
 
