@@ -9,6 +9,7 @@
 #include "Ellie/Renderer/Camera.h"
 #include "SceneCamera.h"
 #include "ScriptableEntity.h"
+#include "Ellie/Renderer/Texture.h"
 
 namespace Ellie {
 
@@ -44,6 +45,7 @@ namespace Ellie {
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color{ 1.0f,1.0f,1.0f,1.0f };
+		Ref<Texture2D> Texture = nullptr;
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;

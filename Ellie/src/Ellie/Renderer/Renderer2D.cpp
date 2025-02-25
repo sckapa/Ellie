@@ -292,15 +292,13 @@ namespace Ellie {
 		s_data.stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4 transform, const Ref<Texture2D> texture, int entityID)
+	void Renderer2D::DrawQuad(const glm::mat4 transform, const Ref<Texture2D> texture, const glm::vec4 color, int entityID)
 	{
 
 		if (s_data.QuadIndexCount >= s_data.MaxIndices)
 		{
 			FlushAndReset();
 		}
-
-		const glm::vec4 color = { 1.0f,1.0f,1.0f,1.0f };
 
 		float texIndex = 0.0f;
 
@@ -361,7 +359,7 @@ namespace Ellie {
 			* glm::rotate(glm::mat4(1.0f), rotationInRadians, { 0.0f,0.0f,1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x,size.y,1.0f });
 
-		DrawQuad(transform, texture);
+		DrawQuad(transform, texture, glm::vec4(1.0f));
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2 position, const glm::vec2 size, float rotationInRadians, const Ref<Texture2D> texture)
@@ -369,9 +367,18 @@ namespace Ellie {
 		DrawRotatedQuad({ position.x, position.y, 0.0 }, size, rotationInRadians, texture);
 	}
 
+	//
+
 	void Renderer2D::DrawSprite(const glm::mat4 transform, SpriteRendererComponent& src, int entityID)
 	{
-		DrawQuad(transform, src.Color, entityID);
+		if (src.Texture)
+		{
+			DrawQuad(transform, src.Texture, src.Color, entityID);
+		}
+		else
+		{
+			DrawQuad(transform, src.Color, entityID);
+		}
 	}
 
 	//

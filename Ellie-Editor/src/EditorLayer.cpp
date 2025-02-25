@@ -19,6 +19,8 @@
 
 namespace Ellie {
 
+    extern const std::filesystem::path m_AssetPath;
+
     ImGuizmo::OPERATION m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
 
     EditorLayer::EditorLayer() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f)
@@ -233,6 +235,7 @@ namespace Ellie {
 
         // Hierarchy Panel
         m_SceneHierarchyPanel.OnImGuiRender();
+        m_ContentBrowserPanel.OnImguiRender();
 
         // Viewport
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
@@ -253,6 +256,16 @@ namespace Ellie {
 
         uint32_t texID = m_FrameBuffer->GetColorAttachmentRendererID();
         ImGui::Image((ImTextureID)(uintptr_t)texID, ImVec2{ m_ViewportSize.x,m_ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
+
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+            {
+                const wchar_t* path = (const wchar_t*)payload->Data;
+                OpenScene(std::filesystem::path(m_AssetPath) / path);
+            }
+            ImGui::EndDragDropTarget();
+        }
 
         // Gizmo
         Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -413,12 +426,17 @@ namespace Ellie {
         std::string filepath = FileDialogs::OpenFile("Ellie Scene (*.ellie)\0*.ellie\0");
         if (!filepath.empty())
         {
-            m_ActiveScene = std::make_shared<Scene>();
-            m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-            m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-            SceneSerializer serializer(m_ActiveScene);
-            serializer.Deserialize(filepath);
+            OpenScene(filepath);
         }
+    }
+
+    void EditorLayer::OpenScene(std::filesystem::path path)
+    {
+        m_ActiveScene = std::make_shared<Scene>();
+        m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+        SceneSerializer serializer(m_ActiveScene);
+        serializer.Deserialize(path.string());
     }
 }

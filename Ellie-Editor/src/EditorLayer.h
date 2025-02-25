@@ -2,6 +2,7 @@
 
 #include "Ellie.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 #include "Ellie/Events/KeyEvent.h"
 #include "Ellie/Renderer/EditorCamera.h"
 
@@ -27,6 +28,7 @@ namespace Ellie {
 		void SaveSceneAs();
 		void NewScene();
 		void OpenScene();
+		void OpenScene(std::filesystem::path path);
 
 		bool isViewportFocused = false, isViewportHovered = false;
 
@@ -50,6 +52,7 @@ namespace Ellie {
 		Ref<Scene> m_ActiveScene;
 
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 	};
 
 }

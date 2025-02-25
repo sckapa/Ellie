@@ -4,7 +4,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Ellie/Scene/Components.h"
 
+#include <filesystem>
+
 namespace Ellie {
+
+	extern const std::filesystem::path m_AssetPath;
 
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> context)
 	{
@@ -342,6 +346,18 @@ namespace Ellie {
 		DrawComponents<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 		{
 			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+
+			ImGui::Button("Texture", { 64,64 });
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path texturePath = std::filesystem::path(m_AssetPath) / path;
+					component.Texture = Texture2D::Create(texturePath.string());
+				}
+				ImGui::EndDragDropTarget();
+			}
 		});
 	}
 
