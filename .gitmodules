@@ -16,3 +16,6 @@
 [submodule "Ellie/vendor/ImGuizmo"]
 	path = Ellie/vendor/ImGuizmo
 	url = https://github.com/CedricGuillemet/ImGuizmo
+[submodule "Ellie/vendor/Box2D"]
+	path = Ellie/vendor/Box2D
+	url = https://github.com/sckapa/box2d

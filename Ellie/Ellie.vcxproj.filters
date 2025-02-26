@@ -123,6 +123,9 @@
     <ClInclude Include="src\Ellie\Renderer\Camera.h">
       <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Renderer\EditorCamera.h">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\FrameBuffer.h">
       <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
@@ -1458,9 +1461,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\Renderer\EditorCamera.h">
-      <Filter>src\Ellie\Renderer</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Core\Application.cpp">
@@ -1482,6 +1482,9 @@
       <Filter>src\Ellie\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Renderer\Buffers.cpp">
+      <Filter>src\Ellie\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Renderer\EditorCamera.cpp">
       <Filter>src\Ellie\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Renderer\FrameBuffer.cpp">
@@ -1567,9 +1570,6 @@
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ellie\Renderer\EditorCamera.cpp">
-      <Filter>src\Ellie\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

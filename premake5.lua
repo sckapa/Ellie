@@ -12,6 +12,7 @@ workspace "Ellie"
  outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
  IncludeDir = {}
+ IncludeDir["Box2D"] = "Ellie/vendor/Box2D/include"
  IncludeDir["GLFW"] = "Ellie/vendor/GLFW/include"
  IncludeDir["Glad"] = "Ellie/vendor/Glad/include"
  IncludeDir["ImGui"] = "Ellie/vendor/imgui"
@@ -22,6 +23,7 @@ workspace "Ellie"
  IncludeDir["ImGuizmo"] = "Ellie/vendor/ImGuizmo"
  
  group "Dependencies"
+  include "Ellie/vendor/Box2D"
   include "Ellie/vendor/GLFW"
   include "Ellie/vendor/Glad"
   include "Ellie/vendor/imgui"
@@ -64,6 +66,7 @@ project "Ellie"
  {
   "%{prj.name}/src",
   "%{prj.name}/vendor/spdlog/include",
+  "%{IncludeDir.Box2D}",
   "%{IncludeDir.GLFW}",
   "%{IncludeDir.Glad}",
   "%{IncludeDir.ImGui}",
@@ -76,6 +79,7 @@ project "Ellie"
 
  links
  {
+  "Box2D",
   "GLFW",
   "Glad",
   "ImGui",
