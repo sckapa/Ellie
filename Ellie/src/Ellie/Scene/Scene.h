@@ -4,6 +4,8 @@
 #include "Ellie/Core/Timestep.h"
 #include "Ellie/Renderer/EditorCamera.h"
 
+class b2World;
+
 namespace Ellie {
 
 	class Entity;
@@ -16,6 +18,9 @@ namespace Ellie {
 
 		Entity CreateEntity(std::string name = std::string());
 		void DestroyEntity(Entity entity);
+
+		void OnRuntimeStart();
+		void OnRuntimeStop();
 		
 		void OnUpdateRuntime(Timestep ts);
 		void OnUpdateEditor(Timestep ts, EditorCamera& editorCam);
@@ -31,6 +36,8 @@ namespace Ellie {
 		entt::registry m_Registry;
 
 		uint32_t m_ViewportWidth = 0.0f, m_ViewportHeight = 0.0f;
+
+		b2World* m_PhysicsWorld = nullptr;
 
 		friend class Entity;
 		friend class SceneHierarchyPanel;
