@@ -2,6 +2,8 @@
 
 #include "Scene.h"
 #include "entt.hpp"
+#include "Ellie/Core/UUID.h"
+#include "Ellie/Scene/Components.h"
 
 namespace Ellie {
 
@@ -44,6 +46,8 @@ namespace Ellie {
 		{
 			return m_Scene->m_Registry.all_of<T>(m_EntityHandle);
 		}
+
+		UUID GetUUID() { return GetComponent<IDComponent>().ID; }
 
 		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
 		operator entt::entity() const { return m_EntityHandle; }

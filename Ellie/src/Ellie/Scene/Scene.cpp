@@ -3,7 +3,7 @@
 #include "Ellie/Renderer/Renderer2D.h"
 #include "Components.h"
 #include "Entity.h"
-
+#include "Ellie/Scene/ScriptableEntity.h"
 
 // Box2D
 #include "box2d/b2_world.h"
@@ -37,6 +37,17 @@ namespace Ellie {
 	Entity Scene::CreateEntity(std::string name)
 	{
 		Entity entity = { m_Registry.create(), this };
+		entity.AddComponent<IDComponent>();
+		entity.AddComponent<TransformComponent>();
+		auto& tag = entity.AddComponent<TagComponent>();
+		tag.Tag = name.empty() ? "Entity" : name;
+		return entity;
+	}
+
+	Entity Scene::CreateEntityWithUUID(UUID id, std::string name)
+	{
+		Entity entity = { m_Registry.create(), this };
+		entity.AddComponent<IDComponent>(id);
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
@@ -103,7 +114,6 @@ namespace Ellie {
 
 			if (camera.Primary)
 			{
-				EE_TRACE("ifkejn");
 				return Entity{ entity,this };
 			}
 		}
@@ -216,6 +226,11 @@ namespace Ellie {
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
 		static_assert(false);
+	}
+
+	template<>
+	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
+	{
 	}
 
 	template<>

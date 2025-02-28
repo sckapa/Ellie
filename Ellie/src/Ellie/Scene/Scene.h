@@ -3,6 +3,7 @@
 #include <entt.hpp>
 #include "Ellie/Core/Timestep.h"
 #include "Ellie/Renderer/EditorCamera.h"
+#include "Ellie/Core/UUID.h"
 
 class b2World;
 
@@ -17,6 +18,7 @@ namespace Ellie {
 		~Scene();
 
 		Entity CreateEntity(std::string name = std::string());
+		Entity CreateEntityWithUUID(UUID id, std::string name = std::string());
 		void DestroyEntity(Entity entity);
 
 		void OnRuntimeStart();

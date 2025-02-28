@@ -1,17 +1,25 @@
 #pragma once
 
+#include "Ellie/Renderer/Camera.h"
+#include "SceneCamera.h"
+#include "Ellie/Renderer/Texture.h"
+#include "Ellie/Core/UUID.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/quaternion.hpp"
 
-#include "Ellie/Renderer/Camera.h"
-#include "SceneCamera.h"
-#include "ScriptableEntity.h"
-#include "Ellie/Renderer/Texture.h"
-
 namespace Ellie {
+
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+	};
 
 	struct TagComponent
 	{
@@ -62,6 +70,7 @@ namespace Ellie {
 		CameraComponent(const CameraComponent&) = default;
 	};
 
+	class ScriptableEntity;
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
