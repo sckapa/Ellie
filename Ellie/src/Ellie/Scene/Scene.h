@@ -17,6 +17,8 @@ namespace Ellie {
 		Scene();
 		~Scene();
 
+		static Ref<Scene> Copy(Ref<Scene> other);
+
 		Entity CreateEntity(std::string name = std::string());
 		Entity CreateEntityWithUUID(UUID id, std::string name = std::string());
 		void DestroyEntity(Entity entity);

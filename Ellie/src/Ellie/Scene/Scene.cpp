@@ -34,6 +34,51 @@ namespace Ellie {
 	{
 	}
 
+	template<typename Component>
+	static void CopyComponent(entt::registry& dst, entt::registry& src, std::unordered_map<UUID, entt::entity> enttMap)
+	{
+		auto view = src.view<Component>();
+		for (auto e : view)
+		{
+			auto uuid = src.get<IDComponent>(e).ID;
+			entt::entity dstEntity = enttMap.at(uuid);
+
+			auto& component = src.get<Component>(e);
+			dst.emplace_or_replace<Component>(dstEntity, component);
+		}
+	}
+
+	Ref<Scene> Scene::Copy(Ref<Scene> other)
+	{
+		Ref<Scene> newScene = std::make_shared<Scene>();
+
+		newScene->m_ViewportHeight = other->m_ViewportHeight;
+		newScene->m_ViewportWidth = other->m_ViewportWidth;
+
+		auto& dstRegistry = newScene->m_Registry;
+		auto& srcRegistry = other->m_Registry;
+
+		std::unordered_map<UUID, entt::entity> enttMap;
+
+		auto view = srcRegistry.view<IDComponent>();
+		for (auto e : view)
+		{
+			auto uuid = srcRegistry.get<IDComponent>(e).ID;
+			auto name = srcRegistry.get<TagComponent>(e).Tag;
+			Entity newEntity = newScene->CreateEntityWithUUID(uuid, name);
+			enttMap[uuid] = newEntity;
+		}
+
+		CopyComponent<TransformComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<SpriteRendererComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<NativeScriptComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<CameraComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<Rigidbody2DComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<BoxCollider2DComponent>(dstRegistry, srcRegistry, enttMap);
+
+		return newScene;
+	}
+
 	Entity Scene::CreateEntity(std::string name)
 	{
 		Entity entity = { m_Registry.create(), this };

@@ -469,17 +469,27 @@ namespace Ellie {
 
     void EditorLayer::OpenScene(std::filesystem::path path)
     {
-        m_ActiveScene = std::make_shared<Scene>();
-        m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+        if (m_SceneState != SceneState::Edit)
+        {
+            OnSceneStop();
+        }
 
-        SceneSerializer serializer(m_ActiveScene);
-        serializer.Deserialize(path.string());
+        Ref<Scene> newScene = std::make_shared<Scene>();
+        SceneSerializer serializer(newScene);
+        if (serializer.Deserialize(path.string()))
+        {
+            m_EditorScene = newScene;
+            m_EditorScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+            m_SceneHierarchyPanel.SetContext(m_ActiveScene);    
+
+            m_ActiveScene = m_EditorScene;
+        }
     }
 
     void EditorLayer::OnScenePlay()
     {
         m_SceneState = SceneState::Play;
+        m_ActiveScene = Scene::Copy(m_EditorScene);
         m_ActiveScene->OnRuntimeStart();
     }
 
@@ -487,5 +497,6 @@ namespace Ellie {
     {
         m_SceneState = SceneState::Edit;
         m_ActiveScene->OnRuntimeStop();
+        m_ActiveScene = m_EditorScene;
     }
 }

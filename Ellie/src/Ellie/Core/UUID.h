@@ -18,3 +18,15 @@ namespace Ellie {
 
 }
 
+namespace std {
+
+	template<>
+	struct hash<Ellie::UUID>
+	{
+		std::size_t operator()(const Ellie::UUID& uuid) const
+		{
+			return hash<uint64_t>()((uint64_t)uuid);
+		}
+	};
+
+}

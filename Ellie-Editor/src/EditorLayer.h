@@ -61,6 +61,7 @@ namespace Ellie {
 		SceneState m_SceneState = SceneState::Edit;
 
 		Ref<Scene> m_ActiveScene;
+		Ref<Scene> m_EditorScene;
 
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
