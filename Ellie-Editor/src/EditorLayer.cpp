@@ -92,7 +92,6 @@ namespace Ellie {
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
 #endif
-        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
 
     void EditorLayer::OnDetach()
@@ -330,6 +329,20 @@ namespace Ellie {
         ImGui::End();
     }
 
+    void EditorLayer::DuplicateEntity()
+    {
+        if (m_SceneState != SceneState::Edit)
+        {
+            return;
+        }
+
+        Entity selected = m_SceneHierarchyPanel.GetSelectedEntity();
+        if (selected.IsValid())
+        {
+            m_EditorScene->DuplicateEntity(selected);
+        }
+    }
+
     void EditorLayer::UI_Toolbar()
     {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
@@ -386,6 +399,10 @@ namespace Ellie {
                 {
                     SaveSceneAs();
                 }
+                else if (control)
+                {
+                    SaveScene();
+                }
                 break;
             }
             case EE_KEY_O:
@@ -401,6 +418,16 @@ namespace Ellie {
                 if (control)
                 {
                     NewScene();
+                }
+                break;
+            }
+
+            // Scene Controls
+            case EE_KEY_D:
+            {
+                if (control)
+                {
+                    DuplicateEntity();
                 }
                 break;
             }
@@ -441,6 +468,19 @@ namespace Ellie {
         return false;
     }
 
+    void EditorLayer::SaveScene()
+    {
+        if (!m_EditorPath.empty())
+        {
+            SceneSerializer serializer(m_ActiveScene);
+            serializer.Serialize(m_EditorPath.string());
+        }
+        else
+        {
+            SaveSceneAs();
+        }
+    }
+
     void EditorLayer::SaveSceneAs()
     {
         std::string filepath = FileDialogs::SaveFile("Ellie Scene (*.ellie)\0*.ellie\0");
@@ -448,6 +488,8 @@ namespace Ellie {
         {
             SceneSerializer serializer(m_ActiveScene);
             serializer.Serialize(filepath);
+
+            m_EditorPath = filepath;
         }
     }
     
@@ -456,6 +498,8 @@ namespace Ellie {
         m_ActiveScene = std::make_shared<Scene>();
         m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
         m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+        m_EditorPath = std::filesystem::path();
     }
     
     void EditorLayer::OpenScene()
@@ -480,9 +524,11 @@ namespace Ellie {
         {
             m_EditorScene = newScene;
             m_EditorScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-            m_SceneHierarchyPanel.SetContext(m_ActiveScene);    
+            m_SceneHierarchyPanel.SetContext(m_EditorScene);  
 
             m_ActiveScene = m_EditorScene;
+
+            m_EditorPath = path;
         }
     }
 
@@ -491,6 +537,8 @@ namespace Ellie {
         m_SceneState = SceneState::Play;
         m_ActiveScene = Scene::Copy(m_EditorScene);
         m_ActiveScene->OnRuntimeStart();
+
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
 
     void EditorLayer::OnSceneStop()
@@ -498,5 +546,7 @@ namespace Ellie {
         m_SceneState = SceneState::Edit;
         m_ActiveScene->OnRuntimeStop();
         m_ActiveScene = m_EditorScene;
+
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
 }

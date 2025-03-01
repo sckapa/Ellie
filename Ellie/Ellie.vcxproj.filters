@@ -99,6 +99,9 @@
     <ClInclude Include="src\Ellie\Core\Timestep.h">
       <Filter>src\Ellie\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Core\UUID.h">
+      <Filter>src\Ellie\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Core\Window.h">
       <Filter>src\Ellie\Core</Filter>
     </ClInclude>
@@ -1461,7 +1464,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\Core\UUID.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Core\Application.cpp">
@@ -1474,6 +1476,9 @@
       <Filter>src\Ellie\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Core\Log.cpp">
+      <Filter>src\Ellie\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Core\UUID.cpp">
       <Filter>src\Ellie\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\ImGui\ImGuiBuild.cpp">
@@ -1572,6 +1577,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ellie\Core\UUID.cpp" />
   </ItemGroup>
 </Project>

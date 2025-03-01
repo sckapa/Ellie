@@ -23,12 +23,20 @@ namespace Ellie {
 		virtual void OnImGuiRender() override;
 
 	private:
+		// Events
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
+
+		// File system
+		std::filesystem::path m_EditorPath;
+		void SaveScene();
 		void SaveSceneAs();
 		void NewScene();
 		void OpenScene();
 		void OpenScene(std::filesystem::path path);
+
+		// Scene Controls
+		void DuplicateEntity();
 
 		void UI_Toolbar();
 		void OnScenePlay();

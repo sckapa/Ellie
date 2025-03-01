@@ -25,25 +25,28 @@ namespace Ellie {
 	{
 		ImGui::Begin("Scene Hierarchy");
 
-		for (auto entityID : m_Context->m_Registry.view<TagComponent>())
+		if (m_Context)
 		{
-			Entity entity{ entityID,m_Context.get() };
-			DrawEntityNode(entity);
-		}
-
-		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-		{
-			m_SelectedContext = {};
-		}
-
-		if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems))
-		{
-			if (ImGui::MenuItem("Create Empty Entity"))
+			for (auto entityID : m_Context->m_Registry.view<TagComponent>())
 			{
-				m_Context->CreateEntity("Empty Entity");
+				Entity entity{ entityID,m_Context.get() };
+				DrawEntityNode(entity);
 			}
 
-			ImGui::EndPopup();
+			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+			{
+				m_SelectedContext = {};
+			}
+
+			if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems))
+			{
+				if (ImGui::MenuItem("Create Empty Entity"))
+				{
+					m_Context->CreateEntity("Empty Entity");
+				}
+
+				ImGui::EndPopup();
+			}
 		}
 
 		ImGui::End();

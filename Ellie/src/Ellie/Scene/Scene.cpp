@@ -47,6 +47,15 @@ namespace Ellie {
 			dst.emplace_or_replace<Component>(dstEntity, component);
 		}
 	}
+	
+	template<typename Component>
+	static void CopyComponentIfExists(Entity dst, Entity src)
+	{
+		if (src.HasComponent<Component>())
+		{
+			dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
+		}
+	}
 
 	Ref<Scene> Scene::Copy(Ref<Scene> other)
 	{
@@ -265,6 +274,19 @@ namespace Ellie {
 				cameraComponent.Camera.SetViewportSize(width, height);
 			}
 		}
+	}
+
+	void Scene::DuplicateEntity(Entity& entity)
+	{
+		std::string name = entity.GetName();
+		Entity e = CreateEntity(name);
+
+		CopyComponentIfExists<TransformComponent>(e, entity);
+		CopyComponentIfExists<SpriteRendererComponent>(e, entity);
+		CopyComponentIfExists<NativeScriptComponent>(e, entity);
+		CopyComponentIfExists<CameraComponent>(e, entity);
+		CopyComponentIfExists<Rigidbody2DComponent>(e, entity);
+		CopyComponentIfExists<BoxCollider2DComponent>(e, entity);
 	}
 
 	template<typename T>

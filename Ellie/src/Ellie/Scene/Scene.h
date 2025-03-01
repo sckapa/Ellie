@@ -31,6 +31,8 @@ namespace Ellie {
 
 		void OnViewportResize(uint32_t width, uint32_t height);
 
+		void DuplicateEntity(Entity& entity);
+
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
 
