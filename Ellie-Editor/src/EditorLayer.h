@@ -44,8 +44,6 @@ namespace Ellie {
 
 		bool isViewportFocused = false, isViewportHovered = false;
 
-		OrthographicCameraController m_CameraController;
-
 		EditorCamera m_EditorCamera;
 
 		Ref<Texture2D> m_PlayButton;
@@ -57,22 +55,17 @@ namespace Ellie {
 		glm::vec2 m_ViewportBounds[2];
 		Entity m_SelectedEntity = Entity();
 
-		// Delete
-		Entity m_SquareEntity;
-		Entity m_CameraEntity;
-		//
+		Ref<Scene> m_ActiveScene;
+		Ref<Scene> m_EditorScene;
+
+		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 
 		enum class SceneState
 		{
 			Edit = 0, Play = 1
 		};
 		SceneState m_SceneState = SceneState::Edit;
-
-		Ref<Scene> m_ActiveScene;
-		Ref<Scene> m_EditorScene;
-
-		SceneHierarchyPanel m_SceneHierarchyPanel;
-		ContentBrowserPanel m_ContentBrowserPanel;
 	};
 
 }

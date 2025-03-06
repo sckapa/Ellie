@@ -138,9 +138,6 @@
     <ClInclude Include="src\Ellie\Renderer\OrthographicCamera.h">
       <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\Renderer\OrthographicCameraController.h">
-      <Filter>src\Ellie\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\RenderCommands.h">
       <Filter>src\Ellie\Renderer</Filter>
     </ClInclude>
@@ -1497,9 +1494,6 @@
       <Filter>src\Ellie\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Renderer\OrthographicCamera.cpp">
-      <Filter>src\Ellie\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ellie\Renderer\OrthographicCameraController.cpp">
       <Filter>src\Ellie\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Renderer\RenderCommands.cpp">

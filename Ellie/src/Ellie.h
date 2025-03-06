@@ -8,8 +8,6 @@
 #include "Ellie/Core/KeyCodes.h"
 #include "Ellie/Core/MouseCodes.h"
 
-#include "Ellie/Renderer/OrthographicCameraController.h"
-
 #include "Ellie/Core/Timestep.h"
 
 #include "Ellie/ImGui/ImGuiLayer.h"
