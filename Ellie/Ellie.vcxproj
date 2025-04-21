@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>eepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EE_PLATFORM_WINDOWS;EE_BUILD_DLL;GLFW_INCLUDE_NONE;YAML_CPP_STATIC_DEFINE;EE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\Box2D\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\stb_image;vendor\glm;vendor\yaml-cpp\include;vendor\entt\include;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\Box2D\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\stb_image;vendor\glm;vendor\yaml-cpp\include;vendor\entt\include;vendor\mono\include;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -90,7 +90,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\mono\lib\Debug\libmono-static-sgen.lib;Ws2_32.lib;Winmm.lib;Version.lib;Bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -99,7 +99,7 @@
       <PrecompiledHeaderFile>eepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EE_PLATFORM_WINDOWS;EE_BUILD_DLL;GLFW_INCLUDE_NONE;YAML_CPP_STATIC_DEFINE;EE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\Box2D\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\stb_image;vendor\glm;vendor\yaml-cpp\include;vendor\entt\include;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\Box2D\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\stb_image;vendor\glm;vendor\yaml-cpp\include;vendor\entt\include;vendor\mono\include;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -116,7 +116,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\mono\lib\Release\libmono-static-sgen.lib;Ws2_32.lib;Winmm.lib;Version.lib;Bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -125,7 +125,7 @@
       <PrecompiledHeaderFile>eepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EE_PLATFORM_WINDOWS;EE_BUILD_DLL;GLFW_INCLUDE_NONE;YAML_CPP_STATIC_DEFINE;EE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\Box2D\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\stb_image;vendor\glm;vendor\yaml-cpp\include;vendor\entt\include;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\Box2D\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\stb_image;vendor\glm;vendor\yaml-cpp\include;vendor\entt\include;vendor\mono\include;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -142,7 +142,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\mono\lib\Dist\libmono-static-sgen.lib;Ws2_32.lib;Winmm.lib;Version.lib;Bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -184,6 +184,7 @@
     <ClInclude Include="src\Ellie\Scene\SceneCamera.h" />
     <ClInclude Include="src\Ellie\Scene\SceneSerializer.h" />
     <ClInclude Include="src\Ellie\Scene\ScriptableEntity.h" />
+    <ClInclude Include="src\Ellie\Scripting\ScriptEngine.h" />
     <ClInclude Include="src\Ellie\Utils\PlatformUtils.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffers.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
@@ -637,6 +638,7 @@
     <ClCompile Include="src\Ellie\Scene\Scene.cpp" />
     <ClCompile Include="src\Ellie\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Ellie\Scene\SceneSerializer.cpp" />
+    <ClCompile Include="src\Ellie\Scripting\ScriptEngine.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />

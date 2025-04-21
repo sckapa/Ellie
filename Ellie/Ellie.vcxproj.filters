@@ -22,6 +22,9 @@
     <Filter Include="src\Ellie\Scene">
       <UniqueIdentifier>{E471A887-50FD-154C-590E-9940C518724C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Ellie\Scripting">
+      <UniqueIdentifier>{4985AA06-B5E6-8714-3E54-CEC6AAB4BED3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Ellie\Utils">
       <UniqueIdentifier>{2706D687-9391-434C-9CA2-C64008AD9F4C}</UniqueIdentifier>
     </Filter>
@@ -179,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="src\Ellie\Scene\ScriptableEntity.h">
       <Filter>src\Ellie\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Scripting\ScriptEngine.h">
+      <Filter>src\Ellie\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Utils\PlatformUtils.h">
       <Filter>src\Ellie\Utils</Filter>
@@ -1534,6 +1540,9 @@
     </ClCompile>
     <ClCompile Include="src\Ellie\Scene\SceneSerializer.cpp">
       <Filter>src\Ellie\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Scripting\ScriptEngine.cpp">
+      <Filter>src\Ellie\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp">
       <Filter>src\Platform\OpenGL</Filter>

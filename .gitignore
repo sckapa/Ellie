@@ -2,6 +2,9 @@
 .vs/
 bin/
 bin-int/
+Intermediates/
 
 # Files
 *.user
+*.csproj
+*.ini

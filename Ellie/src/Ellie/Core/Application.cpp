@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Ellie/Renderer/Renderer.h"
+#include "Ellie/Scripting/ScriptEngine.h"
 
 namespace Ellie{
 
@@ -20,6 +21,7 @@ namespace Ellie{
 		m_Window->SetEventCallback(EE_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
+		ScriptEngine::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -27,6 +29,7 @@ namespace Ellie{
 
 	Application::~Application()
 	{
+		ScriptEngine::Shutdown();
 	}
 
 	void Application::Run()
