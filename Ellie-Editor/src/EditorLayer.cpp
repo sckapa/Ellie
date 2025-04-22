@@ -23,7 +23,7 @@ namespace Ellie {
 
     ImGuizmo::OPERATION m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
 
-    EditorLayer::EditorLayer() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f)
+    EditorLayer::EditorLayer() : Layer("Sandbox2D")
     {
     }
 
@@ -43,6 +43,7 @@ namespace Ellie {
         m_FrameBuffer = FrameBuffer::Create(spec);
 
         m_ActiveScene = std::make_shared<Scene>();
+        m_EditorScene = std::make_shared<Scene>();
 
         m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
@@ -105,7 +106,6 @@ namespace Ellie {
             (spec.width != m_ViewportSize.x || spec.height != m_ViewportSize.y))
         {
             m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-            m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
             m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
             m_ActiveScene->OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
         }
@@ -274,19 +274,12 @@ namespace Ellie {
 
         // Gizmo
         Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
-        if (selectedEntity.IsValid() && m_GizmoType != -1)
+        if (selectedEntity.IsValid() && m_SceneState == SceneState::Edit)
         {
             ImGuizmo::SetOrthographic(false);
             ImGuizmo::SetDrawlist();
 
             ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
-
-            // Runtime Camera
-            /*auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-            glm::mat4 camView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
-
-            const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-            const glm::mat4& cameraProjection = camera.GetProjection();*/
 
             // Editor Camera
             glm::mat4 camView = m_EditorCamera.GetViewMatrix();
@@ -374,7 +367,6 @@ namespace Ellie {
 
     void EditorLayer::OnEvent(Event& event)
     {
-        m_CameraController.OnEvent(event);
         m_EditorCamera.OnEvent(event);
 
         EventDispatcher dispatcher(event);

@@ -1,12 +1,34 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Ellie
 {
-    public class Main
+    public struct Vector3
     {
-        public Main()
+        public float X, Y, Z;
+
+        public Vector3(float x, float y, float z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
+    }
+
+    public static class InternalCalls
+    {
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void Normalize_Vector3(ref Vector3 param, out Vector3 outParam);
+    }
+
+    public class Entity
+    {
+        public Entity()
         {
             Console.WriteLine("Hello from constructor");
+
+            Vector3 test = new Vector3(5, 2.5f, 1);
+            Log(test);
         }
 
         public void PrintCustomMessage()
@@ -27,6 +49,12 @@ namespace Ellie
         public void PrintCustomMessageWithParams(string param)
         {
             Console.WriteLine(param);
+        }
+
+        private void Log(Vector3 param)
+        {
+            InternalCalls.Normalize_Vector3(ref param, out Vector3 outParam);
+            Console.WriteLine($"{outParam.X}, {outParam.Y}, {outParam.Z}");
         }
     }
 }
