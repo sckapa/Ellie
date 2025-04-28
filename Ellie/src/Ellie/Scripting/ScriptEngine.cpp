@@ -2,6 +2,8 @@
 #include "ScriptEngine.h"
 #include "glm/glm.hpp"
 
+#include "Ellie/Core/UUID.h"
+
 #include "ScriptGlue.h"
 #include "mono/metadata/object.h"
 #include <mono/jit/jit.h>
@@ -93,6 +95,12 @@ namespace Ellie {
 		MonoImage* CoreAssemblyImage = nullptr;
 
 		ScriptClass EntityClass;
+
+		std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
+		std::unordered_map<UUID, Ref<ScriptInstance>> EntityInstances;
+
+		// Runtime
+		Scene* SceneContext = nullptr;
 	};
 
 	static ScriptEngineData* s_Data = nullptr;
@@ -103,9 +111,11 @@ namespace Ellie {
 		
 		InitMono();
 		LoadAssembly("Resources/Scripts/Ellie-ScriptCore.dll");
+		LoadAssemblyClasses(s_Data->CoreAssembly);
 
 		ScriptGlue::RegisterFunctions();
 
+#if 0
 		// Retrieve and instantiate class with constructor
 		s_Data->EntityClass = ScriptClass("Ellie", "Entity");
 		MonoObject* instance = s_Data->EntityClass.Instantiate();
@@ -136,12 +146,45 @@ namespace Ellie {
 		void* strParam = monoStr;
 		MonoMethod* printCustomMessageWithParams = s_Data->EntityClass.GetMethod("PrintCustomMessageWithParams", 1);
 		s_Data->EntityClass.InvokeMethod(instance, printCustomMessageWithParams, &strParam);
+#endif
 	}
 
 	void ScriptEngine::Shutdown()
 	{
 		ShutdownMono();
 		delete s_Data;
+	}
+
+	void ScriptEngine::OnRuntimeStart(Scene* scene)
+	{
+		s_Data->SceneContext = scene;
+	}
+
+	void ScriptEngine::OnRuntimeStop()
+	{
+		s_Data->SceneContext = nullptr;
+		s_Data->EntityInstances.clear();
+	}
+
+	void ScriptEngine::OnCreateEntity(Entity entity)
+	{
+		const auto& sc = entity.GetComponent<ScriptComponent>();
+		if (ScriptEngine::EntityClassExists(sc.ClassName))
+		{
+			Ref<ScriptInstance> instance = std::make_shared<ScriptInstance>(s_Data->EntityClasses[sc.ClassName]);
+			s_Data->EntityInstances[entity.GetUUID()] = instance;
+			instance->InvokeOnCreate();
+		}
+	}
+
+	void ScriptEngine::OnUpdateEntity(Entity entity, Timestep ts)
+	{
+		UUID entityUUID = entity.GetUUID();
+
+		EE_ASSERT(s_Data->EntityInstances.find(entityUUID) != s_Data->EntityInstances.end(), "Could not find entity in EntityInstances");
+
+		Ref<ScriptInstance> instance = s_Data->EntityInstances[entityUUID];
+		instance->InvokeOnUpdate((float)ts);
 	}
 
 	void ScriptEngine::InitMono()
@@ -171,11 +214,68 @@ namespace Ellie {
 		// Utils::PrintAssemblyTypes(s_Data->CoreAssembly);
 	}
 
+	std::unordered_map<std::string, Ref<ScriptClass>> ScriptEngine::GetEntityClasses()
+	{
+		return s_Data->EntityClasses;
+	}
+
+	bool ScriptEngine::EntityClassExists(const std::string& fullname)
+	{
+		if (s_Data->EntityClasses.find(fullname) != s_Data->EntityClasses.end())
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	MonoObject* ScriptEngine::InstantiateClass(MonoClass* monoClass)
 	{
 		MonoObject* instance = mono_object_new(s_Data->AppDomain, monoClass);
 		mono_runtime_object_init(instance); // call constructor
 		return instance;
+	}
+
+	void ScriptEngine::LoadAssemblyClasses(MonoAssembly* assembly)
+	{
+		s_Data->EntityClasses.clear();
+
+		MonoImage* image = mono_assembly_get_image(assembly);
+		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
+		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
+
+		std::string fullname;
+		MonoClass* entityClass = mono_class_from_name(image, "Ellie", "Entity");
+
+		for (int32_t i = 0; i < numTypes; i++)
+		{
+			uint32_t cols[MONO_TYPEDEF_SIZE];
+			mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
+
+			const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
+			const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
+
+			if (strlen(nameSpace) != 0)
+			{
+				fullname = fmt::format("{}.{}", nameSpace, name);
+			}
+			else
+			{
+				fullname = name;
+			}
+
+			MonoClass* monoClass = mono_class_from_name(image, nameSpace, name);
+			if (monoClass == entityClass)
+			{
+				continue;
+			}
+
+			bool isEntity = mono_class_is_subclass_of(monoClass, entityClass, false);
+			if (isEntity)
+			{
+				s_Data->EntityClasses[fullname] = std::make_shared<ScriptClass>(nameSpace, name);
+			}
+		}
 	}
 
 	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className) : m_ClassName(className), m_ClassNamespace(classNamespace)
@@ -196,6 +296,25 @@ namespace Ellie {
 	MonoObject* ScriptClass::InvokeMethod(MonoObject* instance, MonoMethod* method, void** params)
 	{
 		return mono_runtime_invoke(method, instance, params, nullptr);
+	}
+
+	ScriptInstance::ScriptInstance(Ref<ScriptClass> scriptClass) : m_ScriptClass(scriptClass)
+	{
+		m_Instance = m_ScriptClass->Instantiate();
+
+		m_OnCreateMethod = m_ScriptClass->GetMethod("OnCreate", 0);
+		m_OnUpdateMethod = m_ScriptClass->GetMethod("OnUpdate", 1);
+	}
+
+	void ScriptInstance::InvokeOnCreate()
+	{
+		m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
+	}
+
+	void ScriptInstance::InvokeOnUpdate(float ts)
+	{
+		void* param = &ts;
+		m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
 	}
 
 }

@@ -25,10 +25,10 @@ namespace Ellie
     {
         public Entity()
         {
-            Console.WriteLine("Hello from constructor");
+            //Console.WriteLine("Hello from constructor");
 
-            Vector3 test = new Vector3(5, 2.5f, 1);
-            Log(test);
+            //Vector3 test = new Vector3(5, 2.5f, 1);
+            //Log(test);
         }
 
         public void PrintCustomMessage()

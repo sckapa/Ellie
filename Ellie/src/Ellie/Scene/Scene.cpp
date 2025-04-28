@@ -4,6 +4,7 @@
 #include "Components.h"
 #include "Entity.h"
 #include "Ellie/Scene/ScriptableEntity.h"
+#include "Ellie/Scripting/ScriptEngine.h"
 
 // Box2D
 #include "box2d/b2_world.h"
@@ -80,6 +81,7 @@ namespace Ellie {
 
 		CopyComponent<TransformComponent>(dstRegistry, srcRegistry, enttMap);
 		CopyComponent<SpriteRendererComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<ScriptComponent>(dstRegistry, srcRegistry, enttMap);
 		CopyComponent<NativeScriptComponent>(dstRegistry, srcRegistry, enttMap);
 		CopyComponent<CameraComponent>(dstRegistry, srcRegistry, enttMap);
 		CopyComponent<Rigidbody2DComponent>(dstRegistry, srcRegistry, enttMap);
@@ -115,40 +117,55 @@ namespace Ellie {
 
 	void Scene::OnRuntimeStart()
 	{
-		m_PhysicsWorld = new b2World({0.0f,-9.8f});
-
-		auto view = m_Registry.view<Rigidbody2DComponent>();
-		for (auto e : view)
+		// Physics
 		{
-			Entity entity = { e, this };
-			auto& transform = entity.GetComponent<TransformComponent>();
-			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+			m_PhysicsWorld = new b2World({ 0.0f,-9.8f });
 
-			b2BodyDef bodyDef;
-			bodyDef.type = Rigidbody2DTypeToBox2DType(rb2d.Type);
-			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
-			bodyDef.angle = transform.Rotation.z;
-			
-			b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
-
-			body->SetFixedRotation(rb2d.FixedRotation);
-			rb2d.RuntimeBody = body;
-
-			if (entity.HasComponent<BoxCollider2DComponent>())
+			auto view = m_Registry.view<Rigidbody2DComponent>();
+			for (auto e : view)
 			{
-				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+				Entity entity = { e, this };
+				auto& transform = entity.GetComponent<TransformComponent>();
+				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
-				b2PolygonShape boxShape;
-				boxShape.SetAsBox(transform.Scale.x * bc2d.Size.x, transform.Scale.y * bc2d.Size.y);
+				b2BodyDef bodyDef;
+				bodyDef.type = Rigidbody2DTypeToBox2DType(rb2d.Type);
+				bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
+				bodyDef.angle = transform.Rotation.z;
 
-				b2FixtureDef fixtureDef;
-				fixtureDef.shape = &boxShape;
-				fixtureDef.density = bc2d.Density;
-				fixtureDef.friction = bc2d.Friction;
-				fixtureDef.restitution = bc2d.Restitution;
-				fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+				b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
 
-				body->CreateFixture(&fixtureDef);
+				body->SetFixedRotation(rb2d.FixedRotation);
+				rb2d.RuntimeBody = body;
+
+				if (entity.HasComponent<BoxCollider2DComponent>())
+				{
+					auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+
+					b2PolygonShape boxShape;
+					boxShape.SetAsBox(transform.Scale.x * bc2d.Size.x, transform.Scale.y * bc2d.Size.y);
+
+					b2FixtureDef fixtureDef;
+					fixtureDef.shape = &boxShape;
+					fixtureDef.density = bc2d.Density;
+					fixtureDef.friction = bc2d.Friction;
+					fixtureDef.restitution = bc2d.Restitution;
+					fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+
+					body->CreateFixture(&fixtureDef);
+				}
+			}
+		}
+
+		// Scripts
+		{
+			ScriptEngine::OnRuntimeStart(this);
+
+			auto view = m_Registry.view<ScriptComponent>();
+			for (auto e : view)
+			{
+				Entity entity = { e, this };
+				ScriptEngine::OnCreateEntity(entity);
 			}
 		}
 	}
@@ -157,6 +174,8 @@ namespace Ellie {
 	{
 		delete m_PhysicsWorld;
 		m_PhysicsWorld = nullptr;
+
+		ScriptEngine::OnRuntimeStop();
 	}
 
 	Entity Scene::GetPrimaryCameraEntity()
@@ -177,7 +196,17 @@ namespace Ellie {
 
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
-		// Update Scripts
+		// C# Runtime Scripts
+		{
+			const auto view = m_Registry.view<ScriptComponent>();
+			for (auto e : view)
+			{
+				Entity entity = { e, this };
+				ScriptEngine::OnUpdateEntity(entity, ts);
+			}
+		}
+
+		// Native Scripts
 		m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
 		{
 			if (!nsc.Instance)
@@ -302,6 +331,11 @@ namespace Ellie {
 
 	template<>
 	void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
+	{
+	}
+	
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
 	{
 	}
 

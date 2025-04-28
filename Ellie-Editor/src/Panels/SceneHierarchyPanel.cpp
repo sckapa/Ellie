@@ -3,6 +3,7 @@
 #include <imgui_internal.h>
 #include <glm/gtc/type_ptr.hpp>
 #include "Ellie/Scene/Components.h"
+#include "Ellie/Scripting/ScriptEngine.h"
 
 #include <filesystem>
 
@@ -256,6 +257,15 @@ namespace Ellie {
 					ImGui::CloseCurrentPopup();
 				}
 			}
+			
+			if (!m_SelectedContext.HasComponent<ScriptComponent>())
+			{
+				if (ImGui::MenuItem("Script"))
+				{
+					m_SelectedContext.AddComponent<ScriptComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
 
 			if (!m_SelectedContext.HasComponent<SpriteRendererComponent>())
 			{
@@ -298,6 +308,29 @@ namespace Ellie {
 			component.Rotation = glm::radians(rotation);
 
 			DrawVec3Control("Scale", component.Scale, 1.0f);
+		});
+		
+		DrawComponents<ScriptComponent>("Script", entity, [](auto& component)
+		{
+			bool scriptClassExists = ScriptEngine::EntityClassExists(component.ClassName);
+
+			static char buffer[64];
+			strcpy(buffer, component.ClassName.c_str());
+
+			if (!scriptClassExists)
+			{
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.8f, 0.2f, 0.3f, 1.0f));
+			}
+
+			if (ImGui::InputText("Class", buffer, sizeof(buffer)))
+			{
+				component.ClassName = buffer;
+			}
+
+			if (!scriptClassExists)
+			{
+				ImGui::PopStyleColor();
+			}
 		});
 
 		DrawComponents<CameraComponent>("Camera", entity, [](auto& component)

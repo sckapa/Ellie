@@ -180,6 +180,17 @@ namespace Ellie {
 			out << YAML::Key << "FixedAspectRatio" << YAML::Value << cameraComponent.FixedAspectRatio;
 			out << YAML::EndMap;
 		}
+		
+		if (entity.HasComponent<ScriptComponent>())
+		{
+			out << YAML::Key << "ScriptComponent";
+			out << YAML::BeginMap;
+
+			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+
+			out << YAML::Key << "Class Name" << YAML::Value << scriptComponent.ClassName;
+			out << YAML::EndMap;
+		}
 
 		if (entity.HasComponent<SpriteRendererComponent>())
 		{
@@ -306,6 +317,13 @@ namespace Ellie {
 			{
 				auto& sc = deserializedEntity.AddComponent<SpriteRendererComponent>();
 				sc.Color = spriteComponent["Color"].as<glm::vec4>();
+			}
+			
+			auto scriptComponent = entity["ScriptComponent"];
+			if (scriptComponent)
+			{
+				auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
+				sc.ClassName = scriptComponent["Class Name"].as<std::string>();
 			}
 
 			auto rb2d = entity["Rigidbody2DComponent"];
