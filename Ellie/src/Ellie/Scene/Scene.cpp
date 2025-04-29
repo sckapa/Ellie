@@ -107,12 +107,16 @@ namespace Ellie {
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
+
+		EntityMap[id] = entity;
+
 		return entity;
 	}
 
 	void Scene::DestroyEntity(Entity entity)
 	{
 		m_Registry.destroy(entity);
+		EntityMap.erase(entity.GetUUID());
 	}
 
 	void Scene::OnRuntimeStart()
@@ -176,6 +180,14 @@ namespace Ellie {
 		m_PhysicsWorld = nullptr;
 
 		ScriptEngine::OnRuntimeStop();
+	}
+
+	Entity Scene::GetEntityByUUID(UUID entityID)
+	{
+		if (EntityMap.find(entityID) != EntityMap.end())
+		{
+			return { EntityMap[entityID], this };
+		}
 	}
 
 	Entity Scene::GetPrimaryCameraEntity()

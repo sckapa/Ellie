@@ -7,11 +7,30 @@ namespace Ellie
     {
         public float X, Y, Z;
 
+        public static Vector3 Zero => new Vector3(0.0f);
+
         public Vector3(float x, float y, float z)
         {
             X = x;
             Y = y;
             Z = z;
+        }
+
+        public Vector3(float scalar)
+        {
+            X = scalar;
+            Y = scalar;
+            Z = scalar;
+        }
+
+        public static Vector3 operator*(Vector3 vector, float scalar)
+        {
+            return new Vector3(vector.X * scalar, vector.Y * scalar, vector.Z * scalar);
+        }
+
+        public static Vector3 operator+(Vector3 a, Vector3 b)
+        {
+            return new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
         }
     }
 
@@ -19,42 +38,43 @@ namespace Ellie
     {
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static void Normalize_Vector3(ref Vector3 param, out Vector3 outParam);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void Entity_GetTranslation(ulong entityID, out Vector3 outTranslation);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void Entity_SetTranslation(ulong entityID, ref Vector3 translation);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static bool Input_IsKeyDown(KeyCode keycode);
     }
 
     public class Entity
     {
         public Entity()
         {
-            //Console.WriteLine("Hello from constructor");
-
-            //Vector3 test = new Vector3(5, 2.5f, 1);
-            //Log(test);
+            ID = 0;
         }
 
-        public void PrintCustomMessage()
+        public readonly ulong ID;
+
+        public Entity(ulong id)
         {
-            Console.WriteLine("Hello from function");
+            ID = id;
         }
 
-        public void PrintInt(int param)
+        public Vector3 Translation
         {
-            Console.WriteLine(param);
+            get
+            {
+                InternalCalls.Entity_GetTranslation(ID, out Vector3 outTranslation);
+                return outTranslation;
+            }
+            set
+            {
+                InternalCalls.Entity_SetTranslation(ID, ref value);
+            }
         }
-
-        public void PrintInts(int param1, int param2)
-        {
-            Console.WriteLine($"{param1}, {param2}");
-        }
-
-        public void PrintCustomMessageWithParams(string param)
-        {
-            Console.WriteLine(param);
-        }
-
-        private void Log(Vector3 param)
-        {
-            InternalCalls.Normalize_Vector3(ref param, out Vector3 outParam);
-            Console.WriteLine($"{outParam.X}, {outParam.Y}, {outParam.Z}");
-        }
+        
     }
 }

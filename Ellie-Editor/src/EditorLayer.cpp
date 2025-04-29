@@ -71,19 +71,19 @@ namespace Ellie {
             void OnUpdate(Timestep ts)
             {
                 auto& tr = GetComponent<TransformComponent>().GetTransform();
-                if (Input::IsKeyPressed(EE_KEY_A))
+                if (Input::IsKeyPressed(A))
                 {
                     tr[3][0] -= 5.0f * ts;
                 }
-                if (Input::IsKeyPressed(EE_KEY_D))
+                if (Input::IsKeyPressed(D))
                 {
                     tr[3][0] += 5.0f * ts;
                 }
-                if (Input::IsKeyPressed(EE_KEY_W))
+                if (Input::IsKeyPressed(W))
                 {
                     tr[3][1] += 5.0f * ts;
                 }
-                if (Input::IsKeyPressed(EE_KEY_S))
+                if (Input::IsKeyPressed(S))
                 {
                     tr[3][1] -= 5.0f * ts;
                 }
@@ -289,7 +289,7 @@ namespace Ellie {
             auto& tc = selectedEntity.GetComponent<TransformComponent>();
             glm::mat4 transform = tc.GetTransform();
 
-            bool snap = Input::IsKeyPressed(EE_KEY_LEFT_CONTROL);
+            bool snap = Input::IsKeyPressed(Ellie::Key::LEFT_CONTROL);
             float snapValue = 0.5f;
             if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
             {
@@ -381,11 +381,11 @@ namespace Ellie {
             return false;
         }
 
-        bool control = Input::IsKeyPressed(EE_KEY_LEFT_CONTROL) || Input::IsKeyPressed(EE_KEY_RIGHT_CONTROL);
-        bool shift = Input::IsKeyPressed(EE_KEY_LEFT_SHIFT) || Input::IsKeyPressed(EE_KEY_RIGHT_SHIFT);
+        bool control = Input::IsKeyPressed(Ellie::Key::LEFT_CONTROL) || Input::IsKeyPressed(Ellie::Key::RIGHT_CONTROL);
+        bool shift = Input::IsKeyPressed(Ellie::Key::LEFT_SHIFT) || Input::IsKeyPressed(Ellie::Key::RIGHT_SHIFT);
         switch (e.GetKeyCode())
         {
-            case EE_KEY_S:
+            case Ellie::Key::S:
             {
                 if (control && shift)
                 {
@@ -397,7 +397,7 @@ namespace Ellie {
                 }
                 break;
             }
-            case EE_KEY_O:
+            case Ellie::Key::O:
             {
                 if (control)
                 {
@@ -405,7 +405,7 @@ namespace Ellie {
                 }
                 break;
             }
-            case EE_KEY_N:
+            case Ellie::Key::N:
             {
                 if (control)
                 {
@@ -415,7 +415,7 @@ namespace Ellie {
             }
 
             // Scene Controls
-            case EE_KEY_D:
+            case Ellie::Key::D:
             {
                 if (control)
                 {
@@ -425,22 +425,22 @@ namespace Ellie {
             }
 
             // Gizmo
-            case EE_KEY_Q:
+            case Ellie::Key::Q:
             {
                 m_GizmoType = ImGuizmo::OPERATION::UNIVERSAL;
                 break;
             }
-            case EE_KEY_W:
+            case Ellie::Key::W:
             {
                 m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
                 break;
             }
-            case EE_KEY_E:
+            case Ellie::Key::E:
             {
                 m_GizmoType = ImGuizmo::OPERATION::ROTATE;
                 break;
             }
-            case EE_KEY_R:
+            case Ellie::Key::R:
             {
                 m_GizmoType = ImGuizmo::OPERATION::SCALE;
                 break;
@@ -450,10 +450,10 @@ namespace Ellie {
 
     bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
     {
-        if ((e.GetMouseButton() == EE_MOUSE_BUTTON_LEFT) 
+        if ((e.GetMouseButton() == Ellie::Mouse::MOUSE_LEFT) 
             && isViewportHovered 
             && !ImGuizmo::IsOver() 
-            && !Input::IsKeyPressed(EE_KEY_LEFT_ALT))
+            && !Input::IsKeyPressed(Ellie::Key::LEFT_ALT))
         {
             m_SceneHierarchyPanel.SetSelectedEntity(m_SelectedEntity);
         }

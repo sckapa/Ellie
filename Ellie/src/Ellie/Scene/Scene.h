@@ -36,6 +36,7 @@ namespace Ellie {
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
 
+		Entity GetEntityByUUID(UUID entityID);
 		Entity GetPrimaryCameraEntity();
 
 	private:
@@ -45,10 +46,10 @@ namespace Ellie {
 
 		b2World* m_PhysicsWorld = nullptr;
 
+		std::unordered_map<UUID, entt::entity> EntityMap;
+
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 		friend class SceneSerializer;
 	};
-
 }
-

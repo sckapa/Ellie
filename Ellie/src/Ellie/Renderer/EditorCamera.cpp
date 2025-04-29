@@ -61,17 +61,17 @@ namespace Ellie {
 
 	void EditorCamera::OnUpdate(Timestep ts)
 	{
-		if (Input::IsKeyPressed(EE_KEY_LEFT_ALT))
+		if (Input::IsKeyPressed(Ellie::Key::LEFT_ALT))
 		{
 			const glm::vec2& mouse{ Input::GetMouseX(), Input::GetMouseY() };
 			glm::vec2 delta = (mouse - m_InitialMousePosition) * 0.003f;
 			m_InitialMousePosition = mouse;
 
-			if (Input::IsMouseButtonPressed(EE_MOUSE_BUTTON_MIDDLE))
+			if (Input::IsMouseButtonPressed(Ellie::Mouse::MOUSE_MIDDLE))
 				MousePan(delta);
-			else if (Input::IsMouseButtonPressed(EE_MOUSE_BUTTON_LEFT))
+			else if (Input::IsMouseButtonPressed(Ellie::Mouse::MOUSE_LEFT))
 				MouseRotate(delta);
-			else if (Input::IsMouseButtonPressed(EE_MOUSE_BUTTON_RIGHT))
+			else if (Input::IsMouseButtonPressed(Ellie::Mouse::MOUSE_RIGHT))
 				MouseZoom(delta.y);
 		}
 
