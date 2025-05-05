@@ -113,6 +113,7 @@ namespace Ellie {
 		LoadAssembly("Resources/Scripts/Ellie-ScriptCore.dll");
 		LoadAssemblyClasses(s_Data->CoreAssembly);
 
+		ScriptGlue::RegisterComponents();
 		ScriptGlue::RegisterFunctions();
 
 		// Retrieve and instantiate class with constructor
@@ -281,6 +282,11 @@ namespace Ellie {
 				s_Data->EntityClasses[fullname] = std::make_shared<ScriptClass>(nameSpace, name);
 			}
 		}
+	}
+
+	MonoImage* ScriptEngine::GetAssemblyCoreImage()
+	{
+		return s_Data->CoreAssemblyImage;
 	}
 
 	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className) : m_ClassName(className), m_ClassNamespace(classNamespace)

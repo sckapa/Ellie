@@ -11,6 +11,7 @@ extern "C" {
 	typedef struct _MonoObject MonoObject;
 	typedef struct _MonoMethod MonoMethod;
 	typedef struct _MonoAssembly MonoAssembly;
+	typedef struct _MonoImage MonoImage;
 }
 
 namespace Ellie {
@@ -47,6 +48,8 @@ namespace Ellie {
 		static Scene* GetSceneContext();
 		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
 		static bool EntityClassExists(const std::string& fullname);
+
+		static MonoImage* GetAssemblyCoreImage();
 	private:
 		static void InitMono();
 		static void ShutdownMono();
@@ -55,6 +58,7 @@ namespace Ellie {
 		static void LoadAssemblyClasses(MonoAssembly* assembly);
 
 		friend class ScriptClass;
+		friend class ScriptGlue;
 	};
 
 	class ScriptInstance
