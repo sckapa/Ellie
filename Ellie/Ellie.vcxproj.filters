@@ -183,6 +183,9 @@
     <ClInclude Include="src\Ellie\Scripting\ScriptEngine.h">
       <Filter>src\Ellie\Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ellie\Scripting\ScriptGlue.h">
+      <Filter>src\Ellie\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ellie\Utils\PlatformUtils.h">
       <Filter>src\Ellie\Utils</Filter>
     </ClInclude>
@@ -1467,7 +1470,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ellie\Scripting\ScriptGlue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Core\Application.cpp">
@@ -1539,6 +1541,9 @@
     <ClCompile Include="src\Ellie\Scripting\ScriptEngine.cpp">
       <Filter>src\Ellie\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ellie\Scripting\ScriptGlue.cpp">
+      <Filter>src\Ellie\Scripting</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1581,6 +1586,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ellie\Scripting\ScriptGlue.cpp" />
   </ItemGroup>
 </Project>

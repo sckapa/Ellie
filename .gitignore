@@ -3,8 +3,10 @@
 bin/
 bin-int/
 Intermediates/
+Binaries/
 
 # Files
 *.user
 *.csproj
 *.ini
+*.sln

@@ -146,7 +146,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Ellie\Scripting\ScriptGlue.h" />
     <ClInclude Include="src\Ellie.h" />
     <ClInclude Include="src\Ellie\Core\Application.h" />
     <ClInclude Include="src\Ellie\Core\Core.h" />
@@ -185,6 +184,7 @@
     <ClInclude Include="src\Ellie\Scene\SceneSerializer.h" />
     <ClInclude Include="src\Ellie\Scene\ScriptableEntity.h" />
     <ClInclude Include="src\Ellie\Scripting\ScriptEngine.h" />
+    <ClInclude Include="src\Ellie\Scripting\ScriptGlue.h" />
     <ClInclude Include="src\Ellie\Utils\PlatformUtils.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffers.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
@@ -615,7 +615,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ellie\Scripting\ScriptGlue.cpp" />
     <ClCompile Include="src\Ellie\Core\Application.cpp" />
     <ClCompile Include="src\Ellie\Core\Layer.cpp" />
     <ClCompile Include="src\Ellie\Core\LayerStack.cpp" />
@@ -639,6 +638,7 @@
     <ClCompile Include="src\Ellie\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Ellie\Scene\SceneSerializer.cpp" />
     <ClCompile Include="src\Ellie\Scripting\ScriptEngine.cpp" />
+    <ClCompile Include="src\Ellie\Scripting\ScriptGlue.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffers.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />

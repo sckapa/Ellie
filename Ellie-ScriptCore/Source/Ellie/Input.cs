@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ellie
 {
-    class Input
+    public class Input
     {
         public static bool IsKeyDown(KeyCode keycode)
         {

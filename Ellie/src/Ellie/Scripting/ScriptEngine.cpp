@@ -93,6 +93,9 @@ namespace Ellie {
 
 		MonoAssembly* CoreAssembly = nullptr;
 		MonoImage* CoreAssemblyImage = nullptr;
+		
+		MonoAssembly* AppAssembly = nullptr;
+		MonoImage* AppAssemblyImage = nullptr;
 
 		ScriptClass EntityClass;
 
@@ -111,13 +114,15 @@ namespace Ellie {
 		
 		InitMono();
 		LoadAssembly("Resources/Scripts/Ellie-ScriptCore.dll");
-		LoadAssemblyClasses(s_Data->CoreAssembly);
+		LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
+
+		LoadAssemblyClasses();
 
 		ScriptGlue::RegisterComponents();
 		ScriptGlue::RegisterFunctions();
 
 		// Retrieve and instantiate class with constructor
-		s_Data->EntityClass = ScriptClass("Ellie", "Entity");
+		s_Data->EntityClass = ScriptClass("Ellie", "Entity", true);
 #if 0
 		MonoObject* instance = s_Data->EntityClass.Instantiate();
 
@@ -214,6 +219,14 @@ namespace Ellie {
 		s_Data->CoreAssemblyImage = mono_assembly_get_image(s_Data->CoreAssembly);
 		// Utils::PrintAssemblyTypes(s_Data->CoreAssembly);
 	}
+	
+	void ScriptEngine::LoadAppAssembly(const std::filesystem::path& filepath)
+	{
+		// Move this later
+		s_Data->AppAssembly = Utils::LoadMonoAssembly(filepath);
+		s_Data->AppAssemblyImage = mono_assembly_get_image(s_Data->AppAssembly);
+		// Utils::PrintAssemblyTypes(s_Data->AppAssembly);
+	}
 
 	Scene* ScriptEngine::GetSceneContext()
 	{
@@ -242,24 +255,23 @@ namespace Ellie {
 		return instance;
 	}
 
-	void ScriptEngine::LoadAssemblyClasses(MonoAssembly* assembly)
+	void ScriptEngine::LoadAssemblyClasses()
 	{
 		s_Data->EntityClasses.clear();
 
-		MonoImage* image = mono_assembly_get_image(assembly);
-		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
+		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(s_Data->AppAssemblyImage, MONO_TABLE_TYPEDEF);
 		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
 
 		std::string fullname;
-		MonoClass* entityClass = mono_class_from_name(image, "Ellie", "Entity");
+		MonoClass* entityClass = mono_class_from_name(s_Data->CoreAssemblyImage, "Ellie", "Entity");
 
 		for (int32_t i = 0; i < numTypes; i++)
 		{
 			uint32_t cols[MONO_TYPEDEF_SIZE];
 			mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
 
-			const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
-			const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
+			const char* nameSpace = mono_metadata_string_heap(s_Data->AppAssemblyImage, cols[MONO_TYPEDEF_NAMESPACE]);
+			const char* name = mono_metadata_string_heap(s_Data->AppAssemblyImage, cols[MONO_TYPEDEF_NAME]);
 
 			if (strlen(nameSpace) != 0)
 			{
@@ -270,7 +282,7 @@ namespace Ellie {
 				fullname = name;
 			}
 
-			MonoClass* monoClass = mono_class_from_name(image, nameSpace, name);
+			MonoClass* monoClass = mono_class_from_name(s_Data->AppAssemblyImage, nameSpace, name);
 			if (monoClass == entityClass)
 			{
 				continue;
@@ -289,9 +301,9 @@ namespace Ellie {
 		return s_Data->CoreAssemblyImage;
 	}
 
-	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className) : m_ClassName(className), m_ClassNamespace(classNamespace)
+	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className, bool isCore) : m_ClassName(className), m_ClassNamespace(classNamespace)
 	{
-		m_monoClass = mono_class_from_name(s_Data->CoreAssemblyImage, classNamespace.c_str(), className.c_str());
+		m_monoClass = mono_class_from_name(isCore ? s_Data->CoreAssemblyImage : s_Data->AppAssemblyImage, classNamespace.c_str(), className.c_str());
 	}
 
 	MonoObject* ScriptClass::Instantiate()
@@ -324,13 +336,19 @@ namespace Ellie {
 
 	void ScriptInstance::InvokeOnCreate()
 	{
-		m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
+		if(m_OnCreateMethod)
+		{
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
+		}
 	}
 
 	void ScriptInstance::InvokeOnUpdate(float ts)
 	{
-		void* param = &ts;
-		m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
+		if(m_OnUpdateMethod)
+		{
+			void* param = &ts;
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
+		}
 	}
 
 }
