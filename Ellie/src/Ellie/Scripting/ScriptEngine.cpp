@@ -9,11 +9,35 @@
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/appdomain.h>
+#include <mono/metadata/tabledefs.h>
 
 namespace Ellie {
 
 	namespace Utils
 	{
+		static std::unordered_map<std::string, ScriptFieldType> s_ScriptFieldTypeMap =
+		{
+			{"System.Single", ScriptFieldType::Float},
+			{"System.Double", ScriptFieldType::Double},
+
+			{"System.Boolean", ScriptFieldType::Bool},
+			{"System.Char", ScriptFieldType::Char},
+			{"System.Byte", ScriptFieldType::Byte},
+			{"System.Int16", ScriptFieldType::Short},
+			{"System.Int32", ScriptFieldType::Int},
+			{"System.Int64", ScriptFieldType::Long},
+
+			{"System.UInt16", ScriptFieldType::UShort},
+			{"System.UInt32", ScriptFieldType::UInt},
+			{"System.UInt64", ScriptFieldType::ULong},
+
+			{"Ellie.Vector2", ScriptFieldType::Vector2},
+			{"Ellie.Vector3", ScriptFieldType::Vector3},
+			{"Ellie.Vector4", ScriptFieldType::Vector4},
+
+			{"Ellie.Entity", ScriptFieldType::Entity}
+		};
+
 		static char* ReadBytes(const std::filesystem::path& filepath, uint32_t* outSize)
 		{
 			std::ifstream stream(filepath, std::ios::binary | std::ios::ate);
@@ -83,6 +107,44 @@ namespace Ellie {
 			delete[] fileData;
 
 			return assembly;
+		}
+
+		static ScriptFieldType MonoTypeToScriptFieldType(MonoType* type)
+		{
+			std::string typeName = mono_type_get_name(type);
+			//EE_WARN(typeName);
+
+			auto it = s_ScriptFieldTypeMap.find(typeName);
+			if (it == s_ScriptFieldTypeMap.end())
+			{
+				return ScriptFieldType::None;
+			}
+
+			return it->second;
+		}
+
+		static std::string ScriptFieldTypeToString(ScriptFieldType type)
+		{
+			switch (type)
+			{
+				case Ellie::ScriptFieldType::Float:   return "Float";
+				case Ellie::ScriptFieldType::Double:  return "Double";
+				case Ellie::ScriptFieldType::Char:    return "Char";
+				case Ellie::ScriptFieldType::Bool:    return "Boolean";
+				case Ellie::ScriptFieldType::Byte:    return "Byte";
+				case Ellie::ScriptFieldType::Short:   return "Short";
+				case Ellie::ScriptFieldType::Int:     return "Integer";
+				case Ellie::ScriptFieldType::Long:    return "Long";
+				case Ellie::ScriptFieldType::UShort:  return "UShort";
+				case Ellie::ScriptFieldType::UInt:    return "UInteger";
+				case Ellie::ScriptFieldType::ULong:   return "ULong";
+				case Ellie::ScriptFieldType::Vector2: return "Vector2";
+				case Ellie::ScriptFieldType::Vector3: return "Vector3";
+				case Ellie::ScriptFieldType::Vector4: return "Vector4";
+				case Ellie::ScriptFieldType::Entity:  return "Entity";
+			}
+
+			return "<Invalid>";
 		}
 	}
 
@@ -271,27 +333,45 @@ namespace Ellie {
 			mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
 
 			const char* nameSpace = mono_metadata_string_heap(s_Data->AppAssemblyImage, cols[MONO_TYPEDEF_NAMESPACE]);
-			const char* name = mono_metadata_string_heap(s_Data->AppAssemblyImage, cols[MONO_TYPEDEF_NAME]);
+			const char* className = mono_metadata_string_heap(s_Data->AppAssemblyImage, cols[MONO_TYPEDEF_NAME]);
 
 			if (strlen(nameSpace) != 0)
 			{
-				fullname = fmt::format("{}.{}", nameSpace, name);
+				fullname = fmt::format("{}.{}", nameSpace, className);
 			}
 			else
 			{
-				fullname = name;
+				fullname = className;
 			}
 
-			MonoClass* monoClass = mono_class_from_name(s_Data->AppAssemblyImage, nameSpace, name);
+			MonoClass* monoClass = mono_class_from_name(s_Data->AppAssemblyImage, nameSpace, className);
 			if (monoClass == entityClass)
 			{
 				continue;
 			}
 
 			bool isEntity = mono_class_is_subclass_of(monoClass, entityClass, false);
-			if (isEntity)
+			if (!isEntity)
 			{
-				s_Data->EntityClasses[fullname] = std::make_shared<ScriptClass>(nameSpace, name);
+				continue;
+			}
+
+			Ref<ScriptClass> scriptClass = std::make_shared<ScriptClass>(nameSpace, className);
+			s_Data->EntityClasses[fullname] = scriptClass;
+
+			void* iter = nullptr;
+			EE_TRACE(className);
+			while (MonoClassField* field = mono_class_get_fields(monoClass, &iter))
+			{
+				std::string fieldName = mono_field_get_name(field);
+				uint32_t flags = mono_field_get_flags(field);
+
+				if (flags & FIELD_ATTRIBUTE_PUBLIC)
+				{
+					ScriptFieldType scriptFieldType = Utils::MonoTypeToScriptFieldType(mono_field_get_type(field));
+					std::string scriptTypeName = Utils::ScriptFieldTypeToString(scriptFieldType);
+					scriptClass->m_PublicFields[fieldName] = { scriptFieldType, fieldName, field };
+				}
 			}
 		}
 	}
@@ -299,6 +379,17 @@ namespace Ellie {
 	MonoImage* ScriptEngine::GetAssemblyCoreImage()
 	{
 		return s_Data->CoreAssemblyImage;
+	}
+
+	Ref<ScriptInstance> ScriptEngine::GetScriptInstanceFromUUID(UUID id)
+	{
+		auto it = s_Data->EntityInstances.find(id);
+		if (it == s_Data->EntityInstances.end())
+		{
+			return nullptr;
+		}
+
+		return it->second;
 	}
 
 	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className, bool isCore) : m_ClassName(className), m_ClassNamespace(classNamespace)
@@ -349,6 +440,36 @@ namespace Ellie {
 			void* param = &ts;
 			m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
 		}
+	}
+
+	bool ScriptInstance::GetFieldValueInternal(const std::string& fieldName, void* buffer)
+	{
+		const auto& fields = m_ScriptClass->GetPublicFields();
+
+		auto it = fields.find(fieldName);
+		if (it == fields.end())
+		{
+			return false;
+		}
+
+		const ScriptFields& type = it->second;
+		mono_field_get_value(m_Instance, type.field, buffer);
+		return true;
+	}
+
+	bool ScriptInstance::SetFieldValueInternal(const std::string& fieldName, const void* data)
+	{
+		const auto& fields = m_ScriptClass->GetPublicFields();
+
+		auto it = fields.find(fieldName);
+		if (it == fields.end())
+		{
+			return false;
+		}
+
+		const ScriptFields& type = it->second;
+		mono_field_set_value(m_Instance, type.field, (void*)data);
+		return true;
 	}
 
 }

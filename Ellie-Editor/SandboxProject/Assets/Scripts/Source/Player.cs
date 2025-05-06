@@ -10,16 +10,19 @@ namespace Sandbox
 {
     class Player : Entity
     {
+        public float Speed;
+
         void OnCreate()
         {
             Console.WriteLine($"Create - {ID}");
+            Speed = 0.025f;
         }
 
         void OnUpdate(float ts)
         {
-            Console.WriteLine($"Update : {ts} - {Translation.X}");
+            //Console.WriteLine($"Update : {ts} - {Translation.X}");
 
-            float speed = 10.0f;
+            float speed = Speed;
             Vector3 velocity = Vector3.Zero;
 
             if (Input.IsKeyDown(KeyCode.W))

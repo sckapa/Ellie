@@ -310,7 +310,7 @@ namespace Ellie {
 			DrawVec3Control("Scale", component.Scale, 1.0f);
 		});
 		
-		DrawComponents<ScriptComponent>("Script", entity, [](auto& component)
+		DrawComponents<ScriptComponent>("Script", entity, [entity](auto& component) mutable
 		{
 			bool scriptClassExists = ScriptEngine::EntityClassExists(component.ClassName);
 
@@ -325,6 +325,24 @@ namespace Ellie {
 			if (ImGui::InputText("Class", buffer, sizeof(buffer)))
 			{
 				component.ClassName = buffer;
+			}
+
+			Ref<ScriptInstance> scriptInstance = ScriptEngine::GetScriptInstanceFromUUID(entity.GetUUID());
+			if (scriptInstance)
+			{
+				const auto& fields = scriptInstance->GetScriptClass()->GetPublicFields();
+
+				for (const auto& [fieldName, field] : fields)
+				{
+					if (field.type == ScriptFieldType::Float)
+					{
+						float data = scriptInstance->GetFieldValue<float>(fieldName);
+						if (ImGui::DragFloat(fieldName.c_str(), &data))
+						{
+							scriptInstance->SetFieldValue<float>(fieldName, data);
+						}
+					}
+				}
 			}
 
 			if (!scriptClassExists)
