@@ -15,14 +15,13 @@ namespace Sandbox
         void OnCreate()
         {
             Console.WriteLine($"Create - {ID}");
-            Speed = 0.025f;
+            Speed = 5f;
         }
 
         void OnUpdate(float ts)
         {
             //Console.WriteLine($"Update : {ts} - {Translation.X}");
 
-            float speed = Speed;
             Vector3 velocity = Vector3.Zero;
 
             if (Input.IsKeyDown(KeyCode.W))
@@ -43,7 +42,7 @@ namespace Sandbox
                 velocity.X = 1.0f;
             }
 
-            velocity *= speed;
+            velocity *= Speed;
 
             Vector3 translation = Translation;
             translation += velocity * ts;
