@@ -46,53 +46,6 @@ namespace Ellie {
         m_EditorScene = std::make_shared<Scene>();
 
         m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
-
-#if 0
-
-        auto square = m_ActiveScene->CreateEntity("Blue Square");
-        square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f,0.0f,1.0f,1.0f });
-
-        m_SquareEntity = square;
-
-        m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
-        m_CameraEntity.AddComponent<CameraComponent>();
-
-        class CameraController : public ScriptableEntity
-        {
-        public:
-            void OnCreate()
-            {
-            }
-
-            void OnDestroy()
-            {
-            }
-
-            void OnUpdate(Timestep ts)
-            {
-                auto& tr = GetComponent<TransformComponent>().GetTransform();
-                if (Input::IsKeyPressed(A))
-                {
-                    tr[3][0] -= 5.0f * ts;
-                }
-                if (Input::IsKeyPressed(D))
-                {
-                    tr[3][0] += 5.0f * ts;
-                }
-                if (Input::IsKeyPressed(W))
-                {
-                    tr[3][1] += 5.0f * ts;
-                }
-                if (Input::IsKeyPressed(S))
-                {
-                    tr[3][1] -= 5.0f * ts;
-                }
-            }
-        };
-
-        m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-
-#endif
     }
 
     void EditorLayer::OnDetach()
@@ -541,4 +494,5 @@ namespace Ellie {
 
         m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
+
 }
