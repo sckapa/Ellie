@@ -39,8 +39,11 @@ namespace Ellie {
 		Entity GetEntityByUUID(UUID entityID);
 		Entity GetPrimaryCameraEntity();
 
+		bool IsSceneRunning() const { return isSceneRunning; }
+
 	private:
 		entt::registry m_Registry;
+		bool isSceneRunning = false;
 
 		uint32_t m_ViewportWidth = 0.0f, m_ViewportHeight = 0.0f;
 

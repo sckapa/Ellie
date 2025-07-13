@@ -15,7 +15,6 @@ namespace Sandbox
         void OnCreate()
         {
             Console.WriteLine($"Create - {ID}");
-            Speed = 5f;
         }
 
         void OnUpdate(float ts)

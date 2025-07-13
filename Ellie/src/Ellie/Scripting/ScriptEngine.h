@@ -34,6 +34,32 @@ namespace Ellie {
 		std::string name;
 		MonoClassField* field;
 	};
+	
+	struct ScriptFieldInstance
+	{
+		ScriptFields field;
+
+		template<typename T>
+		T GetValue()
+		{
+			static_assert(sizeof(T) <= 8, "Type too large!");
+			return *(T*)m_Buffer;
+		}
+
+		template<typename T>
+		void SetValue(T data)
+		{
+			static_assert(sizeof(T) <= 8, "Type too large!");
+			memcpy(m_Buffer, &data, sizeof(T));
+		}
+
+	private:
+		uint8_t m_Buffer[8];
+
+		friend class ScriptEngine;
+	};
+
+	using ScriptFieldMap = std::unordered_map<std::string, ScriptFieldInstance>;
 
 	class ScriptClass
 	{
@@ -70,6 +96,8 @@ namespace Ellie {
 		template<typename T>
 		T GetFieldValue(const std::string& fieldName)
 		{
+			static_assert(sizeof(T) <= 8, "Type too large!");
+
 			bool success = GetFieldValueInternal(fieldName, s_FieldValueBuffer);
 			if (!success)
 			{
@@ -80,8 +108,9 @@ namespace Ellie {
 		}
 		
 		template<typename T>
-		void SetFieldValue(const std::string& fieldName, const T& data)
+		void SetFieldValue(const std::string& fieldName, T data)
 		{
+			static_assert(sizeof(T) <= 8, "Type too large!");
 			SetFieldValueInternal(fieldName, &data);
 		}
 
@@ -97,6 +126,8 @@ namespace Ellie {
 		MonoMethod* m_OnUpdateMethod = nullptr;
 
 		inline static char s_FieldValueBuffer[8];
+
+		friend class ScriptEngine;
 	};
 
 	class ScriptEngine
@@ -115,12 +146,15 @@ namespace Ellie {
 		static void LoadAppAssembly(const std::filesystem::path& filepath);
 
 		static Scene* GetSceneContext();
+		static Ref<ScriptClass> GetEntityClass(std::string& name);
 		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
 		static bool EntityClassExists(const std::string& fullname);
 
 		static MonoImage* GetAssemblyCoreImage();
 
 		static Ref<ScriptInstance> GetScriptInstanceFromUUID(UUID id);
+
+		static ScriptFieldMap& GetScriptFieldMap(Entity entity);
 	private:
 		static void InitMono();
 		static void ShutdownMono();

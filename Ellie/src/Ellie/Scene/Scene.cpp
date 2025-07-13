@@ -172,6 +172,8 @@ namespace Ellie {
 				ScriptEngine::OnCreateEntity(entity);
 			}
 		}
+
+		isSceneRunning = true;
 	}
 
 	void Scene::OnRuntimeStop()
@@ -180,6 +182,8 @@ namespace Ellie {
 		m_PhysicsWorld = nullptr;
 
 		ScriptEngine::OnRuntimeStop();
+
+		isSceneRunning = false;
 	}
 
 	Entity Scene::GetEntityByUUID(UUID entityID)

@@ -164,6 +164,8 @@ namespace Ellie {
 		std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
 		std::unordered_map<UUID, Ref<ScriptInstance>> EntityInstances;
 
+		std::unordered_map<UUID, ScriptFieldMap> EntityScriptField;
+
 		// Runtime
 		Scene* SceneContext = nullptr;
 	};
@@ -239,8 +241,20 @@ namespace Ellie {
 		const auto& sc = entity.GetComponent<ScriptComponent>();
 		if (ScriptEngine::EntityClassExists(sc.ClassName))
 		{
+			UUID entityID = entity.GetUUID();
+
 			Ref<ScriptInstance> instance = std::make_shared<ScriptInstance>(s_Data->EntityClasses[sc.ClassName], entity);
-			s_Data->EntityInstances[entity.GetUUID()] = instance;
+			s_Data->EntityInstances[entityID] = instance;
+
+			// Copy changed fields from editor to play mode
+			if (s_Data->EntityScriptField.find(entityID) != s_Data->EntityScriptField.end())
+			{
+				ScriptFieldMap& scriptFieldMap = s_Data->EntityScriptField.at(entityID);
+				for (const auto& [name, fieldInstance] : scriptFieldMap)
+				{
+					instance->SetFieldValueInternal(name, fieldInstance.m_Buffer);
+				}
+			}
 			instance->InvokeOnCreate();
 		}
 	}
@@ -293,6 +307,16 @@ namespace Ellie {
 	Scene* ScriptEngine::GetSceneContext()
 	{
 		return s_Data->SceneContext;
+	}
+
+	Ref<ScriptClass> ScriptEngine::GetEntityClass(std::string& name)
+	{
+		if (s_Data->EntityClasses.find(name) == s_Data->EntityClasses.end())
+		{
+			return nullptr;
+		}
+
+		return s_Data->EntityClasses.at(name);
 	}
 
 	std::unordered_map<std::string, Ref<ScriptClass>> ScriptEngine::GetEntityClasses()
@@ -390,6 +414,15 @@ namespace Ellie {
 		}
 
 		return it->second;
+	}
+
+	ScriptFieldMap& ScriptEngine::GetScriptFieldMap(Entity entity)
+	{
+		EE_ASSERT(entity.IsValid(), "Entity null!");
+
+		UUID uuid = entity.GetUUID();
+
+		return s_Data->EntityScriptField[uuid];
 	}
 
 	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className, bool isCore) : m_ClassName(className), m_ClassNamespace(classNamespace)

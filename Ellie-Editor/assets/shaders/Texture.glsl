@@ -37,9 +37,11 @@ in vec4 v_Color;
 flat in float v_TexIndex;
 flat in int v_EntityID;
 
+vec4 col;
+
 void main()
 {
-    vec4 col = texture(u_Textures[int(v_TexIndex)], v_TexCoords) * v_Color;
+    col = texture(u_Textures[int(v_TexIndex)], v_TexCoords) * v_Color;
 
     if(col.w <= 0)
     {
