@@ -42,19 +42,19 @@ namespace Ellie {
 		template<typename T>
 		T GetValue()
 		{
-			static_assert(sizeof(T) <= 8, "Type too large!");
+			static_assert(sizeof(T) <= 16, "Type too large!");
 			return *(T*)m_Buffer;
 		}
 
 		template<typename T>
 		void SetValue(T data)
 		{
-			static_assert(sizeof(T) <= 8, "Type too large!");
+			static_assert(sizeof(T) <= 16, "Type too large!");
 			memcpy(m_Buffer, &data, sizeof(T));
 		}
 
 	private:
-		uint8_t m_Buffer[8];
+		uint8_t m_Buffer[16];
 
 		friend class ScriptEngine;
 	};
@@ -96,7 +96,7 @@ namespace Ellie {
 		template<typename T>
 		T GetFieldValue(const std::string& fieldName)
 		{
-			static_assert(sizeof(T) <= 8, "Type too large!");
+			static_assert(sizeof(T) <= 16, "Type too large!");
 
 			bool success = GetFieldValueInternal(fieldName, s_FieldValueBuffer);
 			if (!success)
@@ -110,7 +110,7 @@ namespace Ellie {
 		template<typename T>
 		void SetFieldValue(const std::string& fieldName, T data)
 		{
-			static_assert(sizeof(T) <= 8, "Type too large!");
+			static_assert(sizeof(T) <= 16, "Type too large!");
 			SetFieldValueInternal(fieldName, &data);
 		}
 
@@ -125,7 +125,7 @@ namespace Ellie {
 		MonoMethod* m_OnCreateMethod = nullptr;
 		MonoMethod* m_OnUpdateMethod = nullptr;
 
-		inline static char s_FieldValueBuffer[8];
+		inline static char s_FieldValueBuffer[16];
 
 		friend class ScriptEngine;
 	};

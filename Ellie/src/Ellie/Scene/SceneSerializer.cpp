@@ -2,6 +2,8 @@
 #include "SceneSerializer.h"
 #include <yaml-cpp/yaml.h>
 #include "Ellie/Scene/Components.h"
+#include "Ellie/Core/UUID.h"
+#include "Ellie/Scripting/ScriptEngine.h"
 #include <fstream>
 #include "ScriptableEntity.h"
 
@@ -27,6 +29,28 @@ namespace YAML {
 
 			rhs.x = node[0].as<float>();
 			rhs.y = node[1].as<float>();
+			return true;
+ 		}
+	};
+	
+	template<>
+	struct convert<Ellie::UUID>
+	{
+		static Node encode(const Ellie::UUID& uuid)
+		{
+			Node node;
+			node.push_back(uuid);
+			return node;
+		}
+
+		static bool decode(const Node& node, Ellie::UUID& uuid)
+		{
+			if (!node.IsSequence() || node.size() != 2)
+			{
+				return false;
+			}
+
+			uuid = node[0].as<float>();
 			return true;
  		}
 	};
@@ -88,6 +112,60 @@ namespace YAML {
 }
 
 namespace Ellie {
+
+#define WRITE_FIELD_DATA(FieldType, Type) case ScriptFieldType::FieldType:\
+											out << YAML::Value << scriptFieldInstance.GetValue<Type>();\
+											break
+
+	namespace Utils {
+
+		static const char* ScriptFieldTypeToString(Ellie::ScriptFieldType type)
+		{
+			switch (type)
+			{
+			case Ellie::ScriptFieldType::Float:   return "Float";
+			case Ellie::ScriptFieldType::Double:  return "Double";
+			case Ellie::ScriptFieldType::Char:    return "Char";
+			case Ellie::ScriptFieldType::Bool:    return "Boolean";
+			case Ellie::ScriptFieldType::Byte:    return "Byte";
+			case Ellie::ScriptFieldType::Short:   return "Short";
+			case Ellie::ScriptFieldType::Int:     return "Integer";
+			case Ellie::ScriptFieldType::Long:    return "Long";
+			case Ellie::ScriptFieldType::UShort:  return "UShort";
+			case Ellie::ScriptFieldType::UInt:    return "UInteger";
+			case Ellie::ScriptFieldType::ULong:   return "ULong";
+			case Ellie::ScriptFieldType::Vector2: return "Vector2";
+			case Ellie::ScriptFieldType::Vector3: return "Vector3";
+			case Ellie::ScriptFieldType::Vector4: return "Vector4";
+			case Ellie::ScriptFieldType::Entity:  return "Entity";
+			}
+
+			return "<Invalid>";
+		}
+
+		static Ellie::ScriptFieldType ScriptFieldTypeFromString(std::string_view type)
+		{
+			if (type == "Float")    return Ellie::ScriptFieldType::Float;
+			if (type == "Double")   return Ellie::ScriptFieldType::Double;
+			if (type == "Char")     return Ellie::ScriptFieldType::Char;
+			if (type == "Bool")     return Ellie::ScriptFieldType::Bool;
+			if (type == "Byte")     return Ellie::ScriptFieldType::Byte;
+			if (type == "Short")    return Ellie::ScriptFieldType::Short;
+			if (type == "Int")      return Ellie::ScriptFieldType::Int;
+			if (type == "Long")     return Ellie::ScriptFieldType::Long;
+			if (type == "UShort")   return Ellie::ScriptFieldType::UShort;
+			if (type == "UInt")     return Ellie::ScriptFieldType::UInt;
+			if (type == "ULong")    return Ellie::ScriptFieldType::ULong;
+			if (type == "Vector2")  return Ellie::ScriptFieldType::Vector2;
+			if (type == "Vector3")  return Ellie::ScriptFieldType::Vector3;
+			if (type == "Vector4")  return Ellie::ScriptFieldType::Vector4;
+			if (type == "Entity")   return Ellie::ScriptFieldType::Entity;
+
+			EE_ASSERT(false, "Unknown type!")
+				return Ellie::ScriptFieldType::None;
+		}
+
+	}
 
 	YAML::Emitter& operator <<(YAML::Emitter& out, const glm::vec2 v)
 	{
@@ -189,6 +267,52 @@ namespace Ellie {
 			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
 
 			out << YAML::Key << "Class Name" << YAML::Value << scriptComponent.ClassName;
+
+			Ref<ScriptClass> scriptClass = ScriptEngine::GetEntityClass(scriptComponent.ClassName);
+			const auto& fields = scriptClass->GetPublicFields();
+
+			if (fields.size() > 0)
+			{
+				out << YAML::Key << "ScriptFields" << YAML::Value;
+				out << YAML::BeginSeq;
+				ScriptFieldMap& scriptFieldMap = ScriptEngine::GetScriptFieldMap(entity);
+				for (auto& [name, field] : fields)
+				{
+					if (scriptFieldMap.find(name) == scriptFieldMap.end())
+					{
+						continue;
+					}
+
+					out << YAML::BeginMap;
+					out << YAML::Key << "Name" << YAML::Value << name;
+					out << YAML::Key << "Type" << YAML::Value << Utils::ScriptFieldTypeToString(field.type);
+					out << YAML::Key << "Data" << YAML::Value;
+
+					ScriptFieldInstance& scriptFieldInstance = scriptFieldMap.at(name);
+					
+					switch (field.type)
+					{
+						WRITE_FIELD_DATA(Float, float);
+						WRITE_FIELD_DATA(Double, double);
+						WRITE_FIELD_DATA(Bool, bool);
+						WRITE_FIELD_DATA(Byte, int8_t);
+						WRITE_FIELD_DATA(Short, int16_t);
+						WRITE_FIELD_DATA(Int, int32_t);
+						WRITE_FIELD_DATA(Long, int64_t);
+						WRITE_FIELD_DATA(Char, uint8_t);
+						WRITE_FIELD_DATA(UShort, uint16_t);
+						WRITE_FIELD_DATA(UInt, uint32_t);
+						WRITE_FIELD_DATA(ULong, uint64_t);
+						WRITE_FIELD_DATA(Vector2, glm::vec2);
+						WRITE_FIELD_DATA(Vector3, glm::vec3);
+						WRITE_FIELD_DATA(Vector4, glm::vec4);
+						WRITE_FIELD_DATA(Entity, UUID);
+					}
+					out << YAML::EndMap;
+				}
+				out << YAML::EndSeq;
+			}
+
 			out << YAML::EndMap;
 		}
 

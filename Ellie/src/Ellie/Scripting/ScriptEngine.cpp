@@ -122,30 +122,6 @@ namespace Ellie {
 
 			return it->second;
 		}
-
-		static std::string ScriptFieldTypeToString(ScriptFieldType type)
-		{
-			switch (type)
-			{
-				case Ellie::ScriptFieldType::Float:   return "Float";
-				case Ellie::ScriptFieldType::Double:  return "Double";
-				case Ellie::ScriptFieldType::Char:    return "Char";
-				case Ellie::ScriptFieldType::Bool:    return "Boolean";
-				case Ellie::ScriptFieldType::Byte:    return "Byte";
-				case Ellie::ScriptFieldType::Short:   return "Short";
-				case Ellie::ScriptFieldType::Int:     return "Integer";
-				case Ellie::ScriptFieldType::Long:    return "Long";
-				case Ellie::ScriptFieldType::UShort:  return "UShort";
-				case Ellie::ScriptFieldType::UInt:    return "UInteger";
-				case Ellie::ScriptFieldType::ULong:   return "ULong";
-				case Ellie::ScriptFieldType::Vector2: return "Vector2";
-				case Ellie::ScriptFieldType::Vector3: return "Vector3";
-				case Ellie::ScriptFieldType::Vector4: return "Vector4";
-				case Ellie::ScriptFieldType::Entity:  return "Entity";
-			}
-
-			return "<Invalid>";
-		}
 	}
 
 	struct ScriptEngineData
@@ -393,7 +369,6 @@ namespace Ellie {
 				if (flags & FIELD_ATTRIBUTE_PUBLIC)
 				{
 					ScriptFieldType scriptFieldType = Utils::MonoTypeToScriptFieldType(mono_field_get_type(field));
-					std::string scriptTypeName = Utils::ScriptFieldTypeToString(scriptFieldType);
 					scriptClass->m_PublicFields[fieldName] = { scriptFieldType, fieldName, field };
 				}
 			}
