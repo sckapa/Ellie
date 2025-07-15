@@ -207,7 +207,7 @@ namespace Ellie {
 
         isViewportFocused = ImGui::IsWindowFocused();
         isViewportHovered = ImGui::IsWindowHovered();
-        Application::Get().GetImGuiLayer()->SetBlocked(!isViewportFocused && !isViewportHovered);
+        Application::Get().GetImGuiLayer()->SetBlocked(!isViewportHovered);
 
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         m_ViewportSize = { viewportPanelSize.x,viewportPanelSize.y };

@@ -39,18 +39,13 @@ namespace YAML {
 		static Node encode(const Ellie::UUID& uuid)
 		{
 			Node node;
-			node.push_back(uuid);
+			node.push_back((uint64_t)uuid);
 			return node;
 		}
 
 		static bool decode(const Node& node, Ellie::UUID& uuid)
 		{
-			if (!node.IsSequence() || node.size() != 2)
-			{
-				return false;
-			}
-
-			uuid = node[0].as<float>();
+			uuid = node.as<uint64_t>();
 			return true;
  		}
 	};
@@ -116,6 +111,13 @@ namespace Ellie {
 #define WRITE_FIELD_DATA(FieldType, Type) case ScriptFieldType::FieldType:\
 											out << YAML::Value << scriptFieldInstance.GetValue<Type>();\
 											break
+
+#define READ_FIELD_DATA(FieldType, Type) case ScriptFieldType::FieldType:\
+											{\
+												Type data = scriptField["Data"].as<Type>();\
+												fieldInstance.SetValue(data);\
+												break;\
+											}
 
 	namespace Utils {
 
@@ -448,6 +450,43 @@ namespace Ellie {
 			{
 				auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
 				sc.ClassName = scriptComponent["Class Name"].as<std::string>();
+
+				auto& scriptFields = scriptComponent["ScriptFields"];
+				if (scriptFields)
+				{
+					ScriptFieldMap& scriptFieldMap = ScriptEngine::GetScriptFieldMap(deserializedEntity);
+					const auto& entityClass = ScriptEngine::GetEntityClass(sc.ClassName);
+					auto& fields = entityClass->GetPublicFields();
+
+					for (auto& scriptField : scriptFields)
+					{
+						std::string& name = scriptField["Name"].as<std::string>();
+						std::string& typeString = scriptField["Type"].as<std::string>();
+						const ScriptFieldType& Type = Utils::ScriptFieldTypeFromString(typeString);
+
+						ScriptFieldInstance& fieldInstance = scriptFieldMap[name];
+						fieldInstance.field = fields.at(name);
+
+						switch (Type)
+						{
+							READ_FIELD_DATA(Float, float);
+							READ_FIELD_DATA(Double, double);
+							READ_FIELD_DATA(Bool, bool);
+							READ_FIELD_DATA(Byte, int8_t);
+							READ_FIELD_DATA(Short, int16_t);
+							READ_FIELD_DATA(Int, int32_t);
+							READ_FIELD_DATA(Long, int64_t);
+							READ_FIELD_DATA(Char, uint8_t);
+							READ_FIELD_DATA(UShort, uint16_t);
+							READ_FIELD_DATA(UInt, uint32_t);
+							READ_FIELD_DATA(ULong, uint64_t);
+							READ_FIELD_DATA(Vector2, glm::vec2);
+							READ_FIELD_DATA(Vector3, glm::vec3);
+							READ_FIELD_DATA(Vector4, glm::vec4);
+							READ_FIELD_DATA(Entity, UUID);
+						}
+					}
+				}
 			}
 
 			auto rb2d = entity["Rigidbody2DComponent"];

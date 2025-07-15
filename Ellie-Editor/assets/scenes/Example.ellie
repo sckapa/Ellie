@@ -1,34 +1,35 @@
 Scene: Untitled
 Entities:
-  - Entity: 12699817401513986172
+  - Entity: 10159372250841173636
     TagComponent:
-      Tag: Camera
+      Tag: Empty Entity
     TransformComponent:
-      Translation: [0, 0, 4.598357]
+      Translation: [-2.974987, 0, 0]
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 1
-        PerspectiveFOV: 0.7853982
-        PerspectiveNear: 0.01
-        PerspectiveFar: 1000
-        OrthoGraphicSize: 10
-        OrthographicNear: -1
-        OrthographicFar: 10
-      Primary: true
-      FixedAspectRatio: false
-  - Entity: 13136342770209973284
-    TagComponent:
-      Tag: Floor
-    TransformComponent:
-      Translation: [0, -2.1, 0]
-      Rotation: [0, 0, 0]
-      Scale: [8.7, 0.3, 1]
+    ScriptComponent:
+      Class Name: Sandbox.Player
+      ScriptFields:
+        - Name: Speed
+          Type: Float
+          Data: 3
     SpriteRendererComponent:
-      Color: [1, 0.5328185, 0, 1]
+      Color: [1, 1, 1, 1]
+  - Entity: 14988384889644029340
+    TagComponent:
+      Tag: Box
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, -0.5183628]
+      Scale: [1, 1, 1]
+    ScriptComponent:
+      Class Name: Sandbox.Player
+      ScriptFields:
+        []
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
     Rigidbody2DComponent:
-      Type: Static
+      Type: Dynamic
       FixedRotation: false
     BoxCollider2DComponent:
       Offset: [0, 0]
@@ -56,21 +57,17 @@ Entities:
       Friction: 0.5
       Restitution: 0.75
       RestitutionThreshold: 0.5
-  - Entity: 14988384889644029340
+  - Entity: 13136342770209973284
     TagComponent:
-      Tag: Box
+      Tag: Floor
     TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, -0.5183628]
-      Scale: [1, 1, 1]
-    ScriptComponent:
-      Class Name: Sandbox.Player
-      ScriptFields:
-        []
+      Translation: [0, -2.1, 0]
+      Rotation: [0, 0, 0]
+      Scale: [8.7, 0.3, 1]
     SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
+      Color: [1, 0.5328185, 0, 1]
     Rigidbody2DComponent:
-      Type: Dynamic
+      Type: Static
       FixedRotation: false
     BoxCollider2DComponent:
       Offset: [0, 0]
@@ -79,18 +76,21 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 10159372250841173636
+  - Entity: 12699817401513986172
     TagComponent:
-      Tag: Empty Entity
+      Tag: Camera
     TransformComponent:
-      Translation: [-2.974987, 0, 0]
+      Translation: [0, 0, 4.598357]
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
-    ScriptComponent:
-      Class Name: Sandbox.Player
-      ScriptFields:
-        - Name: Speed
-          Type: Float
-          Data: 5
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.7853982
+        PerspectiveNear: 0.01
+        PerspectiveFar: 1000
+        OrthoGraphicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 10
+      Primary: true
+      FixedAspectRatio: false
