@@ -115,8 +115,8 @@ namespace Ellie {
 
 	void Scene::DestroyEntity(Entity entity)
 	{
-		m_Registry.destroy(entity);
 		EntityMap.erase(entity.GetUUID());
+		m_Registry.destroy(entity);
 	}
 
 	void Scene::OnRuntimeStart()
@@ -165,7 +165,7 @@ namespace Ellie {
 		{
 			ScriptEngine::OnRuntimeStart(this);
 
-			auto view = m_Registry.view<ScriptComponent>();
+			auto& view = m_Registry.view<ScriptComponent>();
 			for (auto e : view)
 			{
 				Entity entity = { e, this };
@@ -194,9 +194,25 @@ namespace Ellie {
 		}
 	}
 
+	Entity Scene::GetEntityByName(const std::string name)
+	{
+		auto& view = m_Registry.view<TagComponent>();
+		for (auto& entity : view)
+		{
+			const auto& tag = view.get<TagComponent>(entity);
+
+			if (tag.Tag == name)
+			{
+				return Entity{ entity,this };
+			}
+		}
+
+		return {};
+	}
+
 	Entity Scene::GetPrimaryCameraEntity()
 	{
-		auto view = m_Registry.view<CameraComponent>();
+		auto& view = m_Registry.view<CameraComponent>();
 		for (auto& entity : view)
 		{
 			const auto& camera = view.get<CameraComponent>(entity);
@@ -214,8 +230,8 @@ namespace Ellie {
 	{
 		// C# Runtime Scripts
 		{
-			const auto view = m_Registry.view<ScriptComponent>();
-			for (auto e : view)
+			const auto& view = m_Registry.view<ScriptComponent>();
+			for (auto& e : view)
 			{
 				Entity entity = { e, this };
 				ScriptEngine::OnUpdateEntity(entity, ts);
@@ -242,8 +258,8 @@ namespace Ellie {
 
 			m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
 
-			auto view = m_Registry.view<Rigidbody2DComponent>();
-			for (auto e : view)
+			auto& view = m_Registry.view<Rigidbody2DComponent>();
+			for (auto& e : view)
 			{
 				Entity entity = { e, this };
 				auto& transform = entity.GetComponent<TransformComponent>();
@@ -261,10 +277,10 @@ namespace Ellie {
 		Camera* mainCamera = nullptr;
 		glm::mat4 cameraTransform;
 
-		auto view = m_Registry.view<TransformComponent, CameraComponent>();
-		for (auto entity : view)
+		auto& view = m_Registry.view<TransformComponent, CameraComponent>();
+		for (auto& entity : view)
 		{
-			auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
+			auto& [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 
 			if (camera.Primary)
 			{
@@ -278,10 +294,10 @@ namespace Ellie {
 		{
 			Renderer2D::BeginScene(*mainCamera, cameraTransform);
 
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group)
+			auto& group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto& entity : group)
 			{
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
 				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
@@ -294,10 +310,10 @@ namespace Ellie {
 	{
 		Renderer2D::BeginScene(editorCam);
 
-		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-		for (auto entity : group)
+		auto& group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+		for (auto& entity : group)
 		{
-			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+			auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 			Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 		}
 
@@ -309,8 +325,8 @@ namespace Ellie {
 		m_ViewportHeight = height;
 		m_ViewportWidth = width;
 
-		auto view = m_Registry.view<CameraComponent>();
-		for (auto entity : view)
+		auto& view = m_Registry.view<CameraComponent>();
+		for (auto& entity : view)
 		{
 			auto& cameraComponent = view.get<CameraComponent>(entity);
 			

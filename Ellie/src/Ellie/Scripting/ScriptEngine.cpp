@@ -400,6 +400,13 @@ namespace Ellie {
 		return s_Data->EntityScriptField[uuid];
 	}
 
+	MonoObject* ScriptEngine::GetManagedInstance(UUID uuid)
+	{
+		EE_ASSERT(s_Data->EntityInstances.find(uuid) != s_Data->EntityInstances.end(), "Invalid UUID!");
+
+		return s_Data->EntityInstances.at(uuid)->GetManagedObject();
+	}
+
 	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className, bool isCore) : m_ClassName(className), m_ClassNamespace(classNamespace)
 	{
 		m_monoClass = mono_class_from_name(isCore ? s_Data->CoreAssemblyImage : s_Data->AppAssemblyImage, classNamespace.c_str(), className.c_str());
@@ -448,6 +455,11 @@ namespace Ellie {
 			void* param = &ts;
 			m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
 		}
+	}
+
+	MonoObject* ScriptInstance::GetManagedObject()
+	{
+		return m_Instance;
 	}
 
 	bool ScriptInstance::GetFieldValueInternal(const std::string& fieldName, void* buffer)

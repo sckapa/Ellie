@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.Remoting;
 
 namespace Ellie
 {
@@ -45,6 +46,26 @@ namespace Ellie
 
             T component = new T() { Entity = this };
             return component;
+        }
+
+        // Changes made in play mode are not accepted
+        // It will always return the entity that matches the name in edit mode
+        public Entity FindEntityByName(string name)
+        {
+            ulong uuid = InternalCalls.Entity_FindEntityByName(name);
+
+            if (uuid == 0) 
+            {
+                return null;
+            }
+
+            return new Entity(uuid);
+        }
+
+        public T As<T>() where T: Entity, new()
+        {
+            object instance = InternalCalls.GetScriptInstance(ID);
+            return instance as T;
         }
         
     }

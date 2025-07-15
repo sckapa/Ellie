@@ -350,37 +350,40 @@ namespace Ellie {
 			else
 			{
 				Ref<ScriptClass> scriptClass = ScriptEngine::GetEntityClass(component.ClassName);
-				const auto& fields = scriptClass->GetPublicFields();
-
-				auto& fieldMap = ScriptEngine::GetScriptFieldMap(entity);
-
-				for (const auto& [fieldName, field] : fields)
+				if (scriptClass)
 				{
-					if (fieldMap.find(fieldName) != fieldMap.end())
-					{
-						// Field has been set in editor
-						ScriptFieldInstance& scriptField = fieldMap.at(fieldName);
+					const auto& fields = scriptClass->GetPublicFields();
 
-						if (field.type == ScriptFieldType::Float)
+					auto& fieldMap = ScriptEngine::GetScriptFieldMap(entity);
+
+					for (const auto& [fieldName, field] : fields)
+					{
+						if (fieldMap.find(fieldName) != fieldMap.end())
 						{
-							float data = scriptField.GetValue<float>();
-							if (ImGui::DragFloat(fieldName.c_str(), &data))
+							// Field has been set in editor
+							ScriptFieldInstance& scriptField = fieldMap.at(fieldName);
+
+							if (field.type == ScriptFieldType::Float)
 							{
-								fieldMap[fieldName].SetValue<float>(data);
+								float data = scriptField.GetValue<float>();
+								if (ImGui::DragFloat(fieldName.c_str(), &data))
+								{
+									fieldMap[fieldName].SetValue<float>(data);
+								}
 							}
 						}
-					}
-					else
-					{
-						// Display controls to set it
-						if (field.type == ScriptFieldType::Float)
+						else
 						{
-							float data = 0.0f;
-							if (ImGui::DragFloat(fieldName.c_str(), &data))
+							// Display controls to set it
+							if (field.type == ScriptFieldType::Float)
 							{
-								ScriptFieldInstance& fieldInstance = fieldMap[fieldName];
-								fieldInstance.SetValue<float>(data);
-								fieldInstance.field = field;
+								float data = 0.0f;
+								if (ImGui::DragFloat(fieldName.c_str(), &data))
+								{
+									ScriptFieldInstance& fieldInstance = fieldMap[fieldName];
+									fieldInstance.SetValue<float>(data);
+									fieldInstance.field = field;
+								}
 							}
 						}
 					}

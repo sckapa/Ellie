@@ -271,48 +271,51 @@ namespace Ellie {
 			out << YAML::Key << "Class Name" << YAML::Value << scriptComponent.ClassName;
 
 			Ref<ScriptClass> scriptClass = ScriptEngine::GetEntityClass(scriptComponent.ClassName);
-			const auto& fields = scriptClass->GetPublicFields();
-
-			if (fields.size() > 0)
+			if (scriptClass)
 			{
-				out << YAML::Key << "ScriptFields" << YAML::Value;
-				out << YAML::BeginSeq;
-				ScriptFieldMap& scriptFieldMap = ScriptEngine::GetScriptFieldMap(entity);
-				for (auto& [name, field] : fields)
+				const auto& fields = scriptClass->GetPublicFields();
+
+				if (fields.size() > 0)
 				{
-					if (scriptFieldMap.find(name) == scriptFieldMap.end())
+					out << YAML::Key << "ScriptFields" << YAML::Value;
+					out << YAML::BeginSeq;
+					ScriptFieldMap& scriptFieldMap = ScriptEngine::GetScriptFieldMap(entity);
+					for (auto& [name, field] : fields)
 					{
-						continue;
-					}
+						if (scriptFieldMap.find(name) == scriptFieldMap.end())
+						{
+							continue;
+						}
 
-					out << YAML::BeginMap;
-					out << YAML::Key << "Name" << YAML::Value << name;
-					out << YAML::Key << "Type" << YAML::Value << Utils::ScriptFieldTypeToString(field.type);
-					out << YAML::Key << "Data" << YAML::Value;
+						out << YAML::BeginMap;
+						out << YAML::Key << "Name" << YAML::Value << name;
+						out << YAML::Key << "Type" << YAML::Value << Utils::ScriptFieldTypeToString(field.type);
+						out << YAML::Key << "Data" << YAML::Value;
 
-					ScriptFieldInstance& scriptFieldInstance = scriptFieldMap.at(name);
-					
-					switch (field.type)
-					{
-						WRITE_FIELD_DATA(Float, float);
-						WRITE_FIELD_DATA(Double, double);
-						WRITE_FIELD_DATA(Bool, bool);
-						WRITE_FIELD_DATA(Byte, int8_t);
-						WRITE_FIELD_DATA(Short, int16_t);
-						WRITE_FIELD_DATA(Int, int32_t);
-						WRITE_FIELD_DATA(Long, int64_t);
-						WRITE_FIELD_DATA(Char, uint8_t);
-						WRITE_FIELD_DATA(UShort, uint16_t);
-						WRITE_FIELD_DATA(UInt, uint32_t);
-						WRITE_FIELD_DATA(ULong, uint64_t);
-						WRITE_FIELD_DATA(Vector2, glm::vec2);
-						WRITE_FIELD_DATA(Vector3, glm::vec3);
-						WRITE_FIELD_DATA(Vector4, glm::vec4);
-						WRITE_FIELD_DATA(Entity, UUID);
+						ScriptFieldInstance& scriptFieldInstance = scriptFieldMap.at(name);
+
+						switch (field.type)
+						{
+							WRITE_FIELD_DATA(Float, float);
+							WRITE_FIELD_DATA(Double, double);
+							WRITE_FIELD_DATA(Bool, bool);
+							WRITE_FIELD_DATA(Byte, int8_t);
+							WRITE_FIELD_DATA(Short, int16_t);
+							WRITE_FIELD_DATA(Int, int32_t);
+							WRITE_FIELD_DATA(Long, int64_t);
+							WRITE_FIELD_DATA(Char, uint8_t);
+							WRITE_FIELD_DATA(UShort, uint16_t);
+							WRITE_FIELD_DATA(UInt, uint32_t);
+							WRITE_FIELD_DATA(ULong, uint64_t);
+							WRITE_FIELD_DATA(Vector2, glm::vec2);
+							WRITE_FIELD_DATA(Vector3, glm::vec3);
+							WRITE_FIELD_DATA(Vector4, glm::vec4);
+							WRITE_FIELD_DATA(Entity, UUID);
+						}
+						out << YAML::EndMap;
 					}
-					out << YAML::EndMap;
+					out << YAML::EndSeq;
 				}
-				out << YAML::EndSeq;
 			}
 
 			out << YAML::EndMap;

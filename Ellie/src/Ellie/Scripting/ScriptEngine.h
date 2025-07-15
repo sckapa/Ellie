@@ -114,6 +114,8 @@ namespace Ellie {
 			SetFieldValueInternal(fieldName, &data);
 		}
 
+		MonoObject* GetManagedObject();
+
 	private:
 		bool GetFieldValueInternal(const std::string& fieldName, void* buffer);
 		bool SetFieldValueInternal(const std::string& fieldName, const void* data);
@@ -155,6 +157,8 @@ namespace Ellie {
 		static Ref<ScriptInstance> GetScriptInstanceFromUUID(UUID id);
 
 		static ScriptFieldMap& GetScriptFieldMap(Entity entity);
+
+		static MonoObject* GetManagedInstance(UUID uuid);
 	private:
 		static void InitMono();
 		static void ShutdownMono();

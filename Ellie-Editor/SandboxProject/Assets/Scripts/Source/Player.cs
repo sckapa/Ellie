@@ -11,15 +11,21 @@ namespace Sandbox
     class Player : Entity
     {
         public float Speed;
+        Entity camEntity;
 
         void OnCreate()
         {
+            camEntity = FindEntityByName("Camera");
             Console.WriteLine($"Create - {ID}");
         }
 
         void OnUpdate(float ts)
         {
-            //Console.WriteLine($"Update : {ts} - {Translation.X}");
+            Camera camera = camEntity.As<Camera>();
+            if (camera != null)
+            {
+                camera.DistanceFromCamera += 0.001f * ts;
+            }
 
             Vector3 velocity = Vector3.Zero;
 

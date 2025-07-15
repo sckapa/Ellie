@@ -18,7 +18,7 @@ namespace Ellie
             Y = y;
             Z = z;
         }
-
+        
         public Vector3(float scalar)
         {
             X = scalar;

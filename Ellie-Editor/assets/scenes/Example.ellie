@@ -1,35 +1,16 @@
 Scene: Untitled
 Entities:
-  - Entity: 10159372250841173636
+  - Entity: 13136342770209973284
     TagComponent:
-      Tag: Empty Entity
+      Tag: Floor
     TransformComponent:
-      Translation: [-2.974987, 0, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1, 1]
-    ScriptComponent:
-      Class Name: Sandbox.Player
-      ScriptFields:
-        - Name: Speed
-          Type: Float
-          Data: 3
+      Translation: [0, -2.1, 0]
+      Rotation: [0, 0, 0]
+      Scale: [8.7, 0.3, 1]
     SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-  - Entity: 14988384889644029340
-    TagComponent:
-      Tag: Box
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, -0.5183628]
-      Scale: [1, 1, 1]
-    ScriptComponent:
-      Class Name: Sandbox.Player
-      ScriptFields:
-        []
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
+      Color: [1, 0.5328185, 0, 1]
     Rigidbody2DComponent:
-      Type: Dynamic
+      Type: Static
       FixedRotation: false
     BoxCollider2DComponent:
       Offset: [0, 0]
@@ -40,7 +21,7 @@ Entities:
       RestitutionThreshold: 0.5
   - Entity: 5022138809447041042
     TagComponent:
-      Tag: Box
+      Tag: Boxx
     TransformComponent:
       Translation: [0.27111927, 2.979618, 0]
       Rotation: [0, 0, -0.5183628]
@@ -57,17 +38,21 @@ Entities:
       Friction: 0.5
       Restitution: 0.75
       RestitutionThreshold: 0.5
-  - Entity: 13136342770209973284
+  - Entity: 14988384889644029340
     TagComponent:
-      Tag: Floor
+      Tag: Box
     TransformComponent:
-      Translation: [0, -2.1, 0]
-      Rotation: [0, 0, 0]
-      Scale: [8.7, 0.3, 1]
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, -0.5183628]
+      Scale: [1, 1, 1]
+    ScriptComponent:
+      Class Name: Sandbox.Player
+      ScriptFields:
+        []
     SpriteRendererComponent:
-      Color: [1, 0.5328185, 0, 1]
+      Color: [1, 1, 1, 1]
     Rigidbody2DComponent:
-      Type: Static
+      Type: Dynamic
       FixedRotation: false
     BoxCollider2DComponent:
       Offset: [0, 0]
@@ -94,3 +79,7 @@ Entities:
         OrthographicFar: 10
       Primary: true
       FixedAspectRatio: false
+    ScriptComponent:
+      Class Name: Sandbox.Camera
+      ScriptFields:
+        []

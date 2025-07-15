@@ -37,6 +37,7 @@ namespace Ellie {
 		void OnComponentAdded(Entity entity, T& component);
 
 		Entity GetEntityByUUID(UUID entityID);
+		Entity GetEntityByName(const std::string name);
 		Entity GetPrimaryCameraEntity();
 
 		bool IsSceneRunning() const { return isSceneRunning; }
