@@ -141,6 +141,8 @@ namespace Ellie {
 		static void OnRuntimeStart(Scene* scene);
 		static void OnRuntimeStop();
 
+		static void ReloadAssembly();
+
 		static void OnCreateEntity(Entity entity);
 		static void OnUpdateEntity(Entity entity, Timestep ts);
 

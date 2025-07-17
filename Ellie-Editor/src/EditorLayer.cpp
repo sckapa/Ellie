@@ -9,6 +9,7 @@
 #include "imgui.h"
 #include "Ellie/Scene/ScriptableEntity.h"
 #include "Ellie/Scene/SceneSerializer.h"
+#include "Ellie/Scripting/ScriptEngine.h"
 
 #include "Ellie/Utils/PlatformUtils.h"
 #include "ImGuizmo.h"
@@ -177,6 +178,12 @@ namespace Ellie {
                 }
 
                 if (ImGui::MenuItem("Exit")) { Application::Get().Close(); }
+                ImGui::EndMenu();
+            }
+            
+            if (ImGui::BeginMenu("Script"))
+            {
+                if (ImGui::MenuItem("Reload Assembly")) { ScriptEngine::ReloadAssembly(); }
                 ImGui::EndMenu();
             }
 

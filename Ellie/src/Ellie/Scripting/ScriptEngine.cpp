@@ -142,6 +142,9 @@ namespace Ellie {
 
 		std::unordered_map<UUID, ScriptFieldMap> EntityScriptField;
 
+		std::filesystem::path CoreAssemblyFilePath;
+		std::filesystem::path AppAssemblyFilePath;
+
 		// Runtime
 		Scene* SceneContext = nullptr;
 	};
@@ -212,6 +215,23 @@ namespace Ellie {
 		s_Data->EntityInstances.clear();
 	}
 
+	void ScriptEngine::ReloadAssembly()
+	{
+		mono_domain_set(mono_get_root_domain(), false);
+
+		mono_domain_unload(s_Data->AppDomain);
+
+		LoadAssembly(s_Data->CoreAssemblyFilePath);
+		LoadAppAssembly(s_Data->AppAssemblyFilePath);
+
+		LoadAssemblyClasses();
+
+		ScriptGlue::RegisterComponents();
+
+		// Retrieve and instantiate class with constructor
+		s_Data->EntityClass = ScriptClass("Ellie", "Entity", true);
+	}
+
 	void ScriptEngine::OnCreateEntity(Entity entity)
 	{
 		const auto& sc = entity.GetComponent<ScriptComponent>();
@@ -257,6 +277,9 @@ namespace Ellie {
 
 	void ScriptEngine::ShutdownMono()
 	{
+		mono_domain_set(mono_get_root_domain(), false);
+		mono_domain_unload(s_Data->AppDomain);
+
 		s_Data->AppDomain = nullptr;
 		s_Data->RootDomain = nullptr;
 	}
@@ -269,7 +292,8 @@ namespace Ellie {
 		// Move this later
 		s_Data->CoreAssembly = Utils::LoadMonoAssembly(filepath);
 		s_Data->CoreAssemblyImage = mono_assembly_get_image(s_Data->CoreAssembly);
-		// Utils::PrintAssemblyTypes(s_Data->CoreAssembly);
+
+		s_Data->CoreAssemblyFilePath = filepath;
 	}
 	
 	void ScriptEngine::LoadAppAssembly(const std::filesystem::path& filepath)
@@ -277,7 +301,8 @@ namespace Ellie {
 		// Move this later
 		s_Data->AppAssembly = Utils::LoadMonoAssembly(filepath);
 		s_Data->AppAssemblyImage = mono_assembly_get_image(s_Data->AppAssembly);
-		// Utils::PrintAssemblyTypes(s_Data->AppAssembly);
+
+		s_Data->AppAssemblyFilePath = filepath;
 	}
 
 	Scene* ScriptEngine::GetSceneContext()

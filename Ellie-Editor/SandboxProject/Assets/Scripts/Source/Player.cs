@@ -22,6 +22,7 @@ namespace Sandbox
         void OnUpdate(float ts)
         {
             Camera camera = camEntity.As<Camera>();
+
             if (camera != null)
             {
                 camera.DistanceFromCamera += 0.001f * ts;
