@@ -166,7 +166,7 @@ namespace Ellie {
 
 			Application::Get().SubmitToMainThreadQueue([]()
 				{
-					s_Data->fileWatcher.reset();
+					//s_Data->fileWatcher.reset();
 					ScriptEngine::ReloadAssembly();
 				});
 		}
@@ -217,6 +217,12 @@ namespace Ellie {
 		MonoMethod* printCustomMessageWithParams = s_Data->EntityClass.GetMethod("PrintCustomMessageWithParams", 1);
 		s_Data->EntityClass.InvokeMethod(instance, printCustomMessageWithParams, &strParam);
 #endif
+
+		s_Data->fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>
+			(
+				s_Data->AppAssemblyFilePath.string(),
+				FileWatcherTriggered
+			);
 	}
 
 	void ScriptEngine::Shutdown()
@@ -325,11 +331,6 @@ namespace Ellie {
 
 		s_Data->AppAssemblyFilePath = filepath;
 
-		s_Data->fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>
-			(
-				filepath.string(),
-				FileWatcherTriggered
-			);
 		s_Data->AssemblyReloadPending = false;
 	}
 

@@ -42,7 +42,7 @@ namespace Sandbox
             if(Input.IsKeyDown(KeyCode.A))
             {
                 velocity.X = -1.0f;
-            }
+            } 
             else if(Input.IsKeyDown(KeyCode.D))
             {
                 velocity.X = 1.0f;
@@ -50,7 +50,7 @@ namespace Sandbox
 
             velocity *= Speed;
 
-            Vector3 translation = Translation; 
+            Vector3 translation = Translation;
             translation += velocity * ts;
 
             Translation = translation;
