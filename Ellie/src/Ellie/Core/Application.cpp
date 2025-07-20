@@ -40,6 +40,8 @@ namespace Ellie{
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
+			ExecuteMainThreadFunctionQueue();
+
 			if(!m_Minimized)
 			{
 				for (Layer* layer : m_LayerStack)
@@ -59,9 +61,25 @@ namespace Ellie{
 		}
 	}
 
+	void Application::ExecuteMainThreadFunctionQueue()
+	{
+		for (auto& func : m_MainThreadFunctionQueue)
+		{
+			func();
+		}
+		m_MainThreadFunctionQueue.clear();
+	}
+
 	void Application::Close()
 	{
 		m_Running = false;
+	}
+
+	void Application::SubmitToMainThreadQueue(const std::function<void()>& func)
+	{
+		std::scoped_lock<std::mutex> lock(m_MainThreadQueueMutex);
+
+		m_MainThreadFunctionQueue.emplace_back(func);
 	}
 
 	void Application::OnEvent(Event& e)

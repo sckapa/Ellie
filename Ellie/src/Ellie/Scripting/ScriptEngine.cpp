@@ -3,6 +3,7 @@
 #include "glm/glm.hpp"
 
 #include "Ellie/Core/UUID.h"
+#include "Ellie/Core/Application.h"
 
 #include "ScriptGlue.h"
 #include "mono/metadata/object.h"
@@ -10,6 +11,8 @@
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/appdomain.h>
 #include <mono/metadata/tabledefs.h>
+
+#include "FileWatch.h"
 
 namespace Ellie {
 
@@ -145,11 +148,29 @@ namespace Ellie {
 		std::filesystem::path CoreAssemblyFilePath;
 		std::filesystem::path AppAssemblyFilePath;
 
+		Scope<filewatch::FileWatch<std::string>> fileWatcher;
+
+		bool AssemblyReloadPending = false;
+
 		// Runtime
 		Scene* SceneContext = nullptr;
 	};
 
 	static ScriptEngineData* s_Data = nullptr;
+
+	static void FileWatcherTriggered(const std::string& path, const filewatch::Event change_type)
+	{
+		if (!s_Data->AssemblyReloadPending && change_type == filewatch::Event::modified)
+		{
+			s_Data->AssemblyReloadPending = true;
+
+			Application::Get().SubmitToMainThreadQueue([]()
+				{
+					s_Data->fileWatcher.reset();
+					ScriptEngine::ReloadAssembly();
+				});
+		}
+	}
 
 	void ScriptEngine::Init()
 	{
@@ -303,6 +324,13 @@ namespace Ellie {
 		s_Data->AppAssemblyImage = mono_assembly_get_image(s_Data->AppAssembly);
 
 		s_Data->AppAssemblyFilePath = filepath;
+
+		s_Data->fileWatcher = std::make_unique<filewatch::FileWatch<std::string>>
+			(
+				filepath.string(),
+				FileWatcherTriggered
+			);
+		s_Data->AssemblyReloadPending = false;
 	}
 
 	Scene* ScriptEngine::GetSceneContext()

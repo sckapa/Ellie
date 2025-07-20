@@ -50,7 +50,7 @@ namespace Sandbox
 
             velocity *= Speed;
 
-            Vector3 translation = Translation;
+            Vector3 translation = Translation; 
             translation += velocity * ts;
 
             Translation = translation;

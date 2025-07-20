@@ -1470,6 +1470,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="vendor\filewatch\FileWatch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Core\Application.cpp">

@@ -22,6 +22,7 @@ workspace "Ellie"
 	IncludeDir["yaml_cpp"] = "Ellie/vendor/yaml-cpp/include"
 	IncludeDir["ImGuizmo"] = "Ellie/vendor/ImGuizmo"
 	IncludeDir["Mono"] = "Ellie/vendor/mono/include"
+	IncludeDir["filewatch"] = "Ellie/vendor/filewatch"
 
 	group "Dependencies"
 		include "Ellie/vendor/Box2D"
@@ -76,7 +77,8 @@ project "Ellie"
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.Mono}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.filewatch}"
 	}
 
 	links
@@ -213,7 +215,8 @@ project "Ellie-Editor"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.filewatch}"
 	}
 
 	links

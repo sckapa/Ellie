@@ -26,6 +26,8 @@ namespace Ellie{
 		void Run();
 		void Close();
 
+		void SubmitToMainThreadQueue(const std::function<void()>& func);
+
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
@@ -36,6 +38,7 @@ namespace Ellie{
 
 		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; } // Remove later, used for blocking events in editorlayer
 	private:
+		void ExecuteMainThreadFunctionQueue();
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
 
@@ -48,6 +51,9 @@ namespace Ellie{
 		LayerStack m_LayerStack;
 
 		static Application* s_Instance;
+
+		std::mutex m_MainThreadQueueMutex;
+		std::vector<std::function<void()>> m_MainThreadFunctionQueue;
 
 		float m_LastFrameTime = 0.0f;
 	};

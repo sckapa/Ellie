@@ -180,10 +180,10 @@ namespace Ellie {
                 if (ImGui::MenuItem("Exit")) { Application::Get().Close(); }
                 ImGui::EndMenu();
             }
-            
+
             if (ImGui::BeginMenu("Script"))
             {
-                if (ImGui::MenuItem("Reload Assembly")) { ScriptEngine::ReloadAssembly(); }
+                if (ImGui::MenuItem("Reload Assembly", "Crtl+R")) { ScriptEngine::ReloadAssembly(); }
                 ImGui::EndMenu();
             }
 
@@ -345,74 +345,81 @@ namespace Ellie {
         bool shift = Input::IsKeyPressed(Ellie::Key::LEFT_SHIFT) || Input::IsKeyPressed(Ellie::Key::RIGHT_SHIFT);
         switch (e.GetKeyCode())
         {
-            case Ellie::Key::S:
+        case Ellie::Key::S:
+        {
+            if (control && shift)
             {
-                if (control && shift)
-                {
-                    SaveSceneAs();
-                }
-                else if (control)
-                {
-                    SaveScene();
-                }
-                break;
+                SaveSceneAs();
             }
-            case Ellie::Key::O:
+            else if (control)
             {
-                if (control)
-                {
-                    OpenScene();
-                }
-                break;
+                SaveScene();
             }
-            case Ellie::Key::N:
+            break;
+        }
+        case Ellie::Key::O:
+        {
+            if (control)
             {
-                if (control)
-                {
-                    NewScene();
-                }
-                break;
+                OpenScene();
             }
+            break;
+        }
+        case Ellie::Key::N:
+        {
+            if (control)
+            {
+                NewScene();
+            }
+            break;
+        }
 
-            // Scene Controls
-            case Ellie::Key::D:
+        // Scene Controls
+        case Ellie::Key::D:
+        {
+            if (control)
             {
-                if (control)
-                {
-                    DuplicateEntity();
-                }
-                break;
+                DuplicateEntity();
             }
+            break;
+        }
 
-            // Gizmo
-            case Ellie::Key::Q:
+        // Gizmo
+        case Ellie::Key::Q:
+        {
+            m_GizmoType = ImGuizmo::OPERATION::UNIVERSAL;
+            break;
+        }
+        case Ellie::Key::W:
+        {
+            m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+            break;
+        }
+        case Ellie::Key::E:
+        {
+            m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+            break;
+        }
+        case Ellie::Key::R:
+        {
+            if (control)
             {
-                m_GizmoType = ImGuizmo::OPERATION::UNIVERSAL;
-                break;
+                ScriptEngine::ReloadAssembly();
             }
-            case Ellie::Key::W:
-            {
-                m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-                break;
-            }
-            case Ellie::Key::E:
-            {
-                m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-                break;
-            }
-            case Ellie::Key::R:
+            else
             {
                 m_GizmoType = ImGuizmo::OPERATION::SCALE;
                 break;
             }
         }
+        }
     }
 
     bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
     {
-        if ((e.GetMouseButton() == Ellie::Mouse::MOUSE_LEFT) 
-            && isViewportHovered 
-            && !ImGuizmo::IsOver() 
+        if ((e.GetMouseButton() == Ellie::Mouse::MOUSE_LEFT)
+            && isViewportHovered
+            && !ImGuizmo::IsOver()
             && !Input::IsKeyPressed(Ellie::Key::LEFT_ALT))
         {
             m_SceneHierarchyPanel.SetSelectedEntity(m_SelectedEntity);
@@ -444,7 +451,7 @@ namespace Ellie {
             m_EditorPath = filepath;
         }
     }
-    
+
     void EditorLayer::NewScene()
     {
         m_ActiveScene = std::make_shared<Scene>();
@@ -453,7 +460,7 @@ namespace Ellie {
 
         m_EditorPath = std::filesystem::path();
     }
-    
+
     void EditorLayer::OpenScene()
     {
         std::string filepath = FileDialogs::OpenFile("Ellie Scene (*.ellie)\0*.ellie\0");
@@ -476,7 +483,7 @@ namespace Ellie {
         {
             m_EditorScene = newScene;
             m_EditorScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-            m_SceneHierarchyPanel.SetContext(m_EditorScene);  
+            m_SceneHierarchyPanel.SetContext(m_EditorScene);
 
             m_ActiveScene = m_EditorScene;
 

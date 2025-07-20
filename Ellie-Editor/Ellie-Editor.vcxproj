@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>EE_PLATFORM_WINDOWS;YAML_CPP_STATIC_DEFINE;EE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Ellie\vendor\spdlog\include;..\Ellie\src;..\Ellie\vendor\imgui;..\Ellie\vendor\glm;..\Ellie\vendor\entt\include;..\Ellie\vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Ellie\vendor\spdlog\include;..\Ellie\src;..\Ellie\vendor\imgui;..\Ellie\vendor\glm;..\Ellie\vendor\entt\include;..\Ellie\vendor\ImGuizmo;..\Ellie\vendor\filewatch;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -97,7 +97,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>EE_PLATFORM_WINDOWS;YAML_CPP_STATIC_DEFINE;EE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Ellie\vendor\spdlog\include;..\Ellie\src;..\Ellie\vendor\imgui;..\Ellie\vendor\glm;..\Ellie\vendor\entt\include;..\Ellie\vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Ellie\vendor\spdlog\include;..\Ellie\src;..\Ellie\vendor\imgui;..\Ellie\vendor\glm;..\Ellie\vendor\entt\include;..\Ellie\vendor\ImGuizmo;..\Ellie\vendor\filewatch;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -119,7 +119,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>EE_PLATFORM_WINDOWS;YAML_CPP_STATIC_DEFINE;EE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Ellie\vendor\spdlog\include;..\Ellie\src;..\Ellie\vendor\imgui;..\Ellie\vendor\glm;..\Ellie\vendor\entt\include;..\Ellie\vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Ellie\vendor\spdlog\include;..\Ellie\src;..\Ellie\vendor\imgui;..\Ellie\vendor\glm;..\Ellie\vendor\entt\include;..\Ellie\vendor\ImGuizmo;..\Ellie\vendor\filewatch;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
