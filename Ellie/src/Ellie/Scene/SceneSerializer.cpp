@@ -385,11 +385,16 @@ namespace Ellie {
 
 	bool SceneSerializer::Deserialize(const std::string& filepath)
 	{
-		std::ifstream stream(filepath);
-		std::stringstream strstream;
-		strstream << stream.rdbuf();
-
-		YAML::Node data = YAML::Load(strstream.str());
+		YAML::Node data;
+		try 
+		{
+			data = YAML::LoadFile(filepath);
+		}
+		catch (YAML::ParserException e)
+		{
+			EE_CORE_ERROR("Failed to load .ellie file '{0}'\n		{1}", filepath, e.what());
+			return false;
+		}
 
 		if (!data["Scene"])
 		{

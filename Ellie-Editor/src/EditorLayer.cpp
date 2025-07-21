@@ -47,6 +47,16 @@ namespace Ellie {
         m_EditorScene = std::make_shared<Scene>();
 
         m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+
+        std::filesystem::path path = "";
+        if (std::filesystem::exists(path))
+        {
+            OpenProject(path);
+        }
+        else
+        {
+            NewProject();
+        }
     }
 
     void EditorLayer::OnDetach()
@@ -425,6 +435,25 @@ namespace Ellie {
             m_SceneHierarchyPanel.SetSelectedEntity(m_SelectedEntity);
         }
         return false;
+    }
+
+    void EditorLayer::SaveProject()
+    {
+        //Project::SaveActive();
+    }
+
+    void EditorLayer::NewProject()
+    {
+        Project::New();
+    }
+
+    void EditorLayer::OpenProject(const std::filesystem::path& path)
+    {
+        if (Project::Load(path))
+        {
+            auto startScenePath = Project::GetAssetFileSystemPath(Project::Get()->GetConfig().StartScene);
+            OpenScene(startScenePath);
+        }
     }
 
     void EditorLayer::SaveScene()

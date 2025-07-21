@@ -22,10 +22,17 @@ namespace Ellie {
 
 		virtual void OnImGuiRender() override;
 
+		//void OnEditorOpenProject(const std::filesystem::path& path) { OpenProject(path); }
+
 	private:
 		// Events
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
+
+		// Project
+		void SaveProject();
+		void NewProject();
+		void OpenProject(const std::filesystem::path& path);
 
 		// File system
 		std::filesystem::path m_EditorPath;

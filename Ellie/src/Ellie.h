@@ -29,3 +29,5 @@
 
 #include "Ellie/Renderer/OrthographicCamera.h"
 // -------------------------------
+
+#include "Ellie/Project/Project.h"

@@ -4,6 +4,7 @@
 #include "Platform/OpenGL/OpenGLTexture2D.h"
 
 namespace Ellie {
+
 	Ref<Texture2D> Texture2D::Create(uint32_t width, uint32_t height)
 	{
 		switch (Renderer::GetAPI())
@@ -22,6 +23,7 @@ namespace Ellie {
 		EE_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
+
 	Ref<Texture2D> Texture2D::Create(const std::string& path)
 	{
 		switch (Renderer::GetAPI())
