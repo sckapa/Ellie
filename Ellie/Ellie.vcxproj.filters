@@ -16,6 +16,9 @@
     <Filter Include="src\Ellie\ImGui">
       <UniqueIdentifier>{F179F886-5D05-664B-6616-E93FD220C24B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Ellie\Project">
+      <UniqueIdentifier>{CDF64D50-390D-4CE6-8284-D707EED91C6E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Ellie\Renderer">
       <UniqueIdentifier>{0DE71947-F9CA-DA9C-622B-D5EF4E2EC51E}</UniqueIdentifier>
     </Filter>
@@ -122,6 +125,12 @@
     </ClInclude>
     <ClInclude Include="src\Ellie\ImGui\ImGuiLayer.h">
       <Filter>src\Ellie\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Project\Project.h">
+      <Filter>src\Ellie\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ellie\Project\ProjectSerializer.h">
+      <Filter>src\Ellie\Project</Filter>
     </ClInclude>
     <ClInclude Include="src\Ellie\Renderer\Buffers.h">
       <Filter>src\Ellie\Renderer</Filter>
@@ -1470,7 +1479,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\filewatch\FileWatch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ellie\Core\Application.cpp">
@@ -1493,6 +1501,12 @@
     </ClCompile>
     <ClCompile Include="src\Ellie\ImGui\ImGuiLayer.cpp">
       <Filter>src\Ellie\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Project\Project.cpp">
+      <Filter>src\Ellie\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ellie\Project\ProjectSerializer.cpp">
+      <Filter>src\Ellie\Project</Filter>
     </ClCompile>
     <ClCompile Include="src\Ellie\Renderer\Buffers.cpp">
       <Filter>src\Ellie\Renderer</Filter>

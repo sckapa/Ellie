@@ -20,8 +20,6 @@
 
 namespace Ellie {
 
-    extern const std::filesystem::path m_AssetPath;
-
     ImGuizmo::OPERATION m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
 
     EditorLayer::EditorLayer() : Layer("Sandbox2D")
@@ -55,7 +53,12 @@ namespace Ellie {
         }
         else
         {
-            NewProject();
+            //NewProject();
+
+            if (!OpenProject())
+            {
+                Application::Get().Close();
+            }
         }
     }
 
@@ -172,20 +175,29 @@ namespace Ellie {
         {
             if (ImGui::BeginMenu("File"))
             {
-                if (ImGui::MenuItem("New", "Ctrl+N"))
+                if (ImGui::MenuItem("Open Project...", "Ctrl+O"))
+                {
+                    OpenProject();
+                }
+                
+                ImGui::Separator();
+
+                if (ImGui::MenuItem("New Scene", "Ctrl+N"))
                 {
                     NewScene();
                 }
 
-                if (ImGui::MenuItem("Open...", "Ctrl+O"))
+                if (ImGui::MenuItem("Save Scene", "Ctrl+S"))
                 {
-                    OpenScene();
+                    SaveScene();
                 }
 
-                if (ImGui::MenuItem("SaveAs...", "Crtl+Shift+S"))
+                if (ImGui::MenuItem("Save Scene As...", "Crtl+Shift+S"))
                 {
                     SaveSceneAs();
                 }
+
+                ImGui::Separator();
 
                 if (ImGui::MenuItem("Exit")) { Application::Get().Close(); }
                 ImGui::EndMenu();
@@ -210,7 +222,7 @@ namespace Ellie {
 
         // Hierarchy Panel
         m_SceneHierarchyPanel.OnImGuiRender();
-        m_ContentBrowserPanel.OnImguiRender();
+        m_ContentBrowserPanel->OnImguiRender();
 
         // Viewport
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
@@ -237,7 +249,7 @@ namespace Ellie {
             if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
             {
                 const wchar_t* path = (const wchar_t*)payload->Data;
-                OpenScene(std::filesystem::path(m_AssetPath) / path);
+                OpenScene(path);
             }
             ImGui::EndDragDropTarget();
         }
@@ -371,7 +383,7 @@ namespace Ellie {
         {
             if (control)
             {
-                OpenScene();
+                OpenProject();
             }
             break;
         }
@@ -447,12 +459,25 @@ namespace Ellie {
         Project::New();
     }
 
+    bool EditorLayer::OpenProject()
+    {
+        std::string filepath = FileDialogs::OpenFile("Ellie Project (*.eproj)\0*.eproj\0");
+        if (!filepath.empty())
+        {
+            OpenProject(filepath);
+            return true;
+        }
+
+        return false;
+    }
+
     void EditorLayer::OpenProject(const std::filesystem::path& path)
     {
         if (Project::Load(path))
         {
             auto startScenePath = Project::GetAssetFileSystemPath(Project::Get()->GetConfig().StartScene);
             OpenScene(startScenePath);
+            m_ContentBrowserPanel = std::make_unique<ContentBrowserPanel>();
         }
     }
 

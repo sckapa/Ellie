@@ -1,11 +1,10 @@
+#include "Ellie/Project/Project.h"
 #include "ContentBrowserPanel.h"
 #include "imgui.h"
 
 namespace Ellie {
 
-	extern const std::filesystem::path m_AssetPath = "assets";
-
-	ContentBrowserPanel::ContentBrowserPanel() : m_CurrentPath(m_AssetPath)
+	ContentBrowserPanel::ContentBrowserPanel() : m_BasePath(Project::GetAssetDirectory()), m_CurrentPath(m_BasePath)
 	{
 		m_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowserIcons/DirectoryIcon.png");
 		m_DirectoryIcon = Texture2D::Create("Resources/Icons/ContentBrowserIcons/FileIcon.png");
@@ -15,7 +14,7 @@ namespace Ellie {
 	{
 		ImGui::Begin("Content Browser");
 
-		if (m_CurrentPath != m_AssetPath)
+		if (m_CurrentPath != std::filesystem::path(m_BasePath))
 		{
 			if (ImGui::Button("<-"))
 			{
@@ -36,7 +35,7 @@ namespace Ellie {
 
 		for (auto& path : std::filesystem::directory_iterator(m_CurrentPath))
 		{
-			auto relativePath = std::filesystem::relative(path.path(), m_AssetPath);
+			std::filesystem::path relativePath(path.path());
 			std::string filenameString = relativePath.filename().string();
 
 			m_Icon = path.is_directory() ? m_FileIcon : m_DirectoryIcon;

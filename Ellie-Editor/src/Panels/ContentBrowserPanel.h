@@ -13,6 +13,7 @@ namespace Ellie {
 		void OnImguiRender();
 
 	private:
+		std::filesystem::path m_BasePath;
 		std::filesystem::path m_CurrentPath;
 
 		Ref<Texture2D> m_DirectoryIcon;

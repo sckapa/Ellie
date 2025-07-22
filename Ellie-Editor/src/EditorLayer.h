@@ -32,6 +32,7 @@ namespace Ellie {
 		// Project
 		void SaveProject();
 		void NewProject();
+		bool OpenProject();
 		void OpenProject(const std::filesystem::path& path);
 
 		// File system
@@ -66,7 +67,7 @@ namespace Ellie {
 		Ref<Scene> m_EditorScene;
 
 		SceneHierarchyPanel m_SceneHierarchyPanel;
-		ContentBrowserPanel m_ContentBrowserPanel;
+		Scope<ContentBrowserPanel> m_ContentBrowserPanel;
 
 		enum class SceneState
 		{
