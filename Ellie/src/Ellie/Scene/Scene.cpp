@@ -337,17 +337,20 @@ namespace Ellie {
 		}
 	}
 
-	void Scene::DuplicateEntity(Entity& entity)
+	Entity Scene::DuplicateEntity(Entity& entity)
 	{
 		std::string name = entity.GetName();
 		Entity e = CreateEntity(name);
 
 		CopyComponentIfExists<TransformComponent>(e, entity);
 		CopyComponentIfExists<SpriteRendererComponent>(e, entity);
-		CopyComponentIfExists<NativeScriptComponent>(e, entity);
+		CopyComponentIfExists<ScriptComponent>(e, entity);
 		CopyComponentIfExists<CameraComponent>(e, entity);
 		CopyComponentIfExists<Rigidbody2DComponent>(e, entity);
+		CopyComponentIfExists<TagComponent>(e, entity);
 		CopyComponentIfExists<BoxCollider2DComponent>(e, entity);
+
+		return e;
 	}
 
 	template<typename T>

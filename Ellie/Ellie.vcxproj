@@ -146,8 +146,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Ellie\Project\ProjectSerializer.h" />
-    <ClInclude Include="src\Ellie\Project\Project.h" />
     <ClInclude Include="src\Ellie.h" />
     <ClInclude Include="src\Ellie\Core\Application.h" />
     <ClInclude Include="src\Ellie\Core\Core.h" />
@@ -166,6 +164,8 @@
     <ClInclude Include="src\Ellie\Events\KeyEvent.h" />
     <ClInclude Include="src\Ellie\Events\MouseEvent.h" />
     <ClInclude Include="src\Ellie\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Ellie\Project\Project.h" />
+    <ClInclude Include="src\Ellie\Project\ProjectSerializer.h" />
     <ClInclude Include="src\Ellie\Renderer\Buffers.h" />
     <ClInclude Include="src\Ellie\Renderer\Camera.h" />
     <ClInclude Include="src\Ellie\Renderer\EditorCamera.h" />
@@ -197,7 +197,6 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\eepch.h" />
-    <ClInclude Include="vendor\filewatch\FileWatch.h" />
     <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
@@ -618,8 +617,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ellie\Project\ProjectSerializer.cpp" />
-    <ClCompile Include="src\Ellie\Project\Project.cpp" />
     <ClCompile Include="src\Ellie\Core\Application.cpp" />
     <ClCompile Include="src\Ellie\Core\Layer.cpp" />
     <ClCompile Include="src\Ellie\Core\LayerStack.cpp" />
@@ -627,6 +624,8 @@
     <ClCompile Include="src\Ellie\Core\UUID.cpp" />
     <ClCompile Include="src\Ellie\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Ellie\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Ellie\Project\Project.cpp" />
+    <ClCompile Include="src\Ellie\Project\ProjectSerializer.cpp" />
     <ClCompile Include="src\Ellie\Renderer\Buffers.cpp" />
     <ClCompile Include="src\Ellie\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\Ellie\Renderer\FrameBuffer.cpp" />

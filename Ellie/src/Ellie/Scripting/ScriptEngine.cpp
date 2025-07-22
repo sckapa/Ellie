@@ -14,6 +14,8 @@
 
 #include "FileWatch.h"
 
+#include "Ellie/Project/Project.h"
+
 namespace Ellie {
 
 	namespace Utils
@@ -178,7 +180,9 @@ namespace Ellie {
 		
 		InitMono();
 		LoadAssembly("Resources/Scripts/Ellie-ScriptCore.dll");
-		LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
+
+		auto scriptModulePath = Project::GetAssetDirectory() / Project::Get()->GetConfig().ScriptModuelPath;
+		LoadAppAssembly(scriptModulePath);
 
 		LoadAssemblyClasses();
 
