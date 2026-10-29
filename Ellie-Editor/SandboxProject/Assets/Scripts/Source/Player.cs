@@ -11,6 +11,7 @@ namespace Sandbox
     class Player : Entity
     {
         public float Speed;
+        public float rotationSpeed = 15f;
         Entity camEntity;
 
         void OnCreate()
@@ -29,6 +30,7 @@ namespace Sandbox
             }
 
             Vector3 velocity = Vector3.Zero;
+            Vector3 rotation = Vector3.Zero;
 
             if (Input.IsKeyDown(KeyCode.W))
             {
@@ -47,13 +49,27 @@ namespace Sandbox
             {
                 velocity.X = 1.0f;
             }
+            
+            if(Input.IsKeyDown(KeyCode.Q))
+            {
+                rotation.Z = 1.0f;
+            } 
+            else if(Input.IsKeyDown(KeyCode.E))
+            {
+                rotation.Z = -1.0f;
+            }
 
             velocity *= Speed;
+            rotation *= rotationSpeed;
 
             Vector3 translation = Translation;
             translation += velocity * ts;
+            
+            Vector3 rot = Rotation;
+            rot += rotation * ts;
 
             Translation = translation;
+            Rotation = rot;
         }
     }
 }

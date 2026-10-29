@@ -65,6 +65,18 @@ namespace Ellie {
 		scene->GetEntityByUUID(entityID).GetComponent<TransformComponent>().Translation = *translation;
 	}
 	
+	static void TransformComponent_GetRotation(UUID entityID, glm::vec3* outRotation)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		*outRotation = scene->GetEntityByUUID(entityID).GetComponent<TransformComponent>().Rotation;
+	}
+	
+	static void TransformComponent_SetRotation(UUID entityID, glm::vec3* rotation)
+	{
+		Scene* scene = ScriptEngine::GetSceneContext();
+		scene->GetEntityByUUID(entityID).GetComponent<TransformComponent>().Rotation = *rotation;
+	}
+	
 	static bool Input_IsKeyDown(KeyCode keycode)
 	{
 		return Input::IsKeyPressed(keycode);
@@ -99,6 +111,9 @@ namespace Ellie {
 
 		EE_ADD_INTERNAL_CALL(TransformComponent_GetTranslation);
 		EE_ADD_INTERNAL_CALL(TransformComponent_SetTranslation);
+		
+		EE_ADD_INTERNAL_CALL(TransformComponent_GetRotation);
+		EE_ADD_INTERNAL_CALL(TransformComponent_SetRotation);
 
 		EE_ADD_INTERNAL_CALL(Input_IsKeyDown);
 	}

@@ -15,7 +15,7 @@ namespace Sandbox
         Entity box;
         void OnCreate()
         {
-            box = FindEntityByName("Boxx");
+            box = FindEntityByName("Box");
         }
 
         void OnUpdate(float ts)
